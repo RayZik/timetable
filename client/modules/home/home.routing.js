@@ -13,7 +13,7 @@ System.register(['@angular/router', './home.component'], function(exports_1, con
             }],
         execute: function() {
             exports_1("routes", routes = [
-                { path: 'home', component: home_component_1.HomeComponent }
+                { path: 'home', component: home_component_1.HomeComponent, pathMatch: 'full' }
             ]);
             exports_1("routing", routing = router_1.RouterModule.forChild(routes));
         }

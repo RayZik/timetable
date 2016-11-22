@@ -13,7 +13,7 @@ import { HomeModule }      from "./modules/home/home.module";
         BrowserModule,
         HttpModule,
         NgSemanticModule,
-        HomeModule,
+       HomeModule,
         routing
     ],
     providers: [

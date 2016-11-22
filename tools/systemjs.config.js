@@ -1,20 +1,16 @@
 var isPublic = typeof window != "undefined";
 
-/**
- * System configuration for Angular 2 samples
- * Adjust as necessary for your application needs.
- */
+
 (function (global) {
     System.config({
         paths: {
-            // paths serve as alias
-            'npm:': (isPublic) ? '/' : 'node_modules/'
+            // Псевдоним пути
+            'npm:': (isPublic) ? '/' : '/node_modules/'
         },
-        // map tells the System loader where to look for things
+        // Говорит где искать нужные файлы
         map: {
-            // our app is within the app folder
             app: 'client',
-            // angular bundles
+            // Связи
             '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
             '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
             '@angular/compiler': 'npm:@angular/compiler/bundles/compiler.umd.js',
@@ -29,7 +25,7 @@ var isPublic = typeof window != "undefined";
             'angular2-jwt':               'npm:angular2-jwt/angular2-jwt.js',
             'ng-semantic':                'npm:ng-semantic'
         },
-        // packages tells the System loader how to load when no filename and/or no extension
+        //Говорит системе, какого типа файлы без расширения
         packages: {
             app: {
                 main: './main.js',

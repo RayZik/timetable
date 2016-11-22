@@ -13,6 +13,20 @@ app.use(body_parser_1.urlencoded({ extended: true }));
 // api routes
 app.use("/api", api_1.restApi);
 app.use('/client', express.static(path_1.join(__dirname, '../client')));
+// error handlers
+// development error handler
+// will print stacktrace
+if (app.get("env") === "development") {
+    app.use(express.static(path_1.join(__dirname, '../node_modules')));
+    app.use(express.static(path_1.join(__dirname, '../tools')));
+    app.use(function (err, req, res, next) {
+        res.status(err.status || 500);
+        res.json({
+            error: err,
+            message: err.message
+        });
+    });
+}
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error("Not Found");

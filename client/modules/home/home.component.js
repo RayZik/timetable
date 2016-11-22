@@ -34,8 +34,9 @@ System.register(["@angular/core", "../../service/api.service", "rxjs/add/operato
                 };
                 HomeComponent = __decorate([
                     core_1.Component({
-                        selector: "home",
-                        templateUrl: "client/home/home.component.html"
+                        selector: "fan",
+                        templateUrl: "client/modules/home/home.component.html",
+                        providers: [api_service_1.ApiService]
                     }), 
                     __metadata('design:paramtypes', [api_service_1.ApiService])
                 ], HomeComponent);

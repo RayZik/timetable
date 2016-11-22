@@ -5,7 +5,7 @@ const db = require("../../../../models/user").User;
 
 homeApi.get("/", (request: Request, response: Response) => {
 db.find({}, (err, test) => {
-    response.send(test);
+    response.json(test);
   });
 });
 

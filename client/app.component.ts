@@ -7,6 +7,4 @@ import "rxjs/add/operator/map";
     selector: "app",
     templateUrl: "client/app.component.html"
 })
-export class AppComponent {
-   constructor(){}
-}
+export class AppComponent {}

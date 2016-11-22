@@ -3,8 +3,9 @@ import { ApiService } from "../../service/api.service";
 import "rxjs/add/operator/map";
 
 @Component({
-    selector: "home",
-    templateUrl: "client/home/home.component.html"
+    selector: "fan",
+    templateUrl: "client/modules/home/home.component.html",
+    providers: [ApiService]
 })
 export class HomeComponent implements OnInit {
     private measuresArray: any[];

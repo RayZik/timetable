@@ -21,6 +21,8 @@ export class ApiService {
             .http
             .get('/api/home/')
             .map((response: Response) => response.json());
+
+            
     }
 
 }

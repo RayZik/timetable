@@ -5,7 +5,7 @@ exports.homeApi = homeApi;
 var db = require("../../../../models/user").User;
 homeApi.get("/", function (request, response) {
     db.find({}, function (err, test) {
-        response.send(test);
+        response.json(test);
     });
 });
 //# sourceMappingURL=index.js.map
