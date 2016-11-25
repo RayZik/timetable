@@ -4,29 +4,30 @@ import { provideAuth }      from "angular2-jwt";
 import { HttpModule }       from "@angular/http";
 import { NgSemanticModule } from "ng-semantic";
 
-import { AppComponent }    from './app.component';
-import { routing }         from "./routes";
-import { HomeModule }      from "./modules/home/home.module";
+import { AppComponent } from './app.component';
+import { routing }      from "./routes";
+import { HomeModule }   from "./modules/home/home.module";
 
 @NgModule({
     imports: [
         BrowserModule,
         HttpModule,
         NgSemanticModule,
-       HomeModule,
+        HomeModule,
         routing
     ],
     providers: [
         provideAuth({
-            globalHeaders: [{"Content-type": "application/json"}],
+            globalHeaders: [{ "Content-type": "application/json" }],
             newJwtError: true,
             noTokenScheme: true
         })
     ],
-    declarations: [ AppComponent ],
-    bootstrap:    [ AppComponent ],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA
     ]
 })
-export class AppModule {}
+
+export class AppModule { }

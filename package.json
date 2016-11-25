@@ -1,7 +1,7 @@
 {
-  "name": "angular2-express-starter",
+  "name": "timetable",
   "version": "1.0.0",
-  "description": "Starter application of Angular2 on Express",
+  "description": "Timetable",
   "main": "server/app.js",
   "private": true,
   "scripts": {
@@ -31,7 +31,6 @@
     "mongodb": "^2.2.11",
     "mongojs": "^2.4.0",
     "mongoose": "^4.6.8",
-    "morgan": "^1.7.0",
     "path": "^0.12.7",
     "systemjs": "^0.19.41",
     "typescript": "^2.0.2",

@@ -13,9 +13,6 @@ app.use(body_parser_1.urlencoded({ extended: true }));
 // api routes
 app.use("/api", api_1.restApi);
 app.use('/client', express.static(path_1.join(__dirname, '../client')));
-// error handlers
-// development error handler
-// will print stacktrace
 if (app.get("env") === "development") {
     app.use(express.static(path_1.join(__dirname, '../node_modules')));
     app.use(express.static(path_1.join(__dirname, '../tools')));
@@ -27,13 +24,11 @@ if (app.get("env") === "development") {
         });
     });
 }
-// catch 404 and forward to error handler
+// Error 404
 app.use(function (req, res, next) {
     var err = new Error("Not Found");
     next(err);
 });
-// production error handler
-// no stacktrace leaked to user
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.json({

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "rxjs/add/operator/map"], function(exports_1, context_1) {
+System.register(["@angular/core", "@angular/http", "./service/api.service", "rxjs/add/operator/map"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,24 +10,47 @@ System.register(["@angular/core", "rxjs/add/operator/map"], function(exports_1, 
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, http_1, api_service_1;
     var AppComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
+            function (http_1_1) {
+                http_1 = http_1_1;
+            },
+            function (api_service_1_1) {
+                api_service_1 = api_service_1_1;
+            },
             function (_1) {}],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent() {
+                function AppComponent(http, apiService) {
+                    this.http = http;
+                    this.apiService = apiService;
+                    this.usersArray = {};
                 }
+                AppComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this.apiService
+                        .getUsers()
+                        .subscribe(function (data) { _this.usersArray = data; });
+                };
+                AppComponent.prototype.login = function (username, password) {
+                    console.log(this.usersArray);
+                    this.isLogged = true;
+                };
+                AppComponent.prototype.logout = function () {
+                    this.isLogged = false;
+                };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: "app",
-                        templateUrl: "client/app.component.html"
+                        templateUrl: "client/app.component.html",
+                        providers: [api_service_1.ApiService]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [http_1.Http, api_service_1.ApiService])
                 ], AppComponent);
                 return AppComponent;
             }());

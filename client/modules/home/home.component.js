@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../service/api.service", "rxjs/add/operator/map"], function(exports_1, context_1) {
+System.register(["@angular/core", "../../service/api.service"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -19,8 +19,7 @@ System.register(["@angular/core", "../../service/api.service", "rxjs/add/operato
             },
             function (api_service_1_1) {
                 api_service_1 = api_service_1_1;
-            },
-            function (_1) {}],
+            }],
         execute: function() {
             HomeComponent = (function () {
                 function HomeComponent(apiService) {
@@ -29,12 +28,12 @@ System.register(["@angular/core", "../../service/api.service", "rxjs/add/operato
                 HomeComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this.apiService
-                        .getTable()
-                        .subscribe(function (data) { _this.measuresArray = data; });
+                        .getUsers()
+                        .subscribe(function (data) { _this.usersArray = data; });
                 };
                 HomeComponent = __decorate([
                     core_1.Component({
-                        selector: "fan",
+                        selector: "home",
                         templateUrl: "client/modules/home/home.component.html",
                         providers: [api_service_1.ApiService]
                     }), 

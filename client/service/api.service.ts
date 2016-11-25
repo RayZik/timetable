@@ -16,13 +16,26 @@ export class ApiService {
             .map((response: Response) => response.json());
     }
 
-    getTable(){
-      return this
+    getUsers() {
+        return this
             .http
-            .get('/api/home/')
+            .get('/api/home')
             .map((response: Response) => response.json());
-
-            
     }
+
+    // postUser(username: String, password: String, access: number, status: number) {
+    //     let params = JSON.stringify({
+    //         username: username,
+    //         password: password,
+    //         access: access,
+    //         status: status
+    //     });
+    //     let headers = new Headers();
+    //     headers.append('Content-Type', 'application/json');
+    //     return this
+    //         .http
+    //         .post('/api/home', params, headers)
+    //         .map
+    // }
 
 }

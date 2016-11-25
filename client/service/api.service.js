@@ -36,10 +36,10 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                         .get(url)
                         .map(function (response) { return response.json(); });
                 };
-                ApiService.prototype.getTable = function () {
+                ApiService.prototype.getUsers = function () {
                     return this
                         .http
-                        .get('/api/home/')
+                        .get('/api/home')
                         .map(function (response) { return response.json(); });
                 };
                 ApiService = __decorate([

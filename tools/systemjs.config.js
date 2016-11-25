@@ -1,6 +1,5 @@
 var isPublic = typeof window != "undefined";
 
-
 (function (global) {
     System.config({
         paths: {
@@ -10,7 +9,7 @@ var isPublic = typeof window != "undefined";
         // Говорит где искать нужные файлы
         map: {
             app: 'client',
-            // Связи
+            // Пути
             '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
             '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
             '@angular/compiler': 'npm:@angular/compiler/bundles/compiler.umd.js',
@@ -19,11 +18,11 @@ var isPublic = typeof window != "undefined";
             '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
             '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
-            // other libraries
-            'rxjs':                       'npm:rxjs',
+            // Библиотеки
+            'rxjs': 'npm:rxjs',
             'angular2-in-memory-web-api': 'npm:angular2-in-memory-web-api',
-            'angular2-jwt':               'npm:angular2-jwt/angular2-jwt.js',
-            'ng-semantic':                'npm:ng-semantic'
+            'angular2-jwt': 'npm:angular2-jwt/angular2-jwt.js',
+            'ng-semantic': 'npm:ng-semantic'
         },
         //Говорит системе, какого типа файлы без расширения
         packages: {
