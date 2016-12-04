@@ -1,4 +1,4 @@
-System.register(['@angular/core', "@angular/http", "ng-semantic", "@angular/common", "./home.component", "./home.routing"], function(exports_1, context_1) {
+System.register(['@angular/core', "@angular/http", "ng-semantic", "@angular/common", "../../../client/components/passport/login.component", "./home.component", "./home.routing"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', "@angular/http", "ng-semantic", "@angular/comm
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, ng_semantic_1, common_1, home_component_1, home_routing_1;
+    var core_1, http_1, ng_semantic_1, common_1, login_component_1, home_component_1, home_routing_1;
     var HomeModule;
     return {
         setters:[
@@ -25,6 +25,9 @@ System.register(['@angular/core', "@angular/http", "ng-semantic", "@angular/comm
             },
             function (common_1_1) {
                 common_1 = common_1_1;
+            },
+            function (login_component_1_1) {
+                login_component_1 = login_component_1_1;
             },
             function (home_component_1_1) {
                 home_component_1 = home_component_1_1;
@@ -45,7 +48,8 @@ System.register(['@angular/core', "@angular/http", "ng-semantic", "@angular/comm
                             ng_semantic_1.NgSemanticModule
                         ],
                         declarations: [
-                            home_component_1.HomeComponent
+                            home_component_1.HomeComponent,
+                            login_component_1.LoginComponent
                         ],
                         bootstrap: [
                             home_component_1.HomeComponent

@@ -1,20 +1,36 @@
-import * as express         from "express";
-import { join }             from "path";
+import * as express from "express";
+import * as session from "express-session";
+import * as cookieParser from "cookie-parser";
+import * as passport from "passport";
+
+var flash: any = require('connect-flash');
+
+import { join } from "path";
 import { json, urlencoded } from "body-parser";
 
 import { restApi } from "./routes/api";
+import { login } from "./routes/auth/local";
 
 import './typesext';
 
 const app: express.Application = express();
 app.disable("x-powered-by");
 
-app.use(express.static(join(__dirname, '../public')));
+
 app.use(json());
 app.use(urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(session({ secret: 'mySecretKey',resave:false,saveUninitialized:false}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
+
+app.use(express.static(join(__dirname, '../public')));
 
 // api routes
 app.use("/api", restApi);
+app.use("/user", login);
 app.use('/client', express.static(join(__dirname, '../client')));
 
 if (app.get("env") === "development") {

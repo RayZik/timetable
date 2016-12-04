@@ -1,4 +1,4 @@
-<div class="ui  menu">
+<!--<div class="ui  menu">
     <nav class="item right">
         <a class="ui button" (click)="logining.show($event, {position: 'right center'})" *ngIf="!isLogged" class="item">Войти</a>
         <a class="ui button" (click)="logout()" *ngIf="isLogged" class="item inverted red">Выйти</a>
@@ -11,16 +11,17 @@
         <card-subtitle>Введите логин и пароль</card-subtitle>
         <card-content>
             <p><b>Имя</b>:</p>
-            <input type="text" id="username" />
+            <input type="text" id="username" #name required/>
             <p><b>Пароль</b>:</p>
-            <input type="password" id="password" />
+            <input type="password" id="password" #pass required/>
         </card-content>
-        <sm-button class="bottom attached fluid primary" *ngIf="!isLogged" (click)="login(username,password)">Войти</sm-button>
+        <sm-button class="bottom attached fluid primary" *ngIf="!isLogged" (click)="login(name.value,pass.value)">Войти</sm-button>
     </sm-card>
 </sm-popup>
 
 
-<div *ngIf="isLogged">
-    <h1 *ngFor="let user of usersArray">{{user.username}}</h1>
-</div>
+<div> response {{response}}</div>-->
+
+
+
 <router-outlet></router-outlet>

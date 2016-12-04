@@ -3,6 +3,7 @@ import { HttpModule } from "@angular/http";
 import { NgSemanticModule } from "ng-semantic";
 import { CommonModule } from "@angular/common";
 
+import { LoginComponent } from "../../../client/components/passport/login.component";
 import { HomeComponent } from "./home.component";
 import { routing } from "./home.routing";
 
@@ -14,7 +15,8 @@ import { routing } from "./home.routing";
         NgSemanticModule
     ],
     declarations: [
-        HomeComponent
+        HomeComponent,
+        LoginComponent
     ],
     bootstrap: [
         HomeComponent

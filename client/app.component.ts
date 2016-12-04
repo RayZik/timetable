@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Http, Headers, RequestOptions, Response } from "@angular/http";
 import { ApiService } from "./service/api.service";
-import { SemanticPopupComponent } from "ng-semantic";
+import { Router, Params } from "@angular/router";
 import "rxjs/add/operator/map";
 
 @Component({
@@ -10,26 +10,44 @@ import "rxjs/add/operator/map";
     providers: [ApiService]
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent  {
 
-    private isLogged: boolean;
-    private usersArray: any = {};
+    // private isLogged: boolean;
+    // private usersArray = {};
+    // private response = {};
+    // constructor(private apiService: ApiService, private router: Router) { }
+    // refresh() {
+    //     this.apiService
+    //         .getUsers()
+    //         .subscribe((data) => { this.usersArray = data; },
+    //         (err) => { console.log(err) });
+    //     console.log(this.response);
+    // }
+    // ngOnInit() {
+    //     this.refresh();
+    // }
 
-    constructor(private http: Http, private apiService: ApiService) { }
+    // login(username: String, password: String) {
+    //     this.apiService
+    //         .postUser(username, password)
+    //         .subscribe(
+    //         (res: Response) => {
+    //             this.response = res;
+    //             this.isLogged = true;
+    //             this.refresh();
+    //         },
+    //         (error: Error) => { console.log(error); }
+    //         ),
+    //         () => console.log('done');
 
-    ngOnInit() {
-        this.apiService
-            .getUsers()
-            .subscribe((data) => { this.usersArray = data; });
-    }
+    // }
 
-    login(username: String, password: String) {
-        console.log(this.usersArray);
+    // logout() {
+    //     this.isLogged = false;
+    //     this.router.navigate(['/']);
+    // }
 
-        this.isLogged = true;
-    }
 
-    logout() {
-        this.isLogged = false;
-    }
+
+
 }

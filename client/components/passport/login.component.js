@@ -1,4 +1,4 @@
-System.register(["@angular/core", "./service/api.service", "rxjs/add/operator/map"], function(exports_1, context_1) {
+System.register(["@angular/core"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,33 +10,28 @@ System.register(["@angular/core", "./service/api.service", "rxjs/add/operator/ma
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, api_service_1;
-    var AppComponent;
+    var core_1;
+    var LoginComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (api_service_1_1) {
-                api_service_1 = api_service_1_1;
-            },
-            function (_1) {}],
+            }],
         execute: function() {
-            AppComponent = (function () {
-                function AppComponent() {
+            LoginComponent = (function () {
+                function LoginComponent() {
                 }
-                AppComponent = __decorate([
+                LoginComponent = __decorate([
                     core_1.Component({
-                        selector: "app",
-                        templateUrl: "client/app.component.html",
-                        providers: [api_service_1.ApiService]
+                        selector: "tt-login",
+                        templateUrl: "client/components/passport/login.component.html"
                     }), 
                     __metadata('design:paramtypes', [])
-                ], AppComponent);
-                return AppComponent;
+                ], LoginComponent);
+                return LoginComponent;
             }());
-            exports_1("AppComponent", AppComponent);
+            exports_1("LoginComponent", LoginComponent);
         }
     }
 });
-//# sourceMappingURL=app.component.js.map
+//# sourceMappingURL=login.component.js.map

@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../../service/api.service";
 
 @Component({
-    selector: "home",
+    selector: "tt-home",
     templateUrl: "client/modules/home/home.component.html",
     providers: [ApiService]
 })
