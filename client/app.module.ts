@@ -9,6 +9,7 @@ import { AppComponent }   from './app.component';
 
 import { routing } from "./routes";
 import { HomeModule } from "./modules/home/home.module";
+import { AdminModule } from "./modules/admin/admin.module";
 
 
 
@@ -18,6 +19,7 @@ import { HomeModule } from "./modules/home/home.module";
         HttpModule,
         NgSemanticModule,
         HomeModule,
+        AdminModule,
         routing
     ],
     providers: [

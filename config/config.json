@@ -1,5 +1,10 @@
 {
-    "mongoose":{
-        "uri": "mongodb://localhost/test"
+    "session": {
+        "secret": "timetable",
+        "cookie": {
+            "path": "/",
+            "httpOnly": true,
+            "maxAge": null
+        }
     }
 }

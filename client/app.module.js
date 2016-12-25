@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/platform-browser', "angular2-jwt", "@angular/http", "ng-semantic", './app.component', "./routes", "./modules/home/home.module"], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/platform-browser', "angular2-jwt", "@angular/http", "ng-semantic", './app.component', "./routes", "./modules/home/home.module", "./modules/admin/admin.module"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/platform-browser', "angular2-jwt", "
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, platform_browser_1, angular2_jwt_1, http_1, ng_semantic_1, app_component_1, routes_1, home_module_1;
+    var core_1, platform_browser_1, angular2_jwt_1, http_1, ng_semantic_1, app_component_1, routes_1, home_module_1, admin_module_1;
     var AppModule;
     return {
         setters:[
@@ -37,6 +37,9 @@ System.register(['@angular/core', '@angular/platform-browser', "angular2-jwt", "
             },
             function (home_module_1_1) {
                 home_module_1 = home_module_1_1;
+            },
+            function (admin_module_1_1) {
+                admin_module_1 = admin_module_1_1;
             }],
         execute: function() {
             AppModule = (function () {
@@ -49,6 +52,7 @@ System.register(['@angular/core', '@angular/platform-browser', "angular2-jwt", "
                             http_1.HttpModule,
                             ng_semantic_1.NgSemanticModule,
                             home_module_1.HomeModule,
+                            admin_module_1.AdminModule,
                             routes_1.routing
                         ],
                         providers: [

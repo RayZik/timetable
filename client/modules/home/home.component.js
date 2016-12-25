@@ -26,10 +26,18 @@ System.register(["@angular/core", "../../service/api.service"], function(exports
                     this.apiService = apiService;
                 }
                 HomeComponent.prototype.ngOnInit = function () {
+                    this.refresh();
+                };
+                HomeComponent.prototype.refresh = function () {
                     var _this = this;
                     this.apiService
                         .getUsers()
                         .subscribe(function (data) { _this.usersArray = data; });
+                };
+                HomeComponent.prototype.login = function (username, password) {
+                    if (username == "admin" && password == "admin") {
+                        this.isLogged = true;
+                    }
                 };
                 HomeComponent = __decorate([
                     core_1.Component({

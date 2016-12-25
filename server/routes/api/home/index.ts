@@ -13,14 +13,17 @@ const db = require("../../../../models/user").UserModel;
 // })
 
 homeApi.get("/", (reqest: Request, response: Response) => {
-    db.find({}, (err, res) => {
-        if (err) throw err;
-        response.json(res);
+    var promise = new Promise(function (resolve, reject) {
+        resolve(db.find({}));
     });
+    promise
+        .then((user) => {
+            response.json(user);
+        })
+        .catch((err) => {
+            response.send(err);
+        })
 });
-
-
-
 
 // homeApi.post("/",(req: Request, res: Response)=>{
 //     var username = req.body.username;

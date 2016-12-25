@@ -3,34 +3,44 @@ import * as session from "express-session";
 import * as cookieParser from "cookie-parser";
 import * as passport from "passport";
 
-var flash: any = require('connect-flash');
+const flash: any = require('connect-flash');
+const config: any = require('../config');
+var mongoose: any = require('../lib/mongoose');
+var MongoStore = require('connect-mongo')(session);
 
 import { join } from "path";
 import { json, urlencoded } from "body-parser";
 
 import { restApi } from "./routes/api";
 import { login } from "./routes/auth/local";
+import { admin } from "./routes/timetable/admin";
 
 import './typesext';
 
 const app: express.Application = express();
 app.disable("x-powered-by");
 
-
 app.use(json());
 app.use(urlencoded({ extended: true }));
+//настройки пасспорта
 app.use(cookieParser());
-app.use(session({ secret: 'mySecretKey',resave:false,saveUninitialized:false}));
+app.use(session(
+    {
+        secret: 'Timetable',
+        resave: false,
+        saveUninitialized: true,
+        cookie: config.get('session:cookie'),
+        store: new MongoStore({ mongooseConnection: mongoose.connection })
+    }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-
 app.use(express.static(join(__dirname, '../public')));
 
-// api routes
 app.use("/api", restApi);
 app.use("/user", login);
+app.use("/admin", admin);
 app.use('/client', express.static(join(__dirname, '../client')));
 
 if (app.get("env") === "development") {

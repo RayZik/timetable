@@ -11,10 +11,15 @@ var db = require("../../../../models/user").UserModel;
 //     console.log(user);
 // })
 homeApi.get("/", function (reqest, response) {
-    db.find({}, function (err, res) {
-        if (err)
-            throw err;
-        response.json(res);
+    var promise = new Promise(function (resolve, reject) {
+        resolve(db.find({}));
+    });
+    promise
+        .then(function (user) {
+        response.json(user);
+    })
+        .catch(function (err) {
+        response.send(err);
     });
 });
 // homeApi.post("/",(req: Request, res: Response)=>{

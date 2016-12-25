@@ -26,15 +26,4 @@ export class ApiService {
     }
 
 
-    // postUser(username: String, password: String) {
-    //     let params = JSON.stringify({ username:username, password:password });
-    //     let headers = new Headers();
-    //     headers.append('Content-Type', 'application/json');
-    //     return this
-    //         .http
-    //         .post('/api/auth', params,{headers: headers})
-    //         .map((res)=>res);
-
-    // }
-
 }

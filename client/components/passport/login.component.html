@@ -1,7 +1,21 @@
-<form action="user/login" method="POST">
-    <label> Логин: </label>
-    <input type="text" name="username" />
-    <label> Пароль: </label>
-    <input type="password" name="password" />
-    <button type="submit">Войти</button>
-</form>
+<div class="ui two column middle aligned very relaxed stackable grid">
+    <div class="column">
+        <form action="user/login" method="POST" class="ui form">
+            <div class="field">
+                <label>Логин</label>
+                <div class="ui left icon input">
+                    <input type="text" name="username" placeholder="Логин..." required>
+                    <i class="user icon"></i>
+                </div>
+            </div>
+            <div class="field">
+                <label>Пароль</label>
+                <div class="ui left icon input">
+                    <input type="password" name="password" required>
+                    <i class="lock icon"></i>
+                </div>
+            </div>
+            <button type="submit" class="ui blue submit button">Войти</button>
+        </form>
+    </div>
+</div>
