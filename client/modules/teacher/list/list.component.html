@@ -1,0 +1,10 @@
+<sm-list class="ui center ">
+    <sm-item (click)="goTeacherId(item._id)" *ngFor="let item of teacherList" [attr.id]="'teacher:'+item._id">
+        <div class="content">
+            <div class="content">
+                <h4 class="ui ">{{item.name}} {{item.lastName}}</h4>
+            </div>
+        </div>
+    </sm-item>
+</sm-list>
+

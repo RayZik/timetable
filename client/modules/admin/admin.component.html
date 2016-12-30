@@ -1,16 +1,16 @@
-<div class="admin"> Hello ADMIN! </div>
-
 <div>
     <ol>
         <li *ngFor="let items of timetable">
-            <span (blur)="items.time[counter].begin=$event.target.outerText" contenteditable="true"> {{items.time[counter].begin}}</span>
-            <span (blur)="items.time[counter].end=$event.target.outerText" contenteditable="true"> {{items.time[counter].end}}</span>
-            <span (blur)="items._subject[counter].name=$event.target.outerText" contenteditable="true"> {{items._subject[counter].name}} </span>
-            <span (blur)="items._teacher[counter].name=$event.target.outerText" contenteditable="true"> {{items._teacher[counter].name}} </span>
-            <span (blur)="items._teacher[counter].lastName=$event.target.outerText" contenteditable="true"> {{items._teacher[counter].lastName}} </span>
-            <span (blur)="items._group[counter].name=$event.target.outerText" contenteditable="true"> {{items._group[counter].name}} </span>
-            <span (blur)="items._office[counter].name=$event.target.outerText" contenteditable="true"> {{items._office[counter].name}}</span>
+            <span> {{items.time[counter].begin}}</span>
+            <span> {{items.time[counter].end}}</span>
+            <span> {{items._subject[counter].name}} </span>
+            <span> {{items._teacher[counter].name}} </span>
+            <span> {{items._teacher[counter].lastName}} </span>
+            <span> {{items._group[counter].name}} </span>
+            <span> {{items._office[counter].name}}</span>
         </li>
     </ol>
-    <button (click)="updateTable(timetable)">Сохранить изменения</button>
 </div>
+
+
+

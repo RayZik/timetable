@@ -13,7 +13,7 @@ import { json, urlencoded } from "body-parser";
 
 import { restApi } from "./routes/api";
 import { login } from "./routes/auth/local";
-import { admin } from "./routes/timetable/admin";
+import { admin } from "./routes/timetable";
 
 import './typesext';
 

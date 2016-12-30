@@ -6,4 +6,4 @@ export const routes: Routes = [
     { path: 'admin', component: AdminComponent , pathMatch: 'full'}
 ];
 
-export const routing = RouterModule.forChild(routes);
+export const routing = RouterModule.forRoot(routes, { useHash: true });

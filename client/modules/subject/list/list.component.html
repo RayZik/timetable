@@ -1,0 +1,9 @@
+<sm-list class="ui medium aligned divided animated selection">
+    <sm-item (click)="goSubjectId(item._id)" *ngFor="let item of subjectList" [attr.id]="'subject:'+item._id">
+        <div class="content">
+            <div class="middle aligned content">
+                <h4 class="ui grey header">{{item.name}}</h4>
+            </div>
+        </div>
+    </sm-item>
+</sm-list>

@@ -1,27 +1,9 @@
-<!--<div class="ui  menu">
-    <nav class="item right">
-        <a class="ui button" (click)="logining.show($event, {position: 'right center'})" *ngIf="!isLogged" class="item">Войти</a>
-        <a class="ui button" (click)="logout()" *ngIf="isLogged" class="item inverted red">Выйти</a>
+<div class="ui container">
+    <nav class="ui menu inverted teal huge">
+        <a routerLink="admin" class="item">Главная</a>
+        <a routerLink="teacher" class="item">Переподаватель</a>
+        <a routerLink="subject" class="item">Предмет</a>
     </nav>
 </div>
-
-<sm-popup class="huge" #logining>
-    <sm-card class="card basic">
-        <card-title> Войти </card-title>
-        <card-subtitle>Введите логин и пароль</card-subtitle>
-        <card-content>
-            <p><b>Имя</b>:</p>
-            <input type="text" id="username" #name required/>
-            <p><b>Пароль</b>:</p>
-            <input type="password" id="password" #pass required/>
-        </card-content>
-        <sm-button class="bottom attached fluid primary" *ngIf="!isLogged" (click)="login(name.value,pass.value)">Войти</sm-button>
-    </sm-card>
-</sm-popup>
-
-
-<div> response {{response}}</div>-->
-
-
 
 <router-outlet></router-outlet>

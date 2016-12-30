@@ -1,6 +1,6 @@
 import { Router, Response, Request, NextFunction } from "express";
 
-const admin: Router = Router();
+const adminApi: Router = Router();
 const Timetable = require("../../../../models/timetable").TimetableModel;
 const Group = require("../../../../models/group").GroupModel;
 const Office = require("../../../../models/office").OfficeModel;
@@ -48,7 +48,7 @@ const Teacher = require("../../../../models/teacher").TeacherModel;
 //         console.log(blog);
 //     });
 
-admin.get("/", (req: Request, res: Response) => {
+adminApi.get("/", (req: Request, res: Response) => {
     Timetable.findOne({})
         .populate('_office')
         .populate('_subject')
@@ -60,46 +60,4 @@ admin.get("/", (req: Request, res: Response) => {
         });
 });
 
-admin.post("/", (req: Request, res: Response) => {
-    Timetable.findOne({ _id: req.body.id })
-        .populate('_office')
-        .populate('_subject')
-        .populate('_teacher')
-        .populate('_group')
-        .exec((err, table) => {
-            if (err) {
-                res.status(500);
-            } else {
-                table.time[0].end = req.body.timeEnd;
-                table.time[0].begin = req.body.timeBegin;
-                table.save();
-
-                Group.findOne({ _id: table._group[0]._id }, (err, result) => {
-                    if (err) throw err;
-                    result.name = req.body.group;
-                    result.save();
-                });
-
-                Teacher.findOne({ _id: table._teacher[0]._id }, (err, result) => {
-                    if (err) throw err;
-                    result.name = req.body.tName;
-                    result.lastName = req.body.tLName;
-                    result.save();
-                });
-
-                Subject.findOne({ _id: table._subject[0]._id }, (err, result) => {
-                    if (err) throw err;
-                    result.name = req.body.subject;
-                    result.save();
-                });
-
-                Office.findOne({ _id: table._office[0]._id }, (err, result) => {
-                    if (err) throw err;
-                    result.name = req.body.office;
-                    result.save();
-                });
-            }
-        });
-});
-
-export { admin }; 
+export { adminApi }; 

@@ -1,6 +1,5 @@
-System.register(["@angular/core", "angular2-jwt", '@angular/http', "rxjs/add/operator/map"], function(exports_1, context_1) {
+System.register(["@angular/core", "angular2-jwt", "@angular/http", "rxjs/add/operator/map"], function (exports_1, context_1) {
     "use strict";
-    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,10 +9,10 @@ System.register(["@angular/core", "angular2-jwt", '@angular/http', "rxjs/add/ope
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, angular2_jwt_1, http_1;
-    var AdminService;
+    var __moduleName = context_1 && context_1.id;
+    var core_1, angular2_jwt_1, http_1, AdminService;
     return {
-        setters:[
+        setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             },
@@ -23,8 +22,10 @@ System.register(["@angular/core", "angular2-jwt", '@angular/http', "rxjs/add/ope
             function (http_1_1) {
                 http_1 = http_1_1;
             },
-            function (_1) {}],
-        execute: function() {
+            function (_1) {
+            }
+        ],
+        execute: function () {
             AdminService = (function () {
                 function AdminService(authHttp, http) {
                     this.authHttp = authHttp;
@@ -42,32 +43,14 @@ System.register(["@angular/core", "angular2-jwt", '@angular/http', "rxjs/add/ope
                         .get('/admin')
                         .map(function (response) { return response.json(); });
                 };
-                AdminService.prototype.updateTable = function (items) {
-                    var params = {
-                        id: items._id,
-                        timeEnd: items.time[0].end,
-                        timeBegin: items.time[0].begin,
-                        subject: items._subject[0].name,
-                        tName: items._teacher[0].name,
-                        tLName: items._teacher[0].lastName,
-                        group: items._group[0].name,
-                        office: items._office[0].name
-                    };
-                    var headers = new http_1.Headers();
-                    headers.append('Content-Type', 'application/json');
-                    return this
-                        .http
-                        .post('/admin', params, headers)
-                        .map(function (response) { return response.json(); });
-                };
-                AdminService = __decorate([
-                    core_1.Injectable(), 
-                    __metadata('design:paramtypes', [angular2_jwt_1.AuthHttp, http_1.Http])
-                ], AdminService);
                 return AdminService;
             }());
+            AdminService = __decorate([
+                core_1.Injectable(),
+                __metadata("design:paramtypes", [angular2_jwt_1.AuthHttp, http_1.Http])
+            ], AdminService);
             exports_1("AdminService", AdminService);
         }
-    }
+    };
 });
 //# sourceMappingURL=admin.service.js.map

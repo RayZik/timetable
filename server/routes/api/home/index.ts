@@ -25,15 +25,4 @@ homeApi.get("/", (reqest: Request, response: Response) => {
         })
 });
 
-// homeApi.post("/",(req: Request, res: Response)=>{
-//     var username = req.body.username;
-//    db.findOne({username: username}, (err,res)=>{
-//        if(err){
-//            console.log(err);
-//        }else{
-//            res.json(res);
-//        }
-//    })
-//  })
-
 export { homeApi };
