@@ -73,6 +73,27 @@ export class ApiService {
             .post(`/admin/teacher/${teacher.id}`, teacher, { headers: headers })
             .map((response: Response) => response.json());
     }
+//office
+    getOffices() {
+        return this
+            .http
+            .get('/admin/office')
+            .map((response: Response) => response.json());
+    }
 
+    getOffice(id: any) {
+        return this
+            .http
+            .get(`/admin/office/${id}`)
+            .map((response: Response) => response.json());
+    }
 
+    updateOffice(office: any) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post(`/admin/office/${office.id}`, office, { headers: headers })
+            .map((response: Response) => response.json());
+    }
 }

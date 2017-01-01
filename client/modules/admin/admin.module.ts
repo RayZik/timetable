@@ -8,6 +8,7 @@ import { AdminComponent } from "./admin.component";
 
 import { TeacherModule } from "../teacher/teacher.module";
 import { SubjectModule } from "../subject/subject.module";
+import { OfficeModule } from "../office/office.module";
 
 import { routing } from "./admin.routing";
 
@@ -18,7 +19,8 @@ import { routing } from "./admin.routing";
         NgSemanticModule,
         routing,
         TeacherModule,
-        SubjectModule
+        SubjectModule,
+        OfficeModule,
     ],
     declarations: [
         AdminComponent
@@ -30,4 +32,5 @@ import { routing } from "./admin.routing";
         CUSTOM_ELEMENTS_SCHEMA
     ]
 })
+
 export class AdminModule { }

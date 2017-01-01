@@ -85,6 +85,27 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                         .post("/admin/teacher/" + teacher.id, teacher, { headers: headers })
                         .map(function (response) { return response.json(); });
                 };
+                //office
+                ApiService.prototype.getOffices = function () {
+                    return this
+                        .http
+                        .get('/admin/office')
+                        .map(function (response) { return response.json(); });
+                };
+                ApiService.prototype.getOffice = function (id) {
+                    return this
+                        .http
+                        .get("/admin/office/" + id)
+                        .map(function (response) { return response.json(); });
+                };
+                ApiService.prototype.updateOffice = function (office) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/admin/office/" + office.id, office, { headers: headers })
+                        .map(function (response) { return response.json(); });
+                };
                 return ApiService;
             }());
             ApiService = __decorate([
