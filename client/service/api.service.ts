@@ -73,6 +73,15 @@ export class ApiService {
             .post(`/admin/teacher/${teacher.id}`, teacher, { headers: headers })
             .map((response: Response) => response.json());
     }
+
+    createTeachers(teacher){
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post(`/admin/teacher`,teacher, { headers: headers })
+            .map((response: Response) => response.json());
+    }
 //office
     getOffices() {
         return this
@@ -94,6 +103,29 @@ export class ApiService {
         return this
             .http
             .post(`/admin/office/${office.id}`, office, { headers: headers })
+            .map((response: Response) => response.json());
+    }
+    //group
+    getGroups() {
+        return this
+            .http
+            .get('/admin/group')
+            .map((response: Response) => response.json());
+    }
+
+    getGroup(id: any) {
+        return this
+            .http
+            .get(`/admin/group/${id}`)
+            .map((response: Response) => response.json());
+    }
+
+    updateGroup(group: any) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post(`/admin/group/${group.id}`, group, { headers: headers })
             .map((response: Response) => response.json());
     }
 }

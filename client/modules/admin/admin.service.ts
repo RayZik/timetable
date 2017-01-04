@@ -23,4 +23,14 @@ export class AdminService {
             .get('/admin')
             .map((response: Response) => response.json());
     }
+
+    addTT(id) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post("/admin", { id: id}, { headers: headers })
+            .map((response: Response) => response.json());
+
+    }
 }

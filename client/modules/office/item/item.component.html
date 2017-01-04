@@ -1,26 +1,18 @@
-<table class="ui celled table">
-    <thead>
-        <tr>
-            <th colspan="2">Внесите изменения</th>   
-        </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Наименование</td>
-        <td class="selectable" contenteditable="true" (blur)="office.name=$event.target.outerText">
-            {{office.name}}
-        </td>
-    </tr>
-    </tbody>
-    <tfoot class="full-width">
-    <tr>
-        <th colspan="2">
-            <div class="ui right floated buttons">
-                <button  (click)="updateOffice(office)" class="ui positive button">Сохранить</button>
-                <div class="или"></div>
-                <button (click)="goBack()" class="ui button">Отмена</button>
-            </div>
-        </th>
-    </tr>
-    </tfoot>
-</table>
+<div class="ui container">
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th colspan="2">Внесите изменения</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Имя</td>
+                <td class="selectable" contenteditable="true" (blur)="office.name=$event.target.outerText">
+                    {{office.name}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button (click)="updateOffice(office)" class="ui right floated button">Сохранить</button>
+</div>

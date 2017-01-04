@@ -1,10 +1,17 @@
-<sm-list class="ui center ">
-    <sm-item (click)="goTeacherId(item._id)" *ngFor="let item of teacherList" [attr.id]="'teacher:'+item._id">
-        <div class="content">
-            <div class="content">
-                <h4 class="ui ">{{item.name}} {{item.lastName}}</h4>
-            </div>
-        </div>
-    </sm-item>
-</sm-list>
+<div class="ui container">
+    <input type="text" name="name" (blur)="teacher.name=$event.target.value" />
+    <input type="text" name="lastName" (blur)="teacher.lastName=$event.target.value" />
+    <div class="ui right floated button" (click)="newTeacher(teacher)">Добавить</div>
+</div>
 
+<div class="ui container medium aligned divided animated selection" >
+    <div class="content" >
+        <ol class="content">
+            <li class="middle aligned content" (click)="goTeacherId(item._id)"  *ngFor="let item of teacherList">
+                <h4 class="ui grey header">{{item.name}} {{item.lastName}}</h4>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<!--<tt-admin [teachers]="teacherList"></tt-admin>-->

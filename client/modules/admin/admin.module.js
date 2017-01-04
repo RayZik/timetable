@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/platform-browser", "./admin.component", "../teacher/teacher.module", "../subject/subject.module", "../office/office.module", "./admin.routing"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/platform-browser", "./admin.component", "../teacher/teacher.module", "../subject/subject.module", "../office/office.module", "../group/group.module", "./admin.routing"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/plat
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, http_1, ng_semantic_1, platform_browser_1, admin_component_1, teacher_module_1, subject_module_1, office_module_1, admin_routing_1, AdminModule;
+    var core_1, http_1, ng_semantic_1, platform_browser_1, admin_component_1, teacher_module_1, subject_module_1, office_module_1, group_module_1, admin_routing_1, AdminModule;
     return {
         setters: [
             function (core_1_1) {
@@ -37,6 +37,9 @@ System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/plat
             function (office_module_1_1) {
                 office_module_1 = office_module_1_1;
             },
+            function (group_module_1_1) {
+                group_module_1 = group_module_1_1;
+            },
             function (admin_routing_1_1) {
                 admin_routing_1 = admin_routing_1_1;
             }
@@ -57,6 +60,7 @@ System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/plat
                         teacher_module_1.TeacherModule,
                         subject_module_1.SubjectModule,
                         office_module_1.OfficeModule,
+                        group_module_1.GroupModule
                     ],
                     declarations: [
                         admin_component_1.AdminComponent

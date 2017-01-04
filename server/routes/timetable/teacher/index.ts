@@ -26,12 +26,20 @@ teacher.get("/:id", (req: Request, res: Response) => {
 });
 
 teacher.post("/:id", (req: Request, res: Response) => {
-    Teacher.update({ _id: req.body._id }, { $set: { name: req.body.name, lastName: req.body.lastName } },(err,result)=>{
-        if(err){
+    Teacher.update({ _id: req.body._id }, { $set: { name: req.body.name, lastName: req.body.lastName } }, (err, result) => {
+        if (err) {
             res.status(500);
-        }else{
+        } else {
             console.log(result);
         }
+    });
+});
+
+teacher.post("/", (req: Request, res: Response) => {
+    var t = new Teacher({ name: req.body.name, lastName: req.body.lastName });
+    t.save(function (err) {
+        if (err) return err;
+        console.log(t);
     });
 });
 

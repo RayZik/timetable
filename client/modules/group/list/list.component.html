@@ -1,0 +1,9 @@
+<div class="ui container medium aligned divided animated selection">
+    <div class="content" >
+        <ol class="content">
+            <li class="middle aligned content" (click)="goGroupId(item._id)" *ngFor="let item of groupList">
+                <h4 class="ui grey header">{{item.name}} {{item.lastName}}</h4>
+            </li>
+        </ol>
+    </div>
+</div>

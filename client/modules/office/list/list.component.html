@@ -1,9 +1,9 @@
-<sm-list class="ui medium aligned divided animated selection">
-    <sm-item (click)="goOfficeId(item._id)" *ngFor="let item of officeList" [attr.id]="'office:'+item._id">
-        <div class="content">
-            <div class="middle aligned content">
+<div class="ui container medium aligned divided animated selection">
+    <div class="content"  >
+        <ol class="content">
+            <li class="middle aligned content" (click)="goOfficeId(item._id)" *ngFor="let item of officeList">
                 <h4 class="ui grey header">{{item.name}}</h4>
-            </div>
-        </div>
-    </sm-item>
-</sm-list>
+            </li>
+        </ol>
+    </div>
+</div>

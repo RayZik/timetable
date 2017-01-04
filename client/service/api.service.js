@@ -85,6 +85,14 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                         .post("/admin/teacher/" + teacher.id, teacher, { headers: headers })
                         .map(function (response) { return response.json(); });
                 };
+                ApiService.prototype.createTeachers = function (teacher) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/admin/teacher", teacher, { headers: headers })
+                        .map(function (response) { return response.json(); });
+                };
                 //office
                 ApiService.prototype.getOffices = function () {
                     return this
@@ -104,6 +112,27 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                     return this
                         .http
                         .post("/admin/office/" + office.id, office, { headers: headers })
+                        .map(function (response) { return response.json(); });
+                };
+                //group
+                ApiService.prototype.getGroups = function () {
+                    return this
+                        .http
+                        .get('/admin/group')
+                        .map(function (response) { return response.json(); });
+                };
+                ApiService.prototype.getGroup = function (id) {
+                    return this
+                        .http
+                        .get("/admin/group/" + id)
+                        .map(function (response) { return response.json(); });
+                };
+                ApiService.prototype.updateGroup = function (group) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/admin/group/" + group.id, group, { headers: headers })
                         .map(function (response) { return response.json(); });
                 };
                 return ApiService;

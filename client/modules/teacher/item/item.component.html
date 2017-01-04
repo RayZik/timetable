@@ -1,33 +1,24 @@
-<table class="ui celled table">
-    <thead>
-        <tr>
-            <th colspan="2">Внесите изменения</th>   
-        </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Имя</td>
-        <td class="selectable" contenteditable="true" (blur)="teacher.name=$event.target.outerText">
-            {{teacher.name}}
-        </td>
-    </tr>
-     <tr>
-        <td>Фамилия</td>
-        <td class="selectable" contenteditable="true" (blur)="teacher.lastName=$event.target.outerText">
-            {{teacher.lastName}}
-        </td>
-    </tr>
-    </tbody>
-    <tfoot class="full-width">
-    <tr>
-        <th colspan="2">
-            <div class="ui right floated buttons">
-                <button  (click)="updateTeacher(teacher)" class="ui positive button">Сохранить</button>
-                <div class="или"></div>
-                <button (click)="goBack()" class="ui button">Отмена</button>
-            </div>
-
-        </th>
-    </tr>
-    </tfoot>
-</table>
+<div class="ui container">
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th colspan="2">Внесите изменения</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Имя</td>
+                <td contenteditable="true" (blur)="teacher.name=$event.target.outerText">
+                    {{teacher.name}}
+                </td>
+            </tr>
+            <tr>
+                <td>Фамилия</td>
+                <td contenteditable="true" (blur)="teacher.lastName=$event.target.outerText">
+                    {{teacher.lastName}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button (click)="updateTeacher(teacher)" class="ui right floated button">Сохранить</button>
+</div>

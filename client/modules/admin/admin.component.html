@@ -1,16 +1,14 @@
-<div>
+<div class="ui container">
     <ol>
         <li *ngFor="let items of timetable">
-            <span> {{items.time[counter].begin}}</span>
-            <span> {{items.time[counter].end}}</span>
-            <span> {{items._subject[counter].name}} </span>
-            <span> {{items._teacher[counter].name}} </span>
-            <span> {{items._teacher[counter].lastName}} </span>
-            <span> {{items._group[counter].name}} </span>
-            <span> {{items._office[counter].name}}</span>
+            <span *ngFor="let item of items.time"> {{item.begin}} - {{item.end}}</span>
+            <span *ngFor="let item of items._subject"> {{item.name}} </span>
+            <span *ngFor="let item of items._teacher"> {{item.name}} {{item.lastName}}</span>
+            <span *ngFor="let item of items._group"> {{item.name}} </span>
+            <span *ngFor="let item of items._office"> {{item.name}}</span>
         </li>
     </ol>
+         <select (change)="addTT($event.target.value)">
+            <option *ngFor="let teacher of teachers" [value]="teacher._id" >{{teacher.name}} {{teacher.lastName}}</option>
+         </select>
 </div>
-
-
-

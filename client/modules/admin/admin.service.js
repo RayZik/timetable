@@ -43,6 +43,14 @@ System.register(["@angular/core", "angular2-jwt", "@angular/http", "rxjs/add/ope
                         .get('/admin')
                         .map(function (response) { return response.json(); });
                 };
+                AdminService.prototype.addTT = function (id) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/admin", { id: id }, { headers: headers })
+                        .map(function (response) { return response.json(); });
+                };
                 return AdminService;
             }());
             AdminService = __decorate([

@@ -12,7 +12,7 @@ const Teacher = require("../../../../models/teacher").TeacherModel;
 //     if (err) return;
 // });
 
-// var gr = new Group({ name: "4pi" });
+// var gr = new Group({name:"4pi"});
 // gr.save(function (err) {
 //     if (err) return;
 // });
@@ -27,7 +27,7 @@ const Teacher = require("../../../../models/teacher").TeacherModel;
 //     if (err) return;
 // });
 
-//var tt = new Timetable();
+// var tt = new Timetable();
 // tt._office.push(off._id);
 // tt._subject.push(su._id);
 // tt._teacher.push(tea._id);
@@ -58,6 +58,14 @@ adminApi.get("/", (req: Request, res: Response) => {
             if (err) return err;
             res.send(table);
         });
+});
+
+adminApi.post("/", (req: Request, res: Response) => {
+    Timetable.findOne({}, (err, table) => {
+        if (err) return err;
+        table._teacher.push(req.body.id);
+        table.save();
+    })
 });
 
 export { adminApi }; 

@@ -8,11 +8,11 @@
         <tbody>
             <tr>
                 <td>Имя</td>
-                <td class="selectable" contenteditable="true" (blur)="subject.name=$event.target.outerText">
-                    {{subject.name}}
+                <td class="selectable" contenteditable="true" (blur)="group.name=$event.target.outerText">
+                    {{group.name}}
                 </td>
             </tr>
         </tbody>
     </table>
-    <button (click)="updateSubject(subject)" class="ui right floated button">Сохранить</button>
+    <button (click)="updateGroup(group)" class="ui right floated button">Сохранить</button>
 </div>
