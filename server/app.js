@@ -11,7 +11,6 @@ var path_1 = require("path");
 var body_parser_1 = require("body-parser");
 var api_1 = require("./routes/api");
 var local_1 = require("./routes/auth/local");
-var timetable_1 = require("./routes/timetable");
 require("./typesext");
 var app = express();
 exports.app = app;
@@ -33,7 +32,6 @@ app.use(flash());
 app.use(express.static(path_1.join(__dirname, '../public')));
 app.use("/api", api_1.restApi);
 app.use("/user", local_1.login);
-app.use("/admin", timetable_1.admin);
 app.use('/client', express.static(path_1.join(__dirname, '../client')));
 if (app.get("env") === "development") {
     app.use(express.static(path_1.join(__dirname, '../node_modules')));

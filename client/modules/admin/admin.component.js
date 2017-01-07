@@ -25,12 +25,16 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
         ],
         execute: function () {
             AdminComponent = (function () {
-                // @Input() teachers:any[];
                 function AdminComponent(adminService, apiService) {
                     this.adminService = adminService;
                     this.apiService = apiService;
                     this.counter = 0;
                     this.timetable = [];
+                    this.idTeacher = { id: "", show: false };
+                    this.idSubject = { id: "", show: false };
+                    this.idOffice = { id: "", show: false };
+                    this.idGroup = { id: "", show: false };
+                    this.idTimetable = "";
                 }
                 AdminComponent.prototype.ngOnInit = function () {
                     var _this = this;
@@ -38,17 +42,81 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.apiService
                         .getTeachers()
                         .subscribe(function (data) { _this.teachers = data; }, function (err) { return console.log(err); });
+                    this.apiService
+                        .getGroups()
+                        .subscribe(function (data) { _this.groups = data; }, function (err) { return console.log(err); });
+                    this.apiService
+                        .getOffices()
+                        .subscribe(function (data) { _this.offices = data; }, function (err) { return console.log(err); });
+                    this.apiService
+                        .getSubjects()
+                        .subscribe(function (data) { _this.subjects = data; }, function (err) { return console.log(err); });
                 };
-                AdminComponent.prototype.addTT = function (id) {
+                AdminComponent.prototype.addTeacher = function () {
                     this.adminService
-                        .addTT(id)
-                        .subscribe(function (data) { console.log(data); }, function (err) { return console.log(err); });
+                        .addTeacher(this.idTeacher.id, this.idTimetable)
+                        .subscribe();
+                    this.idTeacher.show = false;
+                    this.refresh();
                 };
+                AdminComponent.prototype.deleteTeacher = function (id, idTimetable) {
+                    this.adminService
+                        .deleteTeacher(id, idTimetable)
+                        .subscribe();
+                    this.refresh();
+                };
+                AdminComponent.prototype.addGroup = function () {
+                    this.adminService
+                        .addGroup(this.idGroup.id, this.idTimetable)
+                        .subscribe();
+                    this.idGroup.show = false;
+                    this.refresh();
+                };
+                AdminComponent.prototype.deleteGroup = function (id, idTimetable) {
+                    this.adminService
+                        .deleteGroup(id, idTimetable)
+                        .subscribe();
+                    this.refresh();
+                };
+                AdminComponent.prototype.addOffice = function () {
+                    this.adminService
+                        .addOffice(this.idOffice.id, this.idTimetable)
+                        .subscribe();
+                    this.idOffice.show = false;
+                    this.refresh();
+                };
+                AdminComponent.prototype.deleteOffice = function (id, idTimetable) {
+                    this.adminService
+                        .deleteOffice(id, idTimetable)
+                        .subscribe();
+                    this.refresh();
+                };
+                AdminComponent.prototype.addSubject = function () {
+                    this.adminService
+                        .addSubject(this.idSubject.id, this.idTimetable)
+                        .subscribe();
+                    this.idSubject.show = false;
+                    this.refresh();
+                };
+                AdminComponent.prototype.deleteSubject = function (id, idTimetable) {
+                    this.adminService
+                        .deleteSubject(id, idTimetable)
+                        .subscribe();
+                    this.refresh();
+                };
+                AdminComponent.prototype.showSelectGroup = function (id) { this.idTimetable = id; this.idGroup.show = !this.idGroup.show; };
+                AdminComponent.prototype.showSelectOffice = function (id) { this.idTimetable = id; this.idOffice.show = !this.idOffice.show; };
+                AdminComponent.prototype.showSelectSubject = function (id) { this.idTimetable = id; this.idSubject.show = !this.idSubject.show; };
+                AdminComponent.prototype.showSelectTeacher = function (id) { this.idTimetable = id; this.idTeacher.show = !this.idTeacher.show; };
+                AdminComponent.prototype.setTeacherId = function (id) { this.idTeacher.id = id; };
+                AdminComponent.prototype.setGroupId = function (id) { this.idGroup.id = id; };
+                AdminComponent.prototype.setSubjectId = function (id) { this.idSubject.id = id; };
+                AdminComponent.prototype.setOfficeId = function (id) { this.idOffice.id = id; };
                 AdminComponent.prototype.refresh = function () {
                     var _this = this;
                     this.adminService
                         .getTimetable()
-                        .subscribe(function (data) { _this.timetable.push(data); }, function (err) { return console.log(err); });
+                        .subscribe(function (data) { _this.timetable = data; }, function (err) { return console.log(err); });
                 };
                 return AdminComponent;
             }());

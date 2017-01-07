@@ -10,17 +10,12 @@ import { Router } from "@angular/router";
 
 export class TeacherListComponent implements OnInit {
 
-     teacherList: any[];
+    teacherList: any[];
     private teacher: any = {};
 
     constructor(private teacherService: ApiService, private router: Router) { }
     ngOnInit() {
-        this.teacherService
-            .getTeachers()
-            .subscribe(
-            (data) => { this.teacherList = data; },
-            (err) => console.log(err)
-            );
+        this.refresh();
     }
 
     goTeacherId(id: any) {
@@ -29,7 +24,24 @@ export class TeacherListComponent implements OnInit {
 
     newTeacher(teacher) {
         this.teacherService
-            .createTeachers(teacher)
+            .createTeacher(teacher)
             .subscribe();
+        this.refresh();
+    }
+
+    deleteTeacher(id) {
+        this.teacherService
+            .deleteTeacher(id)
+            .subscribe();
+        this.refresh();
+    }
+
+    refresh() {
+        this.teacherService
+            .getTeachers()
+            .subscribe(
+            (data) => { this.teacherList = data; },
+            (err) => console.log(err)
+            );
     }
 }

@@ -11,17 +11,11 @@ var User = require("../../../../models/user").UserModel;
 // user.save((err,user,affected)=>{
 //     console.log(user);
 // })
-login.get("/", function (reqest, response) {
-    var promise = new Promise(function (resolve, reject) {
-        resolve(User.find({}));
-    });
-    promise
-        .then(function (user) {
-        response.json(user);
-    })
-        .catch(function (err) {
-        response.send(err);
-    });
+login.get("/", function (req, res, next) {
+    User.find({})
+        .exec().then(function (result) {
+        res.json(result);
+    }).catch(next);
 });
 login.post('/login', function (req, res, next) {
     passport_1.authLocal(req, res, next);

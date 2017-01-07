@@ -13,17 +13,11 @@ const User = require("../../../../models/user").UserModel;
 //     console.log(user);
 // })
 
-login.get("/", (reqest: Request, response: Response) => {
-    var promise = new Promise(function (resolve, reject) {
-        resolve(User.find({}));
-    });
-    promise
-        .then((user) => {
-            response.json(user);
-        })
-        .catch((err) => {
-            response.send(err);
-        })
+login.get("/", (req: Request, res: Response, next: NextFunction) => {
+    User.find({})
+        .exec().then((result) => {
+            res.json(result);
+        }).catch(next);
 });
 
 login.post('/login', (req: Request, res: Response, next: NextFunction) => {

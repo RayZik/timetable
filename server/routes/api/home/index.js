@@ -10,16 +10,10 @@ var db = require("../../../../models/user").UserModel;
 // user.save((err,user,affected)=>{
 //     console.log(user);
 // })
-homeApi.get("/", function (reqest, response) {
-    var promise = new Promise(function (resolve, reject) {
-        resolve(db.find({}));
-    });
-    promise
-        .then(function (user) {
-        response.json(user);
-    })
-        .catch(function (err) {
-        response.send(err);
-    });
+homeApi.get("/", function (reest, res, next) {
+    db.find({})
+        .exec().then(function (result) {
+        res.json(result);
+    }).catch(next);
 });
 //# sourceMappingURL=index.js.map

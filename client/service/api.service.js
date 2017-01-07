@@ -31,12 +31,6 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                     this.authHttp = authHttp;
                     this.http = http;
                 }
-                ApiService.prototype.get = function (url) {
-                    return this
-                        .authHttp
-                        .get(url)
-                        .map(function (response) { return response.json(); });
-                };
                 ApiService.prototype.getUsers = function () {
                     return this
                         .http
@@ -47,13 +41,13 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                 ApiService.prototype.getSubjects = function () {
                     return this
                         .http
-                        .get('/admin/subject')
+                        .get('/api/admin/subject')
                         .map(function (response) { return response.json(); });
                 };
                 ApiService.prototype.getSubject = function (id) {
                     return this
                         .http
-                        .get("/admin/subject/" + id)
+                        .get("/api/admin/subject/" + id)
                         .map(function (response) { return response.json(); });
                 };
                 ApiService.prototype.updateSubject = function (subject) {
@@ -61,20 +55,36 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/admin/subject/" + subject.id, subject, { headers: headers })
-                        .map(function (response) { return response.json(); });
+                        .put("/api/admin/subject/update/" + subject.id, subject, { headers: headers })
+                        .map(function (response) { return response; });
+                };
+                ApiService.prototype.createSubject = function (subject) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/api/admin/subject/create", subject, { headers: headers })
+                        .map(function (response) { return response; });
+                };
+                ApiService.prototype.deleteSubject = function (id) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .delete("/api/admin/subject/remove/" + id, { headers: headers })
+                        .map(function (response) { return response; });
                 };
                 //teacher
                 ApiService.prototype.getTeachers = function () {
                     return this
                         .http
-                        .get('/admin/teacher')
+                        .get('/api/admin/teacher')
                         .map(function (response) { return response.json(); });
                 };
                 ApiService.prototype.getTeacher = function (id) {
                     return this
                         .http
-                        .get("/admin/teacher/" + id)
+                        .get("/api/admin/teacher/" + id)
                         .map(function (response) { return response.json(); });
                 };
                 ApiService.prototype.updateTeacher = function (teacher) {
@@ -82,28 +92,36 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/admin/teacher/" + teacher.id, teacher, { headers: headers })
-                        .map(function (response) { return response.json(); });
+                        .put("/api/admin/teacher/update/" + teacher.id, teacher, { headers: headers })
+                        .map(function (response) { return response; });
                 };
-                ApiService.prototype.createTeachers = function (teacher) {
+                ApiService.prototype.createTeacher = function (teacher) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/admin/teacher", teacher, { headers: headers })
-                        .map(function (response) { return response.json(); });
+                        .post("/api/admin/teacher/create", teacher, { headers: headers })
+                        .map(function (response) { return response; });
+                };
+                ApiService.prototype.deleteTeacher = function (id) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .delete("/api/admin/teacher/remove/" + id, { headers: headers })
+                        .map(function (response) { return response; });
                 };
                 //office
                 ApiService.prototype.getOffices = function () {
                     return this
                         .http
-                        .get('/admin/office')
+                        .get('/api/admin/office')
                         .map(function (response) { return response.json(); });
                 };
                 ApiService.prototype.getOffice = function (id) {
                     return this
                         .http
-                        .get("/admin/office/" + id)
+                        .get("/api/admin/office/" + id)
                         .map(function (response) { return response.json(); });
                 };
                 ApiService.prototype.updateOffice = function (office) {
@@ -111,20 +129,36 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/admin/office/" + office.id, office, { headers: headers })
-                        .map(function (response) { return response.json(); });
+                        .put("/api/admin/office/update/" + office.id, office, { headers: headers })
+                        .map(function (response) { return response; });
+                };
+                ApiService.prototype.createOffice = function (office) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/api/admin/office/create", office, { headers: headers })
+                        .map(function (response) { return response; });
+                };
+                ApiService.prototype.deleteOffice = function (id) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .delete("/api/admin/office/remove/" + id, { headers: headers })
+                        .map(function (response) { return response; });
                 };
                 //group
                 ApiService.prototype.getGroups = function () {
                     return this
                         .http
-                        .get('/admin/group')
+                        .get('/api/admin/group')
                         .map(function (response) { return response.json(); });
                 };
                 ApiService.prototype.getGroup = function (id) {
                     return this
                         .http
-                        .get("/admin/group/" + id)
+                        .get("/api/admin/group/" + id)
                         .map(function (response) { return response.json(); });
                 };
                 ApiService.prototype.updateGroup = function (group) {
@@ -132,8 +166,24 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/admin/group/" + group.id, group, { headers: headers })
-                        .map(function (response) { return response.json(); });
+                        .put("/api/admin/group/update/" + group.id, group, { headers: headers })
+                        .map(function (response) { return response; });
+                };
+                ApiService.prototype.createGroup = function (group) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/api/admin/group/create", group, { headers: headers })
+                        .map(function (response) { return response; });
+                };
+                ApiService.prototype.deleteGroup = function (id) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .delete("/api/admin/group/remove/" + id, { headers: headers })
+                        .map(function (response) { return response; });
                 };
                 return ApiService;
             }());

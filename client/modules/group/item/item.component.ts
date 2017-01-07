@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
-import { ActivatedRoute, Params } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Location } from '@angular/common';
 
 @Component({
@@ -16,6 +16,7 @@ export class GroupItemComponent implements OnInit {
     constructor(
         private groupService: ApiService,
         private router: ActivatedRoute,
+        private rout: Router,
         private location: Location) { }
 
     ngOnInit() {
@@ -30,6 +31,7 @@ export class GroupItemComponent implements OnInit {
         this.groupService
             .updateGroup(group)
             .subscribe();
+        this.rout.navigate(['/group']);
     }
 
     goBack(): void {

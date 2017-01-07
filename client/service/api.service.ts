@@ -3,20 +3,13 @@ import { Http, Headers } from "@angular/http";
 import { AuthHttp } from "angular2-jwt";
 import { Response, Request } from "@angular/http";
 import "rxjs/add/operator/map";
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
- 
+
 
 @Injectable()
 export class ApiService {
     constructor(private authHttp: AuthHttp, private http: Http) { }
-
-    get(url: string) {
-        return this
-            .authHttp
-            .get(url)
-            .map((response: Response) => response.json());
-    }
 
     getUsers() {
         return this
@@ -29,14 +22,14 @@ export class ApiService {
     getSubjects() {
         return this
             .http
-            .get('/admin/subject')
+            .get('/api/admin/subject')
             .map((response: Response) => response.json());
     }
 
     getSubject(id: any) {
         return this
             .http
-            .get(`/admin/subject/${id}`)
+            .get(`/api/admin/subject/${id}`)
             .map((response: Response) => response.json());
     }
 
@@ -45,23 +38,41 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/admin/subject/${subject.id}`, subject, { headers: headers })
-            .map((response: Response) => response.json());
+            .put(`/api/admin/subject/update/${subject.id}`, subject, { headers: headers })
+            .map((response: Response) => response);
+    }
+
+    createSubject(subject) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post(`/api/admin/subject/create`, subject, { headers: headers })
+            .map((response: Response) => response);
+    }
+
+    deleteSubject(id: any) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .delete(`/api/admin/subject/remove/${id}`, { headers: headers })
+            .map((response: Response) => response);
     }
 
     //teacher
 
-     getTeachers() {
+    getTeachers() {
         return this
             .http
-            .get('/admin/teacher')
+            .get('/api/admin/teacher')
             .map((response: Response) => response.json());
     }
 
     getTeacher(id: any) {
         return this
             .http
-            .get(`/admin/teacher/${id}`)
+            .get(`/api/admin/teacher/${id}`)
             .map((response: Response) => response.json());
     }
 
@@ -70,30 +81,40 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/admin/teacher/${teacher.id}`, teacher, { headers: headers })
-            .map((response: Response) => response.json());
+            .put(`/api/admin/teacher/update/${teacher.id}`, teacher, { headers: headers })
+            .map((response: Response) => response);
     }
 
-    createTeachers(teacher){
+    createTeacher(teacher) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/admin/teacher`,teacher, { headers: headers })
-            .map((response: Response) => response.json());
+            .post(`/api/admin/teacher/create`, teacher, { headers: headers })
+            .map((response: Response) => response);
     }
-//office
+
+    deleteTeacher(id: any) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .delete(`/api/admin/teacher/remove/${id}`, { headers: headers })
+            .map((response: Response) => response);
+    }
+
+    //office
     getOffices() {
         return this
             .http
-            .get('/admin/office')
+            .get('/api/admin/office')
             .map((response: Response) => response.json());
     }
 
     getOffice(id: any) {
         return this
             .http
-            .get(`/admin/office/${id}`)
+            .get(`/api/admin/office/${id}`)
             .map((response: Response) => response.json());
     }
 
@@ -102,21 +123,40 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/admin/office/${office.id}`, office, { headers: headers })
-            .map((response: Response) => response.json());
+            .put(`/api/admin/office/update/${office.id}`, office, { headers: headers })
+            .map((response: Response) => response);
     }
+
+     createOffice(office: any) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post(`/api/admin/office/create`, office, { headers: headers })
+            .map((response: Response) => response);
+    }
+
+    deleteOffice(id: any) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .delete(`/api/admin/office/remove/${id}`, { headers: headers })
+            .map((response: Response) => response);
+    }
+
     //group
     getGroups() {
         return this
             .http
-            .get('/admin/group')
+            .get('/api/admin/group')
             .map((response: Response) => response.json());
     }
 
     getGroup(id: any) {
         return this
             .http
-            .get(`/admin/group/${id}`)
+            .get(`/api/admin/group/${id}`)
             .map((response: Response) => response.json());
     }
 
@@ -125,7 +165,25 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/admin/group/${group.id}`, group, { headers: headers })
-            .map((response: Response) => response.json());
+            .put(`/api/admin/group/update/${group.id}`, group, { headers: headers })
+            .map((response: Response) => response);
+    }
+
+    createGroup(group) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post(`/api/admin/group/create`, group, { headers: headers })
+            .map((response: Response) => response);
+    }
+
+    deleteGroup(id: any) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .delete(`/api/admin/group/remove/${id}`, { headers: headers })
+            .map((response: Response) => response);
     }
 }

@@ -13,7 +13,6 @@ import { json, urlencoded } from "body-parser";
 
 import { restApi } from "./routes/api";
 import { login } from "./routes/auth/local";
-import { admin } from "./routes/timetable";
 
 import './typesext';
 
@@ -40,7 +39,6 @@ app.use(express.static(join(__dirname, '../public')));
 
 app.use("/api", restApi);
 app.use("/user", login);
-app.use("/admin", admin);
 app.use('/client', express.static(join(__dirname, '../client')));
 
 if (app.get("env") === "development") {

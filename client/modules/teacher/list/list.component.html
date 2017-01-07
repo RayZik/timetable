@@ -4,14 +4,21 @@
     <div class="ui right floated button" (click)="newTeacher(teacher)">Добавить</div>
 </div>
 
-<div class="ui container medium aligned divided animated selection" >
-    <div class="content" >
-        <ol class="content">
-            <li class="middle aligned content" (click)="goTeacherId(item._id)"  *ngFor="let item of teacherList">
-                <h4 class="ui grey header">{{item.name}} {{item.lastName}}</h4>
-            </li>
-        </ol>
-    </div>
+<div class="ui container">
+    <ol>
+        <li (click)="goTeacherId(item._id)" *ngFor="let item of teacherList">
+            <div class="ui middle aligned divided list">
+                <div class="item">
+                    <div class="right floated content">
+                        <button class=" compact ui button " (click)="deleteTeacher(item._id);$event.stopPropagation();">Удалить</button>
+                    </div>
+                    <div class="ui content">
+                        {{item.name}} {{item.lastName}}
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ol>
 </div>
-
+ 
 <!--<tt-admin [teachers]="teacherList"></tt-admin>-->

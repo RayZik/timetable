@@ -1,9 +1,21 @@
-<div class="ui container medium aligned divided animated selection">
-    <div class="content"  >
-        <ol class="content">
-            <li class="middle aligned content" (click)="goOfficeId(item._id)" *ngFor="let item of officeList">
-                <h4 class="ui grey header">{{item.name}}</h4>
-            </li>
-        </ol>
-    </div>
+<div class="ui container">
+    <input type="text" name="name" (blur)="office.name=$event.target.value" />
+    <div class="ui right floated button" (click)="newOffice(office)">Добавить</div>
+</div>
+
+<div class="ui container">
+    <ol>
+        <li (click)="goOfficeId(item._id)" *ngFor="let item of officeList">
+            <div class="ui middle aligned divided list">
+                <div class="item">
+                    <div class="right floated content">
+                        <button class=" compact ui button " (click)="deleteOffice(item._id);$event.stopPropagation();">Удалить</button>
+                    </div>
+                    <div class="ui content">
+                        {{item.name}}
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ol>
 </div>

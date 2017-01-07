@@ -12,17 +12,11 @@ const db = require("../../../../models/user").UserModel;
 //     console.log(user);
 // })
 
-homeApi.get("/", (reqest: Request, response: Response) => {
-    var promise = new Promise(function (resolve, reject) {
-        resolve(db.find({}));
-    });
-    promise
-        .then((user) => {
-            response.json(user);
-        })
-        .catch((err) => {
-            response.send(err);
-        })
+homeApi.get("/", (reest: Request, res: Response, next: NextFunction) => {
+    db.find({})
+        .exec().then((result) => {
+            res.json(result);
+        }).catch(next);
 });
 
 export { homeApi };
