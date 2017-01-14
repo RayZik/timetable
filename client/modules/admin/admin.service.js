@@ -27,67 +27,90 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                 function AdminService(http) {
                     this.http = http;
                 }
-                AdminService.prototype.getTimetable = function () {
+                //ceel-timetable
+                AdminService.prototype.getCellTimetable = function () {
                     return this
                         .http
-                        .get('/api/admin')
+                        .get('/api/admin/cellTimetable')
                         .map(function (response) { return response.json(); });
                 };
-                AdminService.prototype.addTeacher = function (id, timetableLineId) {
+                AdminService.prototype.addTeacher = function (id, cellTimetableId) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/api/admin/add_teacher", { id: id, timetableLineId: timetableLineId }, { headers: headers });
+                        .post("/api/admin/cellTimetable/add_teacher", { id: id, cellTimetableId: cellTimetableId }, { headers: headers });
                 };
-                AdminService.prototype.deleteTeacher = function (id, idTimetable) {
+                AdminService.prototype.deleteTeacher = function (id, cellTimetableId) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/api/admin/delete_teacher/" + id, { idTimetable: idTimetable }, { headers: headers });
+                        .post("/api/admin/cellTimetable/delete_teacher/" + id, { cellTimetableId: cellTimetableId }, { headers: headers });
                 };
-                AdminService.prototype.addOffice = function (id, timetableLineId) {
+                AdminService.prototype.addOffice = function (id, cellTimetableId) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/api/admin/add_office", { id: id, timetableLineId: timetableLineId }, { headers: headers });
+                        .post("/api/admin/cellTimetable/add_office", { id: id, cellTimetableId: cellTimetableId }, { headers: headers });
                 };
-                AdminService.prototype.deleteOffice = function (id, idTimetable) {
+                AdminService.prototype.deleteOffice = function (id, cellTimetableId) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/api/admin/delete_office/" + id, { idTimetable: idTimetable }, { headers: headers });
+                        .post("/api/admin/cellTimetable/delete_office/" + id, { cellTimetableId: cellTimetableId }, { headers: headers });
                 };
-                AdminService.prototype.addGroup = function (id, timetableLineId) {
+                AdminService.prototype.addGroup = function (id, cellTimetableId) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/api/admin/add_group", { id: id, timetableLineId: timetableLineId }, { headers: headers });
+                        .post("/api/admin/cellTimetable/add_group", { id: id, cellTimetableId: cellTimetableId }, { headers: headers });
                 };
-                AdminService.prototype.deleteGroup = function (id, idTimetable) {
+                AdminService.prototype.deleteGroup = function (id, cellTimetableId) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/api/admin/delete_group/" + id, { idTimetable: idTimetable }, { headers: headers });
+                        .post("/api/admin/cellTimetable/delete_group/" + id, { cellTimetableId: cellTimetableId }, { headers: headers });
                 };
-                AdminService.prototype.addSubject = function (id, timetableLineId) {
+                AdminService.prototype.addSubject = function (id, cellTimetableId) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/api/admin/add_subject", { id: id, timetableLineId: timetableLineId }, { headers: headers });
+                        .post("/api/admin/cellTimetable/add_subject", { id: id, cellTimetableId: cellTimetableId }, { headers: headers });
                 };
-                AdminService.prototype.deleteSubject = function (id, idTimetable) {
+                AdminService.prototype.deleteSubject = function (id, cellTimetableId) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .post("/api/admin/delete_subject/" + id, { idTimetable: idTimetable }, { headers: headers });
+                        .post("/api/admin/cellTimetable/delete_subject/" + id, { cellTimetableId: cellTimetableId }, { headers: headers });
+                };
+                AdminService.prototype.addCell = function () {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/api/admin/cellTimetable/add_cell", { headers: headers });
+                };
+                AdminService.prototype.deleteCell = function (id) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .delete("/api/admin/cellTimetable/delete_cell/" + id, { headers: headers });
+                };
+                //timetable
+                AdminService.prototype.addTimeLesson = function (lesson) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/api/admin/timetable/add_time_lesson", lesson, { headers: headers });
                 };
                 return AdminService;
             }());

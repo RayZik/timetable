@@ -9,7 +9,7 @@ import { Location } from '@angular/common';
     providers: [ApiService]
 })
 
-export class GroupItemComponent implements OnInit {
+export class GroupItemComponent implements OnInit { 
 
     private group: any = {};
 

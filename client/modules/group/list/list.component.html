@@ -2,7 +2,7 @@
     <input type="text" name="name" (blur)="group.name=$event.target.value" />
     <div class="ui right floated button" (click)="newGroup(group)">Добавить</div>
 </div>
-
+<br>
 <div class="ui container">
     <ol>
         <li (click)="goGroupId(item._id)" *ngFor="let item of groupList">

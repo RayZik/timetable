@@ -11,8 +11,6 @@ import { routing } from "./routes";
 import { HomeModule } from "./modules/home/home.module";
 import { AdminModule } from "./modules/admin/admin.module";
 
-
-
 @NgModule({
     imports: [
         BrowserModule,

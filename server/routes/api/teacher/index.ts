@@ -2,7 +2,6 @@ import { Router, Response, Request, NextFunction } from "express";
 
 const teacher: Router = Router();
 
-const Timetable = require("../../../../models/timetable").TimetableModel;
 const Teacher = require("../../../../models/teacher").TeacherModel;
 
 teacher.get("/", (req: Request, res: Response, next: NextFunction) => {

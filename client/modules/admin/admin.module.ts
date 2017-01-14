@@ -5,6 +5,7 @@ import { CommonModule } from "@angular/common";
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AdminComponent } from "./admin.component";
+import { CellComponent } from "../../components/cell-timetable/cell.component";
 
 import { TeacherModule } from "../teacher/teacher.module";
 import { SubjectModule } from "../subject/subject.module";
@@ -12,20 +13,23 @@ import { OfficeModule } from "../office/office.module";
 import { GroupModule } from "../group/group.module";
 
 import { routing } from "./admin.routing";
+import { DragulaModule} from 'ng2-dragula/ng2-dragula';
 
 @NgModule({
     imports: [
+        DragulaModule,
         BrowserModule,
         HttpModule,
         NgSemanticModule,
         routing,
         TeacherModule,
         SubjectModule,
-        OfficeModule,
+        OfficeModule, 
         GroupModule
     ],
     declarations: [
-        AdminComponent
+        AdminComponent,
+        CellComponent
     ],
     bootstrap: [
         AdminComponent

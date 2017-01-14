@@ -3,7 +3,7 @@
     <input type="text" name="lastName" (blur)="teacher.lastName=$event.target.value" />
     <div class="ui right floated button" (click)="newTeacher(teacher)">Добавить</div>
 </div>
-
+<br>
 <div class="ui container">
     <ol>
         <li (click)="goTeacherId(item._id)" *ngFor="let item of teacherList">
@@ -20,5 +20,3 @@
         </li>
     </ol>
 </div>
- 
-<!--<tt-admin [teachers]="teacherList"></tt-admin>-->

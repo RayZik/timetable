@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
-import { ActivatedRoute, Params } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Location } from '@angular/common';
 
 @Component({
@@ -16,6 +16,7 @@ export class TeacherItemComponent implements OnInit {
     constructor(
         private teacherService: ApiService,
         private router: ActivatedRoute,
+        private rout: Router,
         private location: Location) { }
 
     ngOnInit() {
@@ -30,6 +31,7 @@ export class TeacherItemComponent implements OnInit {
         this.teacherService
             .updateTeacher(teacher)
             .subscribe();
+        this.rout.navigate(['/teacher']);
     }
 
     goBack(): void {

@@ -8,75 +8,100 @@ import { Observable } from 'rxjs/Observable';
 export class AdminService {
     constructor(private http: Http) { }
 
-    getTimetable() {
+    //ceel-timetable
+    getCellTimetable() {
         return this
             .http
-            .get('/api/admin')
+            .get('/api/admin/cellTimetable')
             .map((response: Response) => response.json());
     }
 
-    addTeacher(id: String, timetableLineId: String) {
+    addTeacher(id: String, cellTimetableId: String) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post("/api/admin/add_teacher", { id: id, timetableLineId: timetableLineId }, { headers: headers })
+            .post("/api/admin/cellTimetable/add_teacher", { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
-    deleteTeacher(id: String, idTimetable: String) {
+    deleteTeacher(id: String, cellTimetableId: String) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/delete_teacher/${id}`, { idTimetable: idTimetable }, { headers: headers })
+            .post(`/api/admin/cellTimetable/delete_teacher/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
-    addOffice(id: String, timetableLineId: String) {
+    addOffice(id: String, cellTimetableId: String) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post("/api/admin/add_office", { id: id, timetableLineId: timetableLineId }, { headers: headers })
+            .post("/api/admin/cellTimetable/add_office", { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
-    deleteOffice(id: String, idTimetable: String) {
+    deleteOffice(id: String, cellTimetableId: String) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/delete_office/${id}`, { idTimetable: idTimetable }, { headers: headers })
+            .post(`/api/admin/cellTimetable/delete_office/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
-    addGroup(id: String, timetableLineId: String) {
+    addGroup(id: String, cellTimetableId: String) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post("/api/admin/add_group", { id: id, timetableLineId: timetableLineId }, { headers: headers })
+            .post("/api/admin/cellTimetable/add_group", { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
-    deleteGroup(id: String, idTimetable: String) {
+    deleteGroup(id: String, cellTimetableId: String) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/delete_group/${id}`, { idTimetable: idTimetable }, { headers: headers })
+            .post(`/api/admin/cellTimetable/delete_group/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
-    addSubject(id: String, timetableLineId: String) {
+    addSubject(id: String, cellTimetableId: String) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post("/api/admin/add_subject", { id: id, timetableLineId: timetableLineId }, { headers: headers })
+            .post("/api/admin/cellTimetable/add_subject", { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
-    deleteSubject(id: String, idTimetable: String) {
+    deleteSubject(id: String, cellTimetableId: String) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/delete_subject/${id}`, { idTimetable: idTimetable }, { headers: headers })
+            .post(`/api/admin/cellTimetable/delete_subject/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
+    addCell() {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post("/api/admin/cellTimetable/add_cell", { headers: headers })
+    }
+
+    deleteCell(id: String) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .delete(`/api/admin/cellTimetable/delete_cell/${id}`, { headers: headers })
+    }
+
+    //timetable
+    addTimeLesson(lesson) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post("/api/admin/timetable/add_time_lesson", lesson, { headers: headers })
+    }
 }

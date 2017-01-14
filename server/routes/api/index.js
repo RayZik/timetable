@@ -2,6 +2,8 @@
 var express_1 = require("express");
 var home_1 = require("./home");
 var admin_1 = require("./admin");
+var cellTimetable_1 = require("./cellTimetable");
+var timetable_1 = require("./timetable");
 var teacher_1 = require("./teacher");
 var subject_1 = require("./subject");
 var office_1 = require("./office");
@@ -10,6 +12,8 @@ var restApi = express_1.Router();
 exports.restApi = restApi;
 restApi.use("/home", home_1.homeApi);
 restApi.use("/admin", admin_1.adminApi);
+restApi.use("/admin/timetable", timetable_1.timetableApi);
+restApi.use("/admin/cellTimetable", cellTimetable_1.cellTimetableApi);
 restApi.use("/admin/teacher", teacher_1.teacher);
 restApi.use("/admin/subject", subject_1.subject);
 restApi.use("/admin/office", office_1.office);

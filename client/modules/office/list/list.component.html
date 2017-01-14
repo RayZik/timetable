@@ -2,7 +2,7 @@
     <input type="text" name="name" (blur)="office.name=$event.target.value" />
     <div class="ui right floated button" (click)="newOffice(office)">Добавить</div>
 </div>
-
+<br>
 <div class="ui container">
     <ol>
         <li (click)="goOfficeId(item._id)" *ngFor="let item of officeList">

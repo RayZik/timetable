@@ -2,7 +2,6 @@ import { Router, Response, Request, NextFunction } from "express";
 
 const group: Router = Router();
 
-const Timetable = require("../../../../models/timetable").TimetableModel;
 const Group = require("../../../../models/group").GroupModel;
 
 group.get("/", (req: Request, res: Response, next: NextFunction) => {

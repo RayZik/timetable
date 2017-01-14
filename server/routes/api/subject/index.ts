@@ -2,7 +2,6 @@ import { Router, Response, Request, NextFunction } from "express";
 
 const subject: Router = Router();
 
-const Timetable = require("../../../../models/timetable").TimetableModel;
 const Subject = require("../../../../models/subject").SubjectModel;
 
 subject.get("/", (req: Request, res: Response, next: NextFunction) => {

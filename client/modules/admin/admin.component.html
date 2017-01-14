@@ -1,54 +1,57 @@
+<br>
 <div class="ui container">
-    <ol>
-        <li *ngFor="let items of timetable" class="ui compact message "> 
-            <!--time-->
-            <span *ngFor="let item of items.time"> {{item.begin}} - {{item.end}}</span>
-            <button class=" mini circular ui icon button"><i class="icon plus"></i></button><br>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Пн</th>
+                <th>Вт</th>
+                <th>Ср</th>
+                <th>Чт</th>
+                <th>Пт</th>
+                <th>Сб</th>
+                <th>Вс</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input type="number" name="begin" (blur)='lesson.begin = $event.target.value'><br>
+                    <input type="number" name="end" (blur)='lesson.end = $event.target.value'><br>
+                    <div class="ui button" (click)="newLesson(lesson)">Добавить</div>
+                </td>
+            </tr>
+        </tbody>
+        <!--<tfoot>
+            <tr>
+                <th colspan="8">
+                    <div class="ui right floated pagination menu">
+                        <a class="icon item">
+                            <i class="left chevron icon"></i>
+                        </a>
+                        <a class="item">1</a>
+                        <a class="item">2</a>
+                        <a class="item">3</a>
+                        <a class="item">4</a>
+                        <a class="icon item">
+                            <i class="right chevron icon"></i>
+                        </a>
+                    </div>
+                </th>
+            </tr>
+        </tfoot>-->
+    </table>
+    <br>
 
-            <!--subject-->
-            <span *ngFor="let item of items._subject" (click)="deleteSubject(item._id, items._id)"> {{item.name}} </span>
-            <button class=" mini circular ui icon button" *ngIf="!idSubject.show" (click)="showSelectSubject(items._id)"><i class="icon plus"></i></button>
-            <span *ngIf="idSubject.show">
-                <select (click)="setSubjectId($event.target.value)">
-                     <option *ngFor="let subject of subjects" [value]="subject._id" >{{subject.name}}</option>
-                 </select>
-                <button class="mini circular ui icon button" (click)="addSubject()"><i class="icon checkmark"></i></button>
-            </span>
-            <br>
 
-            <!--teacher-->
-            <span *ngFor="let item of items._teacher" (click)="deleteTeacher(item._id, items._id)"> {{item.name}} {{item.lastName}}</span>
-            <button class=" mini circular ui icon button" *ngIf="!idTeacher.show" (click)="showSelectTeacher(items._id)"><i class="icon plus"></i></button>
-            <span *ngIf="idTeacher.show">
-                <select (click)="setTeacherId($event.target.value)">
-                     <option *ngFor="let teacher of teachers" [value]="teacher._id" >{{teacher.name}} {{teacher.lastName}}</option>
-                 </select>
-                <button class="mini circular ui icon button" (click)="addTeacher()"><i class="icon checkmark"></i></button>
-            </span>
-            <br>
-
-            <!--group-->
-            <span *ngFor="let item of items._group" (click)="deleteGroup(item._id, items._id)"> {{item.name}} </span>
-            <button class=" mini circular ui icon button" *ngIf="!idGroup.show" (click)="showSelectGroup(items._id)"><i class="icon plus"></i></button>
-            <span *ngIf="idGroup.show">
-                <select (click)="setGroupId($event.target.value)">
-                     <option *ngFor="let group of groups" [value]="group._id" >{{group.name}}</option>
-                 </select>
-                <button class="mini circular ui icon button" (click)="addGroup()"><i class="icon checkmark"></i></button>
-            </span>
-            <br>
-
-            <!--office-->
-            <span *ngFor="let item of items._office" (click)="deleteOffice(item._id, items._id)"> {{item.name}}</span>
-            <button class=" mini circular ui icon button" *ngIf="!idOffice.show" (click)="showSelectOffice(items._id)"><i class="icon plus"></i></button>
-            <span *ngIf="idOffice.show">
-                <select (click)="setOfficeId($event.target.value)">
-                     <option *ngFor="let office of offices" [value]="office._id" >{{office.name}}</option>
-                 </select>
-                <button class="mini circular ui icon button" (click)="addOffice()"><i class="icon checkmark"></i></button>
-            </span>
-            <br>
-
-        </li>
-    </ol>
+    <!--<ul class='ui message'  [dragulaModel]='cellTimetable'>
+        <li *ngFor="let item of cellTimetable">{{item}}</li>
+    </ul>-->
 </div>
+
+
+<tt-cell [dragula]='"bag-one"'></tt-cell>
+
+
+
+<button class=" container circular ui icon button" (click)="addCell()"><i class="icon plus"></i></button>

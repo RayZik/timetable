@@ -2,7 +2,6 @@ import { Router, Response, Request, NextFunction } from "express";
 
 const office: Router = Router();
 
-const Timetable = require("../../../../models/timetable").TimetableModel;
 const Office = require("../../../../models/office").OfficeModel;
 
 office.get("/", (req: Request, res: Response, next: NextFunction) => {
