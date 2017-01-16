@@ -11,12 +11,33 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 })
 
 export class AdminComponent implements OnInit {
-	private cellTimetable: any[] = [];
-	private lesson:any = {};
+
+	private cellTimetable: any = [];
+
+	private timeList: any = [];
+
+	private lesson: any = {};
+	private newDate: any = {};
+	private cellIdTime: any = {};
+
+
 	constructor(private adminService: AdminService, private dragulaService: DragulaService) {
-		dragulaService.setOptions('bag-one', {
-			copy: true
+		dragulaService.dropModel.subscribe((value) => {
+			this.onDropModel(value.slice(1));
 		});
+
+		dragulaService.removeModel.subscribe((value) => {
+			this.onRemoveModel(value.slice(1));
+		});
+	}
+	private onDropModel(args) {
+		let [el, target, source] = args;
+		// console.log(this.cellIdTime)
+	}
+
+	private onRemoveModel(args) {
+		let [el, source] = args;
+		// do something else
 	}
 
 	ngOnInit(): void {
@@ -26,21 +47,43 @@ export class AdminComponent implements OnInit {
 			(data) => { this.cellTimetable = data; },
 			(err) => console.log(err)
 			);
+
+		this.adminService
+			.getTimeLesson()
+			.subscribe(
+			(data) => {
+				for (var i = 0; i < data[0].lessons.length; i++) {
+					this.timeList.push([data[0].lessons[i].begin, data[0].lessons[i].end, [[], [], [], [], [], [], []]]); console.log(this.timeList)
+				}
+			},
+			(err) => console.log(err)
+			);
 	}
 
 	addCell(): void {
 		this.adminService
 			.addCell()
 			.subscribe();
+		this.ngOnInit();
 	}
 
-	newLesson(lesson) {
+	addLesson(lesson) {
 		this.adminService
 			.addTimeLesson(lesson)
 			.subscribe();
+		this.ngOnInit();
+
 	}
 
+	addDate(newDate) {
+		this.adminService
+			.addDate(newDate)
+			.subscribe();
+	}
 
+	show(items) {
+		console.log(items)
+	}
 }
 
 

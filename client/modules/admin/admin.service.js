@@ -112,6 +112,19 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                         .http
                         .post("/api/admin/timetable/add_time_lesson", lesson, { headers: headers });
                 };
+                AdminService.prototype.addDate = function (newDate) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/api/admin/timetable/add_date", newDate, { headers: headers });
+                };
+                AdminService.prototype.getTimeLesson = function () {
+                    return this
+                        .http
+                        .get('/api/admin/timetable')
+                        .map(function (response) { return response.json(); });
+                };
                 return AdminService;
             }());
             AdminService = __decorate([

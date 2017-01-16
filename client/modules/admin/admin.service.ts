@@ -104,4 +104,20 @@ export class AdminService {
             .http
             .post("/api/admin/timetable/add_time_lesson", lesson, { headers: headers })
     }
+
+    addDate(newDate) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post("/api/admin/timetable/add_date", newDate, { headers: headers })
+    }
+
+    getTimeLesson() {
+        return this
+            .http
+            .get('/api/admin/timetable')
+            .map((response: Response) => response.json());
+    }
+
 }

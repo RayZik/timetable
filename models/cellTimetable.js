@@ -20,7 +20,7 @@ var CellTimetable = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subject'
     }],
-    time: [{ begin: Number, end: Number }]
+    time: [{ begin: Date, end: Date }]
 });
 
 module.exports.CellTimetableModel = mongoose.model('CellTimetable', CellTimetable);

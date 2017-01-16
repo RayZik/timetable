@@ -9,7 +9,7 @@ import { ApiService } from '../../service/api.service';
 })
 
 export class CellComponent implements OnInit {
-	private cellTimetable: any[] = [];
+	@Input() cell;
 	private teachers: any[];
 	private subjects: any[];
 	private offices: any[];
@@ -23,7 +23,6 @@ export class CellComponent implements OnInit {
 	constructor(private adminService: AdminService, private apiService: ApiService) { }
 
 	ngOnInit(): void {
-		this.refresh();
 		this.apiService
 			.getTeachers()
 			.subscribe(
@@ -58,29 +57,25 @@ export class CellComponent implements OnInit {
 			.addTeacher(this.idTeacher.id, this.idCell)
 			.subscribe();
 		this.idTeacher.show = false;
-		this.refresh();
 	}
 
 	deleteTeacher(id: String, idCell: String) {
 		this.adminService
 			.deleteTeacher(id, idCell)
 			.subscribe();
-		this.refresh();
 	}
-
+	
 	addGroup(): void {
 		this.adminService
 			.addGroup(this.idGroup.id, this.idCell)
 			.subscribe();
 		this.idGroup.show = false;
-		this.refresh();
 	}
 
 	deleteGroup(id: String, idCell: String) {
 		this.adminService
 			.deleteGroup(id, idCell)
 			.subscribe();
-		this.refresh();
 	}
 
 	addOffice(): void {
@@ -88,14 +83,12 @@ export class CellComponent implements OnInit {
 			.addOffice(this.idOffice.id, this.idCell)
 			.subscribe();
 		this.idOffice.show = false;
-		this.refresh();
 	}
 
 	deleteOffice(id: String, idCell: String) {
 		this.adminService
 			.deleteOffice(id, idCell)
 			.subscribe();
-		this.refresh();
 	}
 
 	addSubject(): void {
@@ -103,14 +96,12 @@ export class CellComponent implements OnInit {
 			.addSubject(this.idSubject.id, this.idCell)
 			.subscribe();
 		this.idSubject.show = false;
-		this.refresh();
 	}
 
 	deleteSubject(id: String, idCell: String) {
 		this.adminService
 			.deleteSubject(id, idCell)
 			.subscribe();
-		this.refresh();
 	}
 
 
@@ -119,7 +110,6 @@ export class CellComponent implements OnInit {
 		this.adminService
 			.deleteCell(id)
 			.subscribe();
-		this.refresh();
 	}
 
 	showSelectGroup(id: String): void { this.idCell = id; this.idGroup.show = !this.idGroup.show; }
@@ -132,12 +122,5 @@ export class CellComponent implements OnInit {
 	setSubjectId(id: String): void { this.idSubject.id = id; }
 	setOfficeId(id: String): void { this.idOffice.id = id; }
 
-	refresh(): void {
-		this.adminService
-			.getCellTimetable()
-			.subscribe(
-			(data) => { this.cellTimetable = data; },
-			(err) => console.log(err)
-			);
-	}
+
 }

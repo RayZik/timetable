@@ -29,29 +29,62 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
         execute: function () {
             AdminComponent = (function () {
                 function AdminComponent(adminService, dragulaService) {
+                    var _this = this;
                     this.adminService = adminService;
                     this.dragulaService = dragulaService;
                     this.cellTimetable = [];
+                    this.timeList = [];
                     this.lesson = {};
-                    dragulaService.setOptions('bag-one', {
-                        copy: true
+                    this.newDate = {};
+                    this.cellIdTime = {};
+                    dragulaService.dropModel.subscribe(function (value) {
+                        _this.onDropModel(value.slice(1));
+                    });
+                    dragulaService.removeModel.subscribe(function (value) {
+                        _this.onRemoveModel(value.slice(1));
                     });
                 }
+                AdminComponent.prototype.onDropModel = function (args) {
+                    var el = args[0], target = args[1], source = args[2];
+                    // console.log(this.cellIdTime)
+                };
+                AdminComponent.prototype.onRemoveModel = function (args) {
+                    var el = args[0], source = args[1];
+                    // do something else
+                };
                 AdminComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this.adminService
                         .getCellTimetable()
                         .subscribe(function (data) { _this.cellTimetable = data; }, function (err) { return console.log(err); });
+                    this.adminService
+                        .getTimeLesson()
+                        .subscribe(function (data) {
+                        for (var i = 0; i < data[0].lessons.length; i++) {
+                            _this.timeList.push([data[0].lessons[i].begin, data[0].lessons[i].end, [[], [], [], [], [], [], []]]);
+                            console.log(_this.timeList);
+                        }
+                    }, function (err) { return console.log(err); });
                 };
                 AdminComponent.prototype.addCell = function () {
                     this.adminService
                         .addCell()
                         .subscribe();
+                    this.ngOnInit();
                 };
-                AdminComponent.prototype.newLesson = function (lesson) {
+                AdminComponent.prototype.addLesson = function (lesson) {
                     this.adminService
                         .addTimeLesson(lesson)
                         .subscribe();
+                    this.ngOnInit();
+                };
+                AdminComponent.prototype.addDate = function (newDate) {
+                    this.adminService
+                        .addDate(newDate)
+                        .subscribe();
+                };
+                AdminComponent.prototype.show = function (items) {
+                    console.log(items);
                 };
                 return AdminComponent;
             }());

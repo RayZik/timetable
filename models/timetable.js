@@ -7,8 +7,8 @@ var Timetable = new Schema({
     beginDate: Date,
     endDate: Date,
     lessons: [{
-        begin: Number,
-        end: Number
+        begin: String,
+        end: String
     }]
 });
 
