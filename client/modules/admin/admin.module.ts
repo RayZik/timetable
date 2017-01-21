@@ -13,18 +13,20 @@ import { OfficeModule } from "../office/office.module";
 import { GroupModule } from "../group/group.module";
 
 import { routing } from "./admin.routing";
-import { DragulaModule} from 'ng2-dragula/ng2-dragula';
+import { DragulaModule } from 'ng2-dragula/ng2-dragula';
+import { MomentModule } from 'angular2-moment';
 
 @NgModule({
     imports: [
         DragulaModule,
+        MomentModule,
         BrowserModule,
         HttpModule,
         NgSemanticModule,
         routing,
         TeacherModule,
         SubjectModule,
-        OfficeModule, 
+        OfficeModule,
         GroupModule
     ],
     declarations: [

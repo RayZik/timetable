@@ -26,6 +26,9 @@ var isPublic = typeof window != "undefined";
             'crossvent': 'npm:crossvent/src',
             'custom-event': 'npm:custom-event',
 
+            'moment': 'npm:moment',
+            'angular2-moment': 'npm:angular2-moment',
+
             'rxjs': 'npm:rxjs',
             'angular2-in-memory-web-api': 'npm:angular2-in-memory-web-api',
             'angular2-jwt': 'npm:angular2-jwt/angular2-jwt.js',
@@ -49,13 +52,41 @@ var isPublic = typeof window != "undefined";
                 main: 'ng-semantic',
                 defaultExtension: 'js'
             },
-            'dragula': {main: 'dragula.js', defaultExtension: 'js'},
-            'ng2-dragula': {defaultExtension: 'js'},
-            'contra': {main: 'contra.js', defaultExtension: 'js'},
-            'atoa': {main: 'atoa.js', defaultExtension: 'js'},
-            'ticky': {main: 'ticky.js', defaultExtension: 'js'},
-            'crossvent': {main: 'crossvent.js', defaultExtension: 'js'},
-            'custom-event': {main: 'index.js', defaultExtension: 'js'},
+            'dragula': {
+                main: 'dragula.js',
+                defaultExtension: 'js'
+            },
+            'ng2-dragula': {
+                defaultExtension: 'js'
+            },
+            'contra': {
+                main: 'contra.js',
+                defaultExtension: 'js'
+            },
+            'atoa': {
+                main: 'atoa.js',
+                defaultExtension: 'js'
+            },
+            'ticky': {
+                main: 'ticky.js',
+                defaultExtension: 'js'
+            },
+            'crossvent': {
+                main: 'crossvent.js',
+                defaultExtension: 'js'
+            },
+            'custom-event': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'moment': {
+                main: './moment.js',
+                defaultExtension: 'js'
+            },
+            'angular2-moment': {
+                main: './index.js',
+                defaultExtension: 'js'
+            }
         }
     });
 })(this);

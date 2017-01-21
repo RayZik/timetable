@@ -8,25 +8,19 @@
         <thead>
             <tr>
                 <th></th>
-                <th>Пн</th>
-                <th>Вт</th>
-                <th>Ср</th>
-                <th>Чт</th>
-                <th>Пт</th>
-                <th>Сб</th>
-                <th>Вс</th>
+                <th *ngFor="let date of dateList">{{date}}</th>
             </tr>
         </thead>
         <tbody>
 
             <tr *ngFor="let items of timeList">
                 <td>
-                    {{items[0]}}-{{items[1]}}
+                    {{(items.begin | amFromUnix)|amDateFormat:'LT' }}-{{(items.end | amFromUnix)|amDateFormat:'LT'}}
                 </td>
 
-                <!--<td *ngFor="let item of items" [dragula]='"bag"' [dragulaModel]='timeList'>
-                    <tt-cell [cell]='item'></tt-cell>
-                </td>-->
+                <td *ngFor="let slot of items.slots" [dragula]='"bag"' [dragulaModel]='slot'>
+                    <tt-cell *ngFor="let c of slot" [cell]='c'></tt-cell>
+                </td>
             </tr>
 
             <tr>
@@ -38,16 +32,18 @@
             </tr>
 
         </tbody>
+        <tfoot>
+            <button class=" compact ui button " (click)="saveTimetable(timeList)">Сохранить расписание</button>
+        </tfoot>
     </table>
     <br>
 
+
     <div class="ui message" [dragula]='"bag"' [dragulaModel]='cellTimetable'>
         <div *ngFor="let item of cellTimetable">
-            <tt-cell [cell]='item' (click)="setIdTimeCell(item._id)"></tt-cell>
+            <tt-cell [cell]='item'></tt-cell>
         </div>
     </div>
 </div>
 
 <button class=" container circular ui icon button" (click)="addCell()"><i class="icon plus"></i></button>
-
-<div [dragula]='"evented-bag"'></div>

@@ -33,10 +33,10 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.adminService = adminService;
                     this.dragulaService = dragulaService;
                     this.cellTimetable = [];
+                    this.dateList = [];
                     this.timeList = [];
                     this.lesson = {};
                     this.newDate = {};
-                    this.cellIdTime = {};
                     dragulaService.dropModel.subscribe(function (value) {
                         _this.onDropModel(value.slice(1));
                     });
@@ -46,11 +46,9 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                 }
                 AdminComponent.prototype.onDropModel = function (args) {
                     var el = args[0], target = args[1], source = args[2];
-                    // console.log(this.cellIdTime)
                 };
                 AdminComponent.prototype.onRemoveModel = function (args) {
                     var el = args[0], source = args[1];
-                    // do something else
                 };
                 AdminComponent.prototype.ngOnInit = function () {
                     var _this = this;
@@ -60,11 +58,17 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.adminService
                         .getTimeLesson()
                         .subscribe(function (data) {
+                        _this.timeList = [];
                         for (var i = 0; i < data[0].lessons.length; i++) {
-                            _this.timeList.push([data[0].lessons[i].begin, data[0].lessons[i].end, [[], [], [], [], [], [], []]]);
-                            console.log(_this.timeList);
+                            data[0].lessons[i].slots = [[], [], [], [], [], [], []];
+                            _this.timeList.push(data[0].lessons[i]);
                         }
                     }, function (err) { return console.log(err); });
+                    var d = new Date(0);
+                    for (var i = 0; i < 8; i++) {
+                        this.dateList.push(d.getDay() + i);
+                    }
+                    console.log(d);
                 };
                 AdminComponent.prototype.addCell = function () {
                     this.adminService
@@ -73,6 +77,8 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.ngOnInit();
                 };
                 AdminComponent.prototype.addLesson = function (lesson) {
+                    lesson.begin = this.getTimeForLessons(lesson.begin);
+                    lesson.end = this.getTimeForLessons(lesson.end);
                     this.adminService
                         .addTimeLesson(lesson)
                         .subscribe();
@@ -83,8 +89,17 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         .addDate(newDate)
                         .subscribe();
                 };
-                AdminComponent.prototype.show = function (items) {
-                    console.log(items);
+                AdminComponent.prototype.saveTimetable = function (data) {
+                    var res = { data: data };
+                    this.adminService
+                        .saveTimetable(res)
+                        .subscribe();
+                };
+                AdminComponent.prototype.getTimeForLessons = function (time) {
+                    var date = new Date(0);
+                    var t = time.split(':');
+                    date.setHours(+t[0], +t[1], 0);
+                    return date.getTime();
                 };
                 return AdminComponent;
             }());

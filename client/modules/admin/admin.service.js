@@ -125,6 +125,13 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                         .get('/api/admin/timetable')
                         .map(function (response) { return response.json(); });
                 };
+                AdminService.prototype.saveTimetable = function (data) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .put("/api/admin/timetable/save", data, { headers: headers });
+                };
                 return AdminService;
             }());
             AdminService = __decorate([

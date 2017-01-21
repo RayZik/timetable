@@ -120,4 +120,12 @@ export class AdminService {
             .map((response: Response) => response.json());
     }
 
+    saveTimetable(data) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .put("/api/admin/timetable/save", data, { headers: headers })
+
+    }
 }
