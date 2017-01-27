@@ -54,21 +54,25 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     var _this = this;
                     this.adminService
                         .getCellTimetable()
-                        .subscribe(function (data) { _this.cellTimetable = data; }, function (err) { return console.log(err); });
+                        .subscribe(function (cells) { _this.cellTimetable = cells; }, function (err) { return console.log(err); });
                     this.adminService
                         .getTimeLesson()
                         .subscribe(function (data) {
                         _this.timeList = [];
+                        _this.topDate = new Date();
+                        if (_this.dateList.length == 0) {
+                            for (var i_1 = 0; i_1 < 7; i_1++) {
+                                _this.topDate = new Date(data[0].beginDate);
+                                _this.topDate.setDate(_this.topDate.getDate() + i_1);
+                                _this.dateList.push(_this.topDate);
+                                console.log(data[0]);
+                            }
+                        }
                         for (var i = 0; i < data[0].lessons.length; i++) {
                             data[0].lessons[i].slots = [[], [], [], [], [], [], []];
                             _this.timeList.push(data[0].lessons[i]);
                         }
                     }, function (err) { return console.log(err); });
-                    var d = new Date(0);
-                    for (var i = 0; i < 8; i++) {
-                        this.dateList.push(d.getDay() + i);
-                    }
-                    console.log(d);
                 };
                 AdminComponent.prototype.addCell = function () {
                     this.adminService
@@ -77,10 +81,20 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.ngOnInit();
                 };
                 AdminComponent.prototype.addLesson = function (lesson) {
-                    lesson.begin = this.getTimeForLessons(lesson.begin);
-                    lesson.end = this.getTimeForLessons(lesson.end);
+                    lesson.begin = this.toInt(lesson.begin);
+                    lesson.end = this.toInt(lesson.end);
                     this.adminService
                         .addTimeLesson(lesson)
+                        .subscribe();
+                    this.ngOnInit();
+                };
+                AdminComponent.prototype.toInt = function (time) {
+                    var arr = time.split(':');
+                    return +arr[1] + (+arr[0] * 60);
+                };
+                AdminComponent.prototype.deleteTimeLesson = function (lesson) {
+                    this.adminService
+                        .deleteLesson(lesson)
                         .subscribe();
                     this.ngOnInit();
                 };
@@ -90,16 +104,23 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         .subscribe();
                 };
                 AdminComponent.prototype.saveTimetable = function (data) {
-                    var res = { data: data };
+                    var res = [];
+                    for (var i = 0; i < data.length; i++) {
+                        for (var j = 0; j < data[i].slots.length; j++) {
+                            for (var t = 0; t < data[i].slots[j].length; t++) {
+                                if (data[i].slots[j][t]) {
+                                    var begin = (new Date(this.dateList[j]).getTime() + data[i].begin * 1000);
+                                    var end = new Date(this.dateList[j]).getTime() + data[i].end * 1000;
+                                    data[i].slots[j][t].time[0] = { begin: new Date(begin), end: new Date(end) };
+                                    res.push([data[i].slots[j][t]._id, data[i].slots[j][t].time[0]]);
+                                }
+                            }
+                        }
+                    }
+                    console.log(res);
                     this.adminService
                         .saveTimetable(res)
                         .subscribe();
-                };
-                AdminComponent.prototype.getTimeForLessons = function (time) {
-                    var date = new Date(0);
-                    var t = time.split(':');
-                    date.setHours(+t[0], +t[1], 0);
-                    return date.getTime();
                 };
                 return AdminComponent;
             }());

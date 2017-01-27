@@ -130,7 +130,14 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .put("/api/admin/timetable/save", data, { headers: headers });
+                        .put("/api/admin/timetable/save", { data: data }, { headers: headers });
+                };
+                AdminService.prototype.deleteLesson = function (lesson) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this
+                        .http
+                        .post("/api/admin/timetable/delete_time_lesson", { lesson: lesson }, { headers: headers });
                 };
                 return AdminService;
             }());

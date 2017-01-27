@@ -1,20 +1,22 @@
 <br>
 <div class="ui container">
-    <input type="date" name="beginDate" (blur)='newDate.beginDate = $event.target.value'>
-    <input type="date" name="endDate" (blur)='newDate.endDate = $event.target.value'>
-    <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>
+    
+        <input type="date" name="beginDate" (blur)='newDate.beginDate = $event.target.value'>
+        <input type="date" name="endDate" (blur)='newDate.endDate = $event.target.value'>
+        <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>
+  
 
     <table class="ui celled table" id="timetable">
         <thead>
-            <tr>
+            <tr> 
                 <th></th>
-                <th *ngFor="let date of dateList">{{date}}</th>
+                <th *ngFor="let date of dateList">{{date|amDateFormat:'ll'}}</th>
             </tr>
         </thead>
         <tbody>
 
             <tr *ngFor="let items of timeList">
-                <td>
+                <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i>
                     {{(items.begin | amFromUnix)|amDateFormat:'LT' }}-{{(items.end | amFromUnix)|amDateFormat:'LT'}}
                 </td>
 
@@ -37,7 +39,6 @@
         </tfoot>
     </table>
     <br>
-
 
     <div class="ui message" [dragula]='"bag"' [dragulaModel]='cellTimetable'>
         <div *ngFor="let item of cellTimetable">

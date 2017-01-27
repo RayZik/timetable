@@ -125,7 +125,15 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put("/api/admin/timetable/save", data, { headers: headers })
+            .put("/api/admin/timetable/save", { data: data }, { headers: headers })
 
+    }
+
+    deleteLesson(lesson) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this
+            .http
+            .post("/api/admin/timetable/delete_time_lesson", { lesson: lesson }, { headers: headers })
     }
 }
