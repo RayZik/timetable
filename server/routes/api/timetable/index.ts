@@ -7,11 +7,9 @@ const Timetable = require("../../../../models/timetable").TimetableModel;
 const cellTimetable = require("../../../../models/cellTimetable").CellTimetableModel;
 
 timetableApi.get("/", (req: Request, res: Response, next: NextFunction) => {
-    cellTimetable.find({})
+    Timetable.find({})
         .exec().then((result) => {
-            if(result){
-
-            }
+            res.send(result);
             res.end();
         }).catch(next);
 });
@@ -41,42 +39,18 @@ timetableApi.post("/add_time_lesson", (req: Request, res: Response, next: NextFu
 
 timetableApi.put("/save", (req: Request, res: Response, next: NextFunction) => {
     let data = req.body.data;
+ 
     data.forEach(item => {
-        cellTimetable.findOneAndUpdate(item[0]._id, { $set: { time: { begin:item[1].begin, end: item[1].end } } })
-        .exec().then(() => {
-            res.end();
-        }).catch(next); 
+        cellTimetable.findOneAndUpdate({ _id: item[0] }, { $set: { time: [{ begin: item[1].begin, end: item[1].end }] } })
+            .exec().then((res) => {
+            }).catch(next);
     });
-
+    res.end();
 });
 
 timetableApi.post("/delete_time_lesson", (req: Request, res: Response, next: NextFunction) => {
     let lesson = req.body.lesson;
 
-    Timetable.findById(lesson._id)
-        .exec().then((result) => {
-            if (result != null) {
-                result.remove();
-
-                lesson.slots.forEach(slot => {
-                    slot.forEach(id => {
-                        cellTimetable.update({ _id: lesson.id }, {
-                            $pull: {
-                                time: {
-                                    begin: lesson.begin,
-                                    end: lesson.end
-                                }
-                            }
-                        })
-                            .exec().then(() => {
-                                res.end();
-                            }).catch(next);
-                    });
-                    res.end();
-                }).catch(next);
-            }
-
-        });
 });
 
 export { timetableApi }; 

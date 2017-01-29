@@ -37,12 +37,25 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.timeList = [];
                     this.lesson = {};
                     this.newDate = {};
+                    this.validedTimeCell = [];
                     dragulaService.dropModel.subscribe(function (value) {
                         _this.onDropModel(value.slice(1));
                     });
                     dragulaService.removeModel.subscribe(function (value) {
                         _this.onRemoveModel(value.slice(1));
                     });
+                    this.adminService
+                        .getCellTimetable()
+                        .subscribe(function (cells) {
+                        cells.forEach(function (cell) {
+                            if (cell.time[0]) {
+                                _this.validedTimeCell.push(cell);
+                            }
+                            else {
+                                _this.cellTimetable.push(cell);
+                            }
+                        });
+                    }, function (err) { return console.log(err); });
                 }
                 AdminComponent.prototype.onDropModel = function (args) {
                     var el = args[0], target = args[1], source = args[2];
@@ -53,24 +66,41 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                 AdminComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this.adminService
-                        .getCellTimetable()
-                        .subscribe(function (cells) { _this.cellTimetable = cells; }, function (err) { return console.log(err); });
-                    this.adminService
                         .getTimeLesson()
                         .subscribe(function (data) {
                         _this.timeList = [];
                         _this.topDate = new Date();
                         if (_this.dateList.length == 0) {
-                            for (var i_1 = 0; i_1 < 7; i_1++) {
+                            for (var i = 0; i < 7; i++) {
                                 _this.topDate = new Date(data[0].beginDate);
-                                _this.topDate.setDate(_this.topDate.getDate() + i_1);
+                                _this.topDate.setDate(_this.topDate.getDate() + i);
                                 _this.dateList.push(_this.topDate);
-                                console.log(data[0]);
                             }
                         }
-                        for (var i = 0; i < data[0].lessons.length; i++) {
+                        console.log(_this.validedTimeCell);
+                        var _loop_1 = function (i) {
                             data[0].lessons[i].slots = [[], [], [], [], [], [], []];
+                            var _loop_2 = function (j) {
+                                var begin = _this.dateList[j].getTime() + data[0].lessons[i].begin * 1000;
+                                var end = _this.dateList[j].getTime() + data[0].lessons[i].end * 1000;
+                                _this.validedTimeCell.forEach(function (cell) {
+                                    // console.log(cell)
+                                    cell.time.forEach(function (time) {
+                                        // console.log(new Date(time.begin).getTime(), new Date(begin).getTime())
+                                        if (new Date(time.begin).getTime() === new Date(begin).getTime()) {
+                                            // console.log(cell)
+                                            data[0].lessons[i].slots[j].push(cell);
+                                        }
+                                    });
+                                });
+                            };
+                            for (var j = 0; j < data[0].lessons[i].slots.length; j++) {
+                                _loop_2(j);
+                            }
                             _this.timeList.push(data[0].lessons[i]);
+                        };
+                        for (var i = 0; i < data[0].lessons.length; i++) {
+                            _loop_1(i);
                         }
                     }, function (err) { return console.log(err); });
                 };
@@ -117,10 +147,18 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                             }
                         }
                     }
-                    console.log(res);
                     this.adminService
                         .saveTimetable(res)
                         .subscribe();
+                };
+                AdminComponent.prototype.cellWithTime = function (cellArray) {
+                    var res = [];
+                    for (var i = 0; i < cellArray.length; i++) {
+                        if (cellArray[i].time[0]) {
+                            res.push(cellArray[i]);
+                        }
+                    }
+                    return res;
                 };
                 return AdminComponent;
             }());
