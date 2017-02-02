@@ -39,7 +39,7 @@ timetableApi.post("/add_time_lesson", (req: Request, res: Response, next: NextFu
 
 timetableApi.put("/save", (req: Request, res: Response, next: NextFunction) => {
     let data = req.body.data;
- 
+
     data.forEach(item => {
         cellTimetable.findOneAndUpdate({ _id: item[0] }, { $set: { time: [{ begin: item[1].begin, end: item[1].end }] } })
             .exec().then((res) => {
@@ -51,6 +51,23 @@ timetableApi.put("/save", (req: Request, res: Response, next: NextFunction) => {
 timetableApi.post("/delete_time_lesson", (req: Request, res: Response, next: NextFunction) => {
     let lesson = req.body.lesson;
 
+    Timetable.findOne({})
+        .exec().then((result) => {
+            result.lessons.forEach(les => {
+                // console.log('l1:' + les._id)
+                // console.log('l2:' + lesson[0])
+
+                if (les._id == lesson[0]) {
+                    les.remove();
+                    lesson[1].forEach(cellId => {
+                        // console.log('cellId: ' + cellId)
+                        cellTimetable.findOneAndUpdate({ _id: cellId }, { $set: { time: [] } })
+                            .exec().then(() => { }).catch(next);
+                    });
+                }
+            });
+        }).catch(next);
+    res.end();
 });
 
 export { timetableApi }; 

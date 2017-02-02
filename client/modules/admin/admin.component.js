@@ -44,6 +44,15 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     dragulaService.removeModel.subscribe(function (value) {
                         _this.onRemoveModel(value.slice(1));
                     });
+                }
+                AdminComponent.prototype.onDropModel = function (args) {
+                    var el = args[0], target = args[1], source = args[2];
+                };
+                AdminComponent.prototype.onRemoveModel = function (args) {
+                    var el = args[0], source = args[1];
+                };
+                AdminComponent.prototype.ngOnInit = function () {
+                    var _this = this;
                     this.adminService
                         .getCellTimetable()
                         .subscribe(function (cells) {
@@ -55,15 +64,10 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                                 _this.cellTimetable.push(cell);
                             }
                         });
+                        _this.subscribeTimeList();
                     }, function (err) { return console.log(err); });
-                }
-                AdminComponent.prototype.onDropModel = function (args) {
-                    var el = args[0], target = args[1], source = args[2];
                 };
-                AdminComponent.prototype.onRemoveModel = function (args) {
-                    var el = args[0], source = args[1];
-                };
-                AdminComponent.prototype.ngOnInit = function () {
+                AdminComponent.prototype.subscribeTimeList = function () {
                     var _this = this;
                     this.adminService
                         .getTimeLesson()
@@ -77,7 +81,6 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                                 _this.dateList.push(_this.topDate);
                             }
                         }
-                        console.log(_this.validedTimeCell);
                         var _loop_1 = function (i) {
                             data[0].lessons[i].slots = [[], [], [], [], [], [], []];
                             var _loop_2 = function (j) {
@@ -99,6 +102,7 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                             }
                             _this.timeList.push(data[0].lessons[i]);
                         };
+                        // console.log(this.validedTimeCell)
                         for (var i = 0; i < data[0].lessons.length; i++) {
                             _loop_1(i);
                         }
@@ -122,9 +126,18 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     var arr = time.split(':');
                     return +arr[1] + (+arr[0] * 60);
                 };
-                AdminComponent.prototype.deleteTimeLesson = function (lesson) {
+                AdminComponent.prototype.deleteTimeLesson = function (lessonRow) {
+                    var resSend = [];
+                    for (var i = 0; i < lessonRow.slots.length; i++) {
+                        if (lessonRow.slots[i].length > 0) {
+                            lessonRow.slots[i].forEach(function (cell) {
+                                resSend.push(cell._id);
+                            });
+                        }
+                    }
+                    lessonRow = [lessonRow._id, resSend];
                     this.adminService
-                        .deleteLesson(lesson)
+                        .deleteLesson(lessonRow)
                         .subscribe();
                     this.ngOnInit();
                 };
@@ -150,15 +163,6 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.adminService
                         .saveTimetable(res)
                         .subscribe();
-                };
-                AdminComponent.prototype.cellWithTime = function (cellArray) {
-                    var res = [];
-                    for (var i = 0; i < cellArray.length; i++) {
-                        if (cellArray[i].time[0]) {
-                            res.push(cellArray[i]);
-                        }
-                    }
-                    return res;
                 };
                 return AdminComponent;
             }());

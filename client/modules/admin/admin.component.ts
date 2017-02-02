@@ -30,20 +30,7 @@ export class AdminComponent implements OnInit {
 			this.onRemoveModel(value.slice(1));
 		});
 
-		this.adminService
-			.getCellTimetable()
-			.subscribe(
-			(cells) => {
-				cells.forEach(cell => {
-					if (cell.time[0]) {
-						this.validedTimeCell.push(cell);
-					} else {
-						this.cellTimetable.push(cell);
-					}
-				});
-			},
-			(err) => console.log(err)
-			);
+
 
 	}
 	private onDropModel(args) {
@@ -57,13 +44,30 @@ export class AdminComponent implements OnInit {
 
 	ngOnInit() {
 
+		this.adminService
+			.getCellTimetable()
+			.subscribe(
+			(cells) => {
+				cells.forEach(cell => {
+					if (cell.time[0]) {
+						this.validedTimeCell.push(cell);
+					} else {
+						this.cellTimetable.push(cell);
+					}
+				});
+				this.subscribeTimeList();
+			},
+			(err) => console.log(err)
+			);
 
+
+	}
+
+	subscribeTimeList() {
 		this.adminService
 			.getTimeLesson()
 			.subscribe(
 			(data) => {
-
-
 				this.timeList = [];
 				this.topDate = new Date();
 				if (this.dateList.length == 0) {
@@ -74,7 +78,7 @@ export class AdminComponent implements OnInit {
 					}
 				}
 
-				console.log(this.validedTimeCell)
+				// console.log(this.validedTimeCell)
 
 				for (let i = 0; i < data[0].lessons.length; i++) {
 					data[0].lessons[i].slots = [[], [], [], [], [], [], []];
@@ -96,15 +100,9 @@ export class AdminComponent implements OnInit {
 					}
 					this.timeList.push(data[0].lessons[i]);
 				}
-
-
 			},
 			(err) => console.log(err)
 			);
-
-
-
-
 	}
 
 
@@ -129,9 +127,19 @@ export class AdminComponent implements OnInit {
 		return +arr[1] + (+arr[0] * 60);
 	}
 
-	deleteTimeLesson(lesson): void {
+	deleteTimeLesson(lessonRow): void {
+		let resSend = [];
+		for (let i = 0; i < lessonRow.slots.length; i++) {
+			if (lessonRow.slots[i].length > 0) {
+				lessonRow.slots[i].forEach(cell => {
+					resSend.push(cell._id);
+				});
+			}
+		}
+		lessonRow = [lessonRow._id, resSend];
+
 		this.adminService
-			.deleteLesson(lesson)
+			.deleteLesson(lessonRow)
 			.subscribe();
 		this.ngOnInit();
 	}
@@ -159,17 +167,6 @@ export class AdminComponent implements OnInit {
 		this.adminService
 			.saveTimetable(res)
 			.subscribe();
-		
-	}
-
-	cellWithTime(cellArray) {
-		let res = [];
-		for (let i = 0; i < cellArray.length; i++) {
-			if (cellArray[i].time[0]) {
-				res.push(cellArray[i])
-			}
-		}
-		return res;
 	}
 }
 
