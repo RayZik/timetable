@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { AdminService } from './admin.service';
 import { ApiService } from '../../service/api.service';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
+import moment from 'moment';
 
 @Component({
 	selector: 'tt-admin',
@@ -17,8 +18,9 @@ export class AdminComponent implements OnInit {
 	private timeList: any = [];
 	private lesson: any = {};
 	private newDate: any = {};
-	private topDate: Date;
 	private validedTimeCell: any[] = [];
+	private arrayWeeks: any[] = [];
+	private data;
 
 	constructor(private adminService: AdminService, private dragulaService: DragulaService) {
 		dragulaService.dropModel.subscribe((value) => {
@@ -43,66 +45,50 @@ export class AdminComponent implements OnInit {
 	}
 
 	ngOnInit() {
-
 		this.adminService
 			.getCellTimetable()
-			.subscribe(
-			(cells) => {
+			.flatMap(cells => {
+				this.validedTimeCell = [];
+				this.cellTimetable = [];
 				cells.forEach(cell => {
-					if (cell.time[0]) {
+					if (cell.time.length > 0) {
 						this.validedTimeCell.push(cell);
 					} else {
 						this.cellTimetable.push(cell);
 					}
 				});
-				this.subscribeTimeList();
-			},
-			(err) => console.log(err)
-			);
 
+				return this.adminService.getTimeLesson();
+			})
+			.subscribe((data) => {
+				this.data = data[0];
+				this.dateList = [];
+				for (let i = 0; i < 7; i++) {
+					let beginDay = moment(data[0].beginDate).day();
+				    this.dateList.push(moment(data[0].beginDate).day(beginDay + i).toDate());
+				}
+				this.outTable(data[0]);
 
+			});
 	}
 
-	subscribeTimeList() {
-		this.adminService
-			.getTimeLesson()
-			.subscribe(
-			(data) => {
-				this.timeList = [];
-				this.topDate = new Date();
-				if (this.dateList.length == 0) {
-					for (let i = 0; i < 7; i++) {
-						this.topDate = new Date(data[0].beginDate);
-						this.topDate.setDate(this.topDate.getDate() + i);
-						this.dateList.push(this.topDate);
-					}
-				}
-
-				// console.log(this.validedTimeCell)
-
-				for (let i = 0; i < data[0].lessons.length; i++) {
-					data[0].lessons[i].slots = [[], [], [], [], [], [], []];
-					for (let j = 0; j < data[0].lessons[i].slots.length; j++) {
-						let begin = this.dateList[j].getTime() + data[0].lessons[i].begin * 1000;
-						let end = this.dateList[j].getTime() + data[0].lessons[i].end * 1000;
-
-						this.validedTimeCell.forEach(cell => {
-							// console.log(cell)
-							cell.time.forEach(time => {
-								// console.log(new Date(time.begin).getTime(), new Date(begin).getTime())
-								if (new Date(time.begin).getTime() === new Date(begin).getTime()) {
-									// console.log(cell)
-									data[0].lessons[i].slots[j].push(cell);
-									// console.log(data[0].lessons[i]);
-								}
-							});
-						});
-					}
-					this.timeList.push(data[0].lessons[i]);
-				}
-			},
-			(err) => console.log(err)
-			);
+	outTable(data) {
+		this.timeList = [];
+		for (let i = 0; i < data.lessons.length; i++) {
+			data.lessons[i].slots = [[], [], [], [], [], [], []];
+			for (let j = 0; j < data.lessons[i].slots.length; j++) {
+				let begin = moment(this.dateList[j]).second(data.lessons[i].begin).valueOf();
+				let end = moment(this.dateList[j]).second(data.lessons[i].end).valueOf();
+				this.validedTimeCell.forEach(cell => {
+					cell.time.forEach(time => {
+						if (moment(time.begin).valueOf() === moment(begin).valueOf()) {
+							data.lessons[i].slots[j].push(cell);
+						}
+					});
+				});
+			}
+			this.timeList.push(data.lessons[i]);
+		}
 	}
 
 
@@ -110,7 +96,6 @@ export class AdminComponent implements OnInit {
 		this.adminService
 			.addCell()
 			.subscribe();
-		this.ngOnInit();
 	}
 
 	addLesson(lesson): void {
@@ -119,7 +104,7 @@ export class AdminComponent implements OnInit {
 		this.adminService
 			.addTimeLesson(lesson)
 			.subscribe();
-		this.ngOnInit();
+
 	}
 
 	toInt(time: String): Number {
@@ -141,7 +126,6 @@ export class AdminComponent implements OnInit {
 		this.adminService
 			.deleteLesson(lessonRow)
 			.subscribe();
-		this.ngOnInit();
 	}
 
 	addDate(newDate): void {
@@ -150,23 +134,75 @@ export class AdminComponent implements OnInit {
 			.subscribe();
 	}
 
-	saveTimetable(data): void {
+	saveOneWeek(data): void {
 		let res = [];
 		for (let i = 0; i < data.length; i++) {
 			for (let j = 0; j < data[i].slots.length; j++) {
 				for (let t = 0; t < data[i].slots[j].length; t++) {
 					if (data[i].slots[j][t]) {
-						let begin = (new Date(this.dateList[j]).getTime() + data[i].begin * 1000);
-						let end = new Date(this.dateList[j]).getTime() + data[i].end * 1000;
-						data[i].slots[j][t].time[0] = { begin: new Date(begin), end: new Date(end) };
-						res.push([data[i].slots[j][t]._id, data[i].slots[j][t].time[0]]);
+						let begin = moment(this.dateList[j]).second(data[i].begin).utc().toDate();
+						let end = moment(this.dateList[j]).second(data[i].end).utc().toDate();
+						data[i].slots[j][t].time = { begin: begin, end: end };
+						res.push([data[i].slots[j][t]._id, data[i].slots[j][t].time]);
+					}
+				}
+			}
+		}
+
+		this.adminService
+			.saveOneWeek(res)
+			.subscribe();
+	}
+
+	saveToEnd(data): void {
+		let res = [];
+		let firstDayWeek = moment(this.dateList[0]);
+		let endDate = moment(this.data.endDate);
+		let diff = Math.ceil(endDate.diff(firstDayWeek, 'days') / 7);
+
+		for (let i = 0; i < data.length; i++) {
+			for (let j = 0; j < data[i].slots.length; j++) {
+				for (let t = 0; t < data[i].slots[j].length; t++) {
+					if (data[i].slots[j][t]) {
+						let begin = moment(this.dateList[j]).second(data[i].begin).utc();
+						let end = moment(this.dateList[j]).second(data[i].end).utc();
+						data[i].slots[j][t].time = [];
+						for (let e = 0; e < diff; e++) {
+							data[i].slots[j][t].time.push({ begin: begin.add(e * 7, 'day').toDate(), end: end.add(e * 7, 'day').toDate() });
+
+							begin = moment(this.dateList[j]).second(data[i].begin).utc();
+							end = moment(this.dateList[j]).second(data[i].end).utc();
+						}
+						res.push([data[i].slots[j][t]._id, data[i].slots[j][t].time]);
 					}
 				}
 			}
 		}
 		this.adminService
-			.saveTimetable(res)
+			.saveToEnd(res)
 			.subscribe();
+	}
+
+	prevWeek() {
+		let n = this.dateList;
+
+		this.dateList = [];
+		for (let i = 7; i >= 1; i--) {
+			this.dateList.push(moment(n[0]).add(-i, 'day').toDate());
+		}
+
+		this.outTable(this.data);
+	}
+
+	nextWeek() {
+		let n = this.dateList;
+		let len = n.length - 1;
+
+		this.dateList = [];
+		for (let i = 1; i <= 7; i++) {
+			this.dateList.push(moment(n[len]).add(i, 'day').toDate());
+		}
+		this.outTable(this.data);
 	}
 }
 

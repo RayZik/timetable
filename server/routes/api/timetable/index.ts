@@ -15,8 +15,8 @@ timetableApi.get("/", (req: Request, res: Response, next: NextFunction) => {
 });
 
 timetableApi.post("/add_date", (req: Request, res: Response, next: NextFunction) => {
-    let begin: Date = new Date(moment.utc(req.body.beginDate).format());
-    let end: Date = new Date(moment.utc(req.body.endDate).format());
+    let begin: Date = moment.utc(req.body.beginDate).toDate();
+    let end: Date = moment.utc(req.body.endDate).toDate();
 
     let les = new Timetable({
         beginDate: begin,
@@ -28,21 +28,37 @@ timetableApi.post("/add_date", (req: Request, res: Response, next: NextFunction)
 });
 
 timetableApi.post("/add_time_lesson", (req: Request, res: Response, next: NextFunction) => {
-    let date: Date = new Date(moment(new Date(0)).hour(0).format());
-    let begin: Number = moment(date).minute(req.body.begin).unix().valueOf();
-    let end: Number = moment(date).minute(req.body.end).unix().valueOf();
+    let date: Date = moment(0).hour(0).toDate();
+    let begin: Number = moment(date).minute(req.body.begin).unix();
+    let end: Number = moment(date).minute(req.body.end).unix();
     Timetable.findOneAndUpdate({}, { $push: { lessons: { begin: begin, end: end } } })
         .exec().then(() => {
             res.end();
         }).catch(next);
 });
 
-timetableApi.put("/save", (req: Request, res: Response, next: NextFunction) => {
+timetableApi.put("/save_one", (req: Request, res: Response, next: NextFunction) => {
+    let data = req.body.data;
+    data.forEach(item => {
+        cellTimetable.findOneAndUpdate({ _id: item[0] }, { $set: { time: { begin: item[1].begin, end: item[1].end } } })
+            .exec().then((res) => {
+            }).catch(next);
+    });
+    res.end();
+});
+
+timetableApi.put("/save_to_end", (req: Request, res: Response, next: NextFunction) => {
     let data = req.body.data;
 
     data.forEach(item => {
-        cellTimetable.findOneAndUpdate({ _id: item[0] }, { $set: { time: [{ begin: item[1].begin, end: item[1].end }] } })
+        cellTimetable.findOne({ _id: item[0] })
             .exec().then((res) => {
+
+                let cell = new cellTimetable(res);
+                item[1].forEach(e => {
+                    cell.time.push({ begin: e.begin, end: e.end });
+                });
+                cell.save();
             }).catch(next);
     });
     res.end();

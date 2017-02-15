@@ -1,14 +1,34 @@
 <br>
 <div class="ui container">
-    
-        <input type="date" name="beginDate" (blur)='newDate.beginDate = $event.target.value'>
-        <input type="date" name="endDate" (blur)='newDate.endDate = $event.target.value'>
-        <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>
-  
+
+    <input type="date" name="beginDate" (blur)='newDate.beginDate = $event.target.value'>
+    <input type="date" name="endDate" (blur)='newDate.endDate = $event.target.value'>
+    <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>
+
+    <div class="ui buttons">
+        <button class="ui left labeled icon button" (click)="prevWeek()"> <i class="left chevron icon"></i> Назад</button>
+        <button class="ui right labeled icon button" (click)="nextWeek()">Вперед<i class="right chevron icon"></i></button>
+    </div>
+
+    <div class="ui floating labeled icon dropdown button">
+        <i class="filter icon"></i>
+        <span class="text">Filter</span>
+        <div class="menu">
+            <div class="item">
+                <i class="attention icon"></i> Important
+            </div>
+            <div class="item">
+                <i class="comment icon"></i> Announcement
+            </div>
+            <div class="item">
+                <i class="conversation icon"></i> Discussion
+            </div>
+        </div>
+    </div>
 
     <table class="ui celled table" id="timetable">
         <thead>
-            <tr> 
+            <tr>
                 <th></th>
                 <th *ngFor="let date of dateList">{{date|amDateFormat:'ll'}}</th>
             </tr>
@@ -16,8 +36,8 @@
         <tbody>
 
             <tr *ngFor="let items of timeList">
-                <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i>
-                    {{(items.begin | amFromUnix)|amDateFormat:'LT' }}-{{(items.end | amFromUnix)|amDateFormat:'LT'}}
+                <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i> {{(items.begin | amFromUnix)|amDateFormat:'LT'
+                    }}-{{(items.end | amFromUnix)|amDateFormat:'LT'}}
                 </td>
 
                 <td *ngFor="let slot of items.slots" [dragula]='"bag"' [dragulaModel]='slot'>
@@ -35,7 +55,8 @@
 
         </tbody>
         <tfoot>
-            <button class=" compact ui button " (click)="saveTimetable(timeList)">Сохранить расписание</button>
+            <button class=" compact ui button " (click)="saveOneWeek(timeList)">Сохранить неделю</button>
+            <button class=" compact ui button " (click)="saveToEnd(timeList)">Сохранить до конца семестра</button>
         </tfoot>
     </table>
     <br>
@@ -45,6 +66,7 @@
             <tt-cell [cell]='item'></tt-cell>
         </div>
     </div>
+
 </div>
 
 <button class=" container circular ui icon button" (click)="addCell()"><i class="icon plus"></i></button>
