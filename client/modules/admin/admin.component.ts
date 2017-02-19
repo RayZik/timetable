@@ -18,11 +18,13 @@ export class AdminComponent implements OnInit {
 	private timeList: any = [];
 	private lesson: any = {};
 	private newDate: any = {};
-	private validedTimeCell: any[] = [];
-	private arrayWeeks: any[] = [];
-	private data;
+	private validedTimeCell = [];
+	private configFilter: any = {};
+	private data: any;
 
-	constructor(private adminService: AdminService, private dragulaService: DragulaService) {
+	showFilter: boolean = false;
+
+	constructor(private adminService: AdminService, private apiService: ApiService, private dragulaService: DragulaService) {
 		dragulaService.dropModel.subscribe((value) => {
 			this.onDropModel(value.slice(1));
 
@@ -63,23 +65,22 @@ export class AdminComponent implements OnInit {
 			.subscribe((data) => {
 				this.data = data[0];
 				this.dateList = [];
-				for (let i = 0; i < 7; i++) {
+				for (let i = 0; i < 14; i++) {
 					let beginDay = moment(data[0].beginDate).day();
-				    this.dateList.push(moment(data[0].beginDate).day(beginDay + i).toDate());
+					this.dateList.push(moment(data[0].beginDate).day(beginDay + i).toDate());
 				}
-				this.outTable(data[0]);
-
+				this.outTable(data[0], this.validedTimeCell);
 			});
 	}
 
-	outTable(data) {
+	outTable(data, validate) {
 		this.timeList = [];
 		for (let i = 0; i < data.lessons.length; i++) {
-			data.lessons[i].slots = [[], [], [], [], [], [], []];
+			data.lessons[i].slots = [[], [], [], [], [], [], [], [], [], [], [], [], [], []];
 			for (let j = 0; j < data.lessons[i].slots.length; j++) {
 				let begin = moment(this.dateList[j]).second(data.lessons[i].begin).valueOf();
 				let end = moment(this.dateList[j]).second(data.lessons[i].end).valueOf();
-				this.validedTimeCell.forEach(cell => {
+				validate.forEach(cell => {
 					cell.time.forEach(time => {
 						if (moment(time.begin).valueOf() === moment(begin).valueOf()) {
 							data.lessons[i].slots[j].push(cell);
@@ -126,6 +127,8 @@ export class AdminComponent implements OnInit {
 		this.adminService
 			.deleteLesson(lessonRow)
 			.subscribe();
+
+		this.ngOnInit();
 	}
 
 	addDate(newDate): void {
@@ -134,75 +137,74 @@ export class AdminComponent implements OnInit {
 			.subscribe();
 	}
 
-	saveOneWeek(data): void {
-		let res = [];
-		for (let i = 0; i < data.length; i++) {
-			for (let j = 0; j < data[i].slots.length; j++) {
-				for (let t = 0; t < data[i].slots[j].length; t++) {
-					if (data[i].slots[j][t]) {
-						let begin = moment(this.dateList[j]).second(data[i].begin).utc().toDate();
-						let end = moment(this.dateList[j]).second(data[i].end).utc().toDate();
-						data[i].slots[j][t].time = { begin: begin, end: end };
-						res.push([data[i].slots[j][t]._id, data[i].slots[j][t].time]);
-					}
-				}
-			}
+	saveCell(value, slot, dayIndex, timeListBegin, timeListEnd) {
+
+		if (value === 'week') {
+			this.saveOneWeek(slot, dayIndex, timeListBegin, timeListEnd);
 		}
 
-		this.adminService
-			.saveOneWeek(res)
-			.subscribe();
+		if (value === 'everyWeek') {
+			this.saveToEnd(slot, dayIndex, timeListBegin, timeListEnd);
+		}
+
+		if (value === 'cherezWeek') {
+
+		}
 	}
 
-	saveToEnd(data): void {
+	saveOneWeek(slot, dayIndex, timeListBegin, timeListEnd): void {
 		let res = [];
-		let firstDayWeek = moment(this.dateList[0]);
-		let endDate = moment(this.data.endDate);
+		for (let i = 0; i < slot.length; i++) {
+			let begin = moment(this.dateList[dayIndex]).second(timeListBegin).toDate();
+			let end = moment(this.dateList[dayIndex]).second(timeListEnd).toDate();
+
+			if (this.contains(slot[i].time, begin) == -1) {
+				slot[i].time = { begin: begin, end: end };
+				res.push([slot[i]._id, slot[i].time]);
+			}
+		}
+		if (res.length > 0) {
+			this.adminService
+				.saveOneWeek(res)
+				.subscribe();
+		}
+	}
+
+	saveToEnd(slot, dayIndex, timeListBegin, timeListEnd): void {
+		let res = [];
+
+		let firstDayWeek = moment(this.dateList[0]).utc();
+		let endDate = moment(this.data.endDate).utc();
 		let diff = Math.ceil(endDate.diff(firstDayWeek, 'days') / 7);
 
-		for (let i = 0; i < data.length; i++) {
-			for (let j = 0; j < data[i].slots.length; j++) {
-				for (let t = 0; t < data[i].slots[j].length; t++) {
-					if (data[i].slots[j][t]) {
-						let begin = moment(this.dateList[j]).second(data[i].begin).utc();
-						let end = moment(this.dateList[j]).second(data[i].end).utc();
-						data[i].slots[j][t].time = [];
-						for (let e = 0; e < diff; e++) {
-							data[i].slots[j][t].time.push({ begin: begin.add(e * 7, 'day').toDate(), end: end.add(e * 7, 'day').toDate() });
+		for (let i = 0; i < slot.length; i++) {
+			let begin = moment(this.dateList[dayIndex]).second(timeListBegin).utc();
+			let end = moment(this.dateList[dayIndex]).second(timeListEnd).utc();
 
-							begin = moment(this.dateList[j]).second(data[i].begin).utc();
-							end = moment(this.dateList[j]).second(data[i].end).utc();
-						}
-						res.push([data[i].slots[j][t]._id, data[i].slots[j][t].time]);
-					}
+			for (let e = 0; e < diff; e++) {
+				if (this.contains(slot[i].time, begin.add(e * 7, 'day').toDate()) == -1) {
+					slot[i].time.push({ begin: begin.add(e * 7, 'day').toDate(), end: end.add(e * 7, 'day').toDate() });
+					begin = moment(this.dateList[dayIndex]).second(timeListBegin).utc();
+					end = moment(this.dateList[dayIndex]).second(timeListEnd).utc();
 				}
 			}
+			res.push([slot[i]._id, slot[i].time]);
 		}
-		this.adminService
-			.saveToEnd(res)
-			.subscribe();
+		console.log(res)
+
+		// if (res.length > 0) {
+		// 	this.adminService
+		// 		.saveToEnd(res)
+		// 		.subscribe();
+		// }
 	}
 
-	prevWeek() {
-		let n = this.dateList;
-
-		this.dateList = [];
-		for (let i = 7; i >= 1; i--) {
-			this.dateList.push(moment(n[0]).add(-i, 'day').toDate());
+	contains(arr, elem) {
+		if (arr.length > 0) {
+			return arr.find((i) => i.begin === elem);
+		} else {
+			return -1;
 		}
-
-		this.outTable(this.data);
-	}
-
-	nextWeek() {
-		let n = this.dateList;
-		let len = n.length - 1;
-
-		this.dateList = [];
-		for (let i = 1; i <= 7; i++) {
-			this.dateList.push(moment(n[len]).add(i, 'day').toDate());
-		}
-		this.outTable(this.data);
 	}
 }
 

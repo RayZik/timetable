@@ -4,28 +4,8 @@
     <input type="date" name="beginDate" (blur)='newDate.beginDate = $event.target.value'>
     <input type="date" name="endDate" (blur)='newDate.endDate = $event.target.value'>
     <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>
-
-    <div class="ui buttons">
-        <button class="ui left labeled icon button" (click)="prevWeek()"> <i class="left chevron icon"></i> Назад</button>
-        <button class="ui right labeled icon button" (click)="nextWeek()">Вперед<i class="right chevron icon"></i></button>
-    </div>
-
-    <div class="ui floating labeled icon dropdown button">
-        <i class="filter icon"></i>
-        <span class="text">Filter</span>
-        <div class="menu">
-            <div class="item">
-                <i class="attention icon"></i> Important
-            </div>
-            <div class="item">
-                <i class="comment icon"></i> Announcement
-            </div>
-            <div class="item">
-                <i class="conversation icon"></i> Discussion
-            </div>
-        </div>
-    </div>
-
+    <tt-filter [configFilter]='configFilter'></tt-filter>
+    <!--таблица-->
     <table class="ui celled table" id="timetable">
         <thead>
             <tr>
@@ -40,8 +20,33 @@
                     }}-{{(items.end | amFromUnix)|amDateFormat:'LT'}}
                 </td>
 
-                <td *ngFor="let slot of items.slots" [dragula]='"bag"' [dragulaModel]='slot'>
+                <td *ngFor="let slot of items.slots; let dayIndex = index" [dragula]='"bag"' [dragulaModel]='slot'>
                     <tt-cell *ngFor="let c of slot" [cell]='c'></tt-cell>
+                    <button *ngIf="slot.length > 0" class=" compact ui button " (click)="createModal.show({blurring: false,closable: false});">Сохранить</button>
+
+                    <!--Модальное окно сохранения ячейки расписания-->
+                    <sm-modal title="Сохранение данных" #createModal>
+                        <modal-content>
+                            <sm-list>
+                                <sm-item>
+                                    <div>
+                                        <select class="ui dropdown" #categSave>
+                        <option value="week">Неделя</option>
+                        <option value="everyWeek">Каждая неделя</option>
+                        <option value="cherezWeek">Через неделю</option>
+                    </select>
+                                    </div>
+                                </sm-item>
+                            </sm-list>
+                        </modal-content>
+                        <modal-actions>
+                            <div class="ui buttons">
+                                <div class="ui positive button primary" (click)="saveCell(categSave.value,slot,dayIndex,items.begin,items.end); createModal.hide()">Сохранить</div>
+                                <div class="ui negative button primary" (click)="createModal.hide()">Выйти</div>
+                            </div>
+                        </modal-actions>
+                    </sm-modal>
+
                 </td>
             </tr>
 
@@ -55,8 +60,7 @@
 
         </tbody>
         <tfoot>
-            <button class=" compact ui button " (click)="saveOneWeek(timeList)">Сохранить неделю</button>
-            <button class=" compact ui button " (click)="saveToEnd(timeList)">Сохранить до конца семестра</button>
+
         </tfoot>
     </table>
     <br>
