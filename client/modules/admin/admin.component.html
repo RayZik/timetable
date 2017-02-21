@@ -4,8 +4,11 @@
     <input type="date" name="beginDate" (blur)='newDate.beginDate = $event.target.value'>
     <input type="date" name="endDate" (blur)='newDate.endDate = $event.target.value'>
     <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>
-    <tt-filter [configFilter]='configFilter'></tt-filter>
-    <!--таблица-->
+
+    <!--Фильтр-->
+    <tt-filter (onChanged)="onChanged($event)"></tt-filter>
+
+    <!--Таблица-->
     <table class="ui celled table" id="timetable">
         <thead>
             <tr>
@@ -46,6 +49,7 @@
                             </div>
                         </modal-actions>
                     </sm-modal>
+                    <!---->
 
                 </td>
             </tr>
@@ -73,4 +77,5 @@
 
 </div>
 
+<!--Добавление ячейки-->
 <button class=" container circular ui icon button" (click)="addCell()"><i class="icon plus"></i></button>

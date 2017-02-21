@@ -1,1 +1,29 @@
-<div>filter</div>
+<div>
+    <!--Установка даты-->
+    <input type="date" (change)='configFilter.date.begin = $event.target.value; change(configFilter)'>
+    <input type="date" (change)='configFilter.date.end = $event.target.value; change(configFilter)'>
+
+    <!--Установка предмета-->
+    <select class="ui dropdown" #subject (change)='configFilter.subject = subject.value; change(configFilter)'>
+        <option value="">Предмет</option>
+        <option *ngFor="let subject of subjects" [value]="subject.name" >{{subject.name}}</option>
+    </select>
+
+    <!--Уствновка Преподавателя-->
+    <select class="ui dropdown" #teacher (change)='configFilter.teacher = teacher.value; change(configFilter)'>
+        <option value="">Преподаватель</option>
+        <option *ngFor="let teacher of teachers" [value]="teacher.name+teacher.lastName" >{{teacher.name}} {{teacher.lastName}}</option>
+    </select>
+
+    <!--Установка группы-->
+    <select class="ui dropdown" #group (change)='configFilter.group = group.value; change(configFilter)'>
+        <option value="">Группа</option>
+        <option *ngFor="let group of groups" [value]="group.name" >{{group.name}}</option>
+    </select>
+
+    <!--Установка аудитории-->
+    <select class="ui dropdown" #office (change)='configFilter.office = office.value; change(configFilter)'>
+        <option value="">Аудитория</option>
+        <option *ngFor="let office of offices" [value]="office.name" >{{office.name}}</option>
+    </select>
+</div>

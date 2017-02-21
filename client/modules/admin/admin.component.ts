@@ -19,10 +19,7 @@ export class AdminComponent implements OnInit {
 	private lesson: any = {};
 	private newDate: any = {};
 	private validedTimeCell = [];
-	private configFilter: any = {};
 	private data: any;
-
-	showFilter: boolean = false;
 
 	constructor(private adminService: AdminService, private apiService: ApiService, private dragulaService: DragulaService) {
 		dragulaService.dropModel.subscribe((value) => {
@@ -64,19 +61,26 @@ export class AdminComponent implements OnInit {
 			})
 			.subscribe((data) => {
 				this.data = data[0];
-				this.dateList = [];
-				for (let i = 0; i < 14; i++) {
-					let beginDay = moment(data[0].beginDate).day();
-					this.dateList.push(moment(data[0].beginDate).day(beginDay + i).toDate());
-				}
 				this.outTable(data[0], this.validedTimeCell);
 			});
 	}
 
 	outTable(data, validate) {
 		this.timeList = [];
+		this.dateList = [];
+		let countSlots = [];
+		let diffDate: number = moment(data.endDate).diff(data.beginDate, 'days');
+
+		for (let a = 0; a <= diffDate; a++) {
+			countSlots.push([]);
+		}
+		for (let i = 0; i <= diffDate; i++) {
+			let beginDay = moment(data.beginDate).day();
+			this.dateList.push(moment(data.beginDate).day(beginDay + i).toDate());
+		}
+
 		for (let i = 0; i < data.lessons.length; i++) {
-			data.lessons[i].slots = [[], [], [], [], [], [], [], [], [], [], [], [], [], []];
+			data.lessons[i].slots = countSlots;
 			for (let j = 0; j < data.lessons[i].slots.length; j++) {
 				let begin = moment(this.dateList[j]).second(data.lessons[i].begin).valueOf();
 				let end = moment(this.dateList[j]).second(data.lessons[i].end).valueOf();
@@ -92,6 +96,13 @@ export class AdminComponent implements OnInit {
 		}
 	}
 
+	onChanged(validate) {
+		if (validate.date.begin != '' && validate.date.end != '') {
+			this.data.beginDate = moment.utc(validate.date.begin).toDate();
+			this.data.endDate = moment.utc(validate.date.end).toDate();
+		}
+		this.outTable(this.data, validate.cells);
+	}
 
 	addCell(): void {
 		this.adminService

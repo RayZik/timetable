@@ -42,8 +42,6 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.lesson = {};
                     this.newDate = {};
                     this.validedTimeCell = [];
-                    this.configFilter = {};
-                    this.showFilter = false;
                     dragulaService.dropModel.subscribe(function (value) {
                         _this.onDropModel(value.slice(1));
                     });
@@ -76,18 +74,23 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     })
                         .subscribe(function (data) {
                         _this.data = data[0];
-                        _this.dateList = [];
-                        for (var i = 0; i < 14; i++) {
-                            var beginDay = moment_1.default(data[0].beginDate).day();
-                            _this.dateList.push(moment_1.default(data[0].beginDate).day(beginDay + i).toDate());
-                        }
                         _this.outTable(data[0], _this.validedTimeCell);
                     });
                 };
                 AdminComponent.prototype.outTable = function (data, validate) {
                     this.timeList = [];
+                    this.dateList = [];
+                    var countSlots = [];
+                    var diffDate = moment_1.default(data.endDate).diff(data.beginDate, 'days');
+                    for (var a = 0; a <= diffDate; a++) {
+                        countSlots.push([]);
+                    }
+                    for (var i = 0; i <= diffDate; i++) {
+                        var beginDay = moment_1.default(data.beginDate).day();
+                        this.dateList.push(moment_1.default(data.beginDate).day(beginDay + i).toDate());
+                    }
                     var _loop_1 = function (i) {
-                        data.lessons[i].slots = [[], [], [], [], [], [], [], [], [], [], [], [], [], []];
+                        data.lessons[i].slots = countSlots;
                         var _loop_2 = function (j) {
                             var begin = moment_1.default(this_1.dateList[j]).second(data.lessons[i].begin).valueOf();
                             var end = moment_1.default(this_1.dateList[j]).second(data.lessons[i].end).valueOf();
@@ -108,6 +111,13 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     for (var i = 0; i < data.lessons.length; i++) {
                         _loop_1(i);
                     }
+                };
+                AdminComponent.prototype.onChanged = function (validate) {
+                    if (validate.date.begin != '' && validate.date.end != '') {
+                        this.data.beginDate = moment_1.default.utc(validate.date.begin).toDate();
+                        this.data.endDate = moment_1.default.utc(validate.date.end).toDate();
+                    }
+                    this.outTable(this.data, validate.cells);
                 };
                 AdminComponent.prototype.addCell = function () {
                     this.adminService
