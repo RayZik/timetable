@@ -13,27 +13,27 @@ import moment from 'moment';
 
 export class AdminComponent implements OnInit {
 
-	private cellTimetable: any = [];
-	private dateList: any = [];
-	private timeList: any = [];
+	private cellTimetable: any[] = [];
+	private validedTimeCell: any[] = [];
+	private dateList: any[] = [];
+	private timeList: any[] = [];
+	private holidayList: any[] = [];
+
 	private lesson: any = {};
 	private newDate: any = {};
-	private validedTimeCell = [];
+
 	private data: any;
 
 	constructor(private adminService: AdminService, private apiService: ApiService, private dragulaService: DragulaService) {
 		dragulaService.dropModel.subscribe((value) => {
 			this.onDropModel(value.slice(1));
-
 		});
 
 		dragulaService.removeModel.subscribe((value) => {
 			this.onRemoveModel(value.slice(1));
 		});
-
-
-
 	}
+
 	private onDropModel(args) {
 		let [el, target, source] = args;
 
@@ -44,6 +44,13 @@ export class AdminComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.adminService
+			.getHolidays()
+			.subscribe((data) => {
+				this.holidayList = data;
+				console.log(data);
+			})
+
 		this.adminService
 			.getCellTimetable()
 			.flatMap(cells => {
@@ -56,7 +63,6 @@ export class AdminComponent implements OnInit {
 						this.cellTimetable.push(cell);
 					}
 				});
-
 				return this.adminService.getTimeLesson();
 			})
 			.subscribe((data) => {
@@ -74,6 +80,7 @@ export class AdminComponent implements OnInit {
 		for (let a = 0; a <= diffDate; a++) {
 			countSlots.push([]);
 		}
+
 		for (let i = 0; i <= diffDate; i++) {
 			let beginDay = moment(data.beginDate).day();
 			this.dateList.push(moment(data.beginDate).day(beginDay + i).toDate());
@@ -116,7 +123,6 @@ export class AdminComponent implements OnInit {
 		this.adminService
 			.addTimeLesson(lesson)
 			.subscribe();
-
 	}
 
 	toInt(time: String): Number {
@@ -138,8 +144,6 @@ export class AdminComponent implements OnInit {
 		this.adminService
 			.deleteLesson(lessonRow)
 			.subscribe();
-
-		this.ngOnInit();
 	}
 
 	addDate(newDate): void {

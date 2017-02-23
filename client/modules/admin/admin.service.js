@@ -146,6 +146,12 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                         .http
                         .post("/api/admin/timetable/delete_time_lesson", { lesson: lesson }, { headers: headers });
                 };
+                AdminService.prototype.getHolidays = function () {
+                    return this
+                        .http
+                        .get('/api/admin/timetable/holidays')
+                        .map(function (response) { return response.json(); });
+                };
                 return AdminService;
             }());
             AdminService = __decorate([

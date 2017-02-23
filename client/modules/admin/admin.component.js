@@ -37,11 +37,12 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.apiService = apiService;
                     this.dragulaService = dragulaService;
                     this.cellTimetable = [];
+                    this.validedTimeCell = [];
                     this.dateList = [];
                     this.timeList = [];
+                    this.holidayList = [];
                     this.lesson = {};
                     this.newDate = {};
-                    this.validedTimeCell = [];
                     dragulaService.dropModel.subscribe(function (value) {
                         _this.onDropModel(value.slice(1));
                     });
@@ -57,6 +58,12 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                 };
                 AdminComponent.prototype.ngOnInit = function () {
                     var _this = this;
+                    this.adminService
+                        .getHolidays()
+                        .subscribe(function (data) {
+                        _this.holidayList = data;
+                        console.log(data);
+                    });
                     this.adminService
                         .getCellTimetable()
                         .flatMap(function (cells) {
@@ -148,7 +155,6 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.adminService
                         .deleteLesson(lessonRow)
                         .subscribe();
-                    this.ngOnInit();
                 };
                 AdminComponent.prototype.addDate = function (newDate) {
                     this.adminService

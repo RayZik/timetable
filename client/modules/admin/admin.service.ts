@@ -143,4 +143,11 @@ export class AdminService {
             .http
             .post("/api/admin/timetable/delete_time_lesson", { lesson: lesson }, { headers: headers })
     }
+
+    getHolidays() {
+        return this
+            .http
+            .get('/api/admin/timetable/holidays')
+            .map((response: Response) => response.json());
+    }
 }

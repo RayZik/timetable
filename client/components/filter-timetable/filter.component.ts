@@ -16,7 +16,7 @@ export class FilterComponent implements OnInit {
     private subjects: any[] = [];
     private offices: any[] = [];
     private groups: any[] = [];
-    private cellWithTime = [];
+    private cellWithTime: any[] = [];
 
 
     private configFilter: any = {

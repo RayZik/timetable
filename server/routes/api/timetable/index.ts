@@ -5,9 +5,21 @@ const timetableApi: Router = Router();
 
 const Timetable = require("../../../../models/timetable").TimetableModel;
 const cellTimetable = require("../../../../models/cellTimetable").CellTimetableModel;
+const holiday = require("../../../../models/holiday").HolidayModel;
+
+// let h = new holiday({ date: moment().toDate(), name: 'тест' });
+// h.save();
 
 timetableApi.get("/", (req: Request, res: Response, next: NextFunction) => {
     Timetable.find({})
+        .exec().then((result) => {
+            res.send(result);
+            res.end();
+        }).catch(next);
+});
+
+timetableApi.get("/holidays", (req: Request, res: Response, next: NextFunction) => {
+    holiday.find({})
         .exec().then((result) => {
             res.send(result);
             res.end();
@@ -23,7 +35,6 @@ timetableApi.post("/add_date", (req: Request, res: Response, next: NextFunction)
         endDate: end
     });
     les.save();
-
     res.end();
 });
 
@@ -70,13 +81,9 @@ timetableApi.post("/delete_time_lesson", (req: Request, res: Response, next: Nex
     Timetable.findOne({})
         .exec().then((result) => {
             result.lessons.forEach(les => {
-                // console.log('l1:' + les._id)
-                // console.log('l2:' + lesson[0])
-
                 if (les._id == lesson[0]) {
                     les.remove();
                     lesson[1].forEach(cellId => {
-                        // console.log('cellId: ' + cellId)
                         cellTimetable.findOneAndUpdate({ _id: cellId }, { $set: { time: [] } })
                             .exec().then(() => { }).catch(next);
                     });
