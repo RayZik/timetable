@@ -38,11 +38,13 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.dragulaService = dragulaService;
                     this.cellTimetable = [];
                     this.validedTimeCell = [];
-                    this.dateList = [];
                     this.timeList = [];
                     this.holidayList = [];
                     this.lesson = {};
                     this.newDate = {};
+                    this.dateList = [];
+                    //cell
+                    this.showSaveButton = true;
                     dragulaService.dropModel.subscribe(function (value) {
                         _this.onDropModel(value.slice(1));
                     });
@@ -62,7 +64,6 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         .getHolidays()
                         .subscribe(function (data) {
                         _this.holidayList = data;
-                        console.log(data);
                     });
                     this.adminService
                         .getCellTimetable()
@@ -81,26 +82,39 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     })
                         .subscribe(function (data) {
                         _this.data = data[0];
+                        _this.addInDateList(data[0].beginDate);
                         _this.outTable(data[0], _this.validedTimeCell);
                     });
                 };
+                AdminComponent.prototype.addInDateList = function (firstDay) {
+                    this.dateList = [];
+                    var _loop_1 = function (i) {
+                        var beginDay = moment_1.default(firstDay).day();
+                        var date = moment_1.default(firstDay).day(beginDay + i);
+                        var cont = this_1.holidayList[0].date.find(function (elem) { return date.isSame(moment_1.default(elem)); });
+                        if (cont) {
+                            this_1.dateList.push({ day: date.toDate(), isHoliday: true });
+                        }
+                        else {
+                            this_1.dateList.push({ day: date.toDate(), isHoliday: false });
+                        }
+                    };
+                    var this_1 = this;
+                    for (var i = 0; i < 7; i++) {
+                        _loop_1(i);
+                    }
+                };
                 AdminComponent.prototype.outTable = function (data, validate) {
                     this.timeList = [];
-                    this.dateList = [];
-                    var countSlots = [];
-                    var diffDate = moment_1.default(data.endDate).diff(data.beginDate, 'days');
-                    for (var a = 0; a <= diffDate; a++) {
-                        countSlots.push([]);
-                    }
-                    for (var i = 0; i <= diffDate; i++) {
-                        var beginDay = moment_1.default(data.beginDate).day();
-                        this.dateList.push(moment_1.default(data.beginDate).day(beginDay + i).toDate());
-                    }
-                    var _loop_1 = function (i) {
+                    var _loop_2 = function (i) {
+                        var countSlots = [];
+                        for (var a = 0; a < 7; a++) {
+                            countSlots.push([]);
+                        }
                         data.lessons[i].slots = countSlots;
-                        var _loop_2 = function (j) {
-                            var begin = moment_1.default(this_1.dateList[j]).second(data.lessons[i].begin).valueOf();
-                            var end = moment_1.default(this_1.dateList[j]).second(data.lessons[i].end).valueOf();
+                        var _loop_3 = function (j) {
+                            var begin = moment_1.default(this_2.dateList[j].day).second(data.lessons[i].begin).valueOf();
+                            var end = moment_1.default(this_2.dateList[j].day).second(data.lessons[i].end).valueOf();
                             validate.forEach(function (cell) {
                                 cell.time.forEach(function (time) {
                                     if (moment_1.default(time.begin).valueOf() === moment_1.default(begin).valueOf()) {
@@ -110,21 +124,25 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                             });
                         };
                         for (var j = 0; j < data.lessons[i].slots.length; j++) {
-                            _loop_2(j);
+                            _loop_3(j);
                         }
-                        this_1.timeList.push(data.lessons[i]);
+                        this_2.timeList.push(data.lessons[i]);
                     };
-                    var this_1 = this;
+                    var this_2 = this;
                     for (var i = 0; i < data.lessons.length; i++) {
-                        _loop_1(i);
+                        _loop_2(i);
                     }
                 };
                 AdminComponent.prototype.onChanged = function (validate) {
-                    if (validate.date.begin != '' && validate.date.end != '') {
-                        this.data.beginDate = moment_1.default.utc(validate.date.begin).toDate();
-                        this.data.endDate = moment_1.default.utc(validate.date.end).toDate();
+                    if (validate.dateList.length > 0) {
+                        this.dateList = validate.dateList;
                     }
                     this.outTable(this.data, validate.cells);
+                };
+                AdminComponent.prototype.onChangedSaveCell = function (bool) {
+                    if (bool) {
+                        this.showSaveButton = !this.showSaveButton;
+                    }
                 };
                 AdminComponent.prototype.addCell = function () {
                     this.adminService
@@ -161,31 +179,27 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         .addDate(newDate)
                         .subscribe();
                 };
-                AdminComponent.prototype.saveCell = function (value, slot, dayIndex, timeListBegin, timeListEnd) {
+                AdminComponent.prototype.saveCell = function (value, dayIndex, timeListBegin, timeListEnd) {
                     if (value === 'week') {
-                        this.saveOneWeek(slot, dayIndex, timeListBegin, timeListEnd);
+                        this.saveOneWeek(this.cellForSave, dayIndex, timeListBegin, timeListEnd);
                     }
                     if (value === 'everyWeek') {
-                        this.saveToEnd(slot, dayIndex, timeListBegin, timeListEnd);
+                        this.saveToEnd(this.cellForSave, dayIndex, timeListBegin, timeListEnd);
                     }
                     if (value === 'cherezWeek') {
                     }
                 };
                 AdminComponent.prototype.saveOneWeek = function (slot, dayIndex, timeListBegin, timeListEnd) {
-                    var res = [];
-                    for (var i = 0; i < slot.length; i++) {
-                        var begin = moment_1.default(this.dateList[dayIndex]).second(timeListBegin).toDate();
-                        var end = moment_1.default(this.dateList[dayIndex]).second(timeListEnd).toDate();
-                        if (this.contains(slot[i].time, begin) == -1) {
-                            slot[i].time = { begin: begin, end: end };
-                            res.push([slot[i]._id, slot[i].time]);
-                        }
+                    var result = {};
+                    var begin = moment_1.default(this.dateList[dayIndex].day).second(timeListBegin).toDate();
+                    var end = moment_1.default(this.dateList[dayIndex].day).second(timeListEnd).toDate();
+                    if (this.contains(slot.time, begin) == -1) {
+                        slot.time = { begin: begin, end: end };
+                        result = { id: slot._id, time: slot.time };
                     }
-                    if (res.length > 0) {
-                        this.adminService
-                            .saveOneWeek(res)
-                            .subscribe();
-                    }
+                    this.adminService
+                        .saveOneWeek(result)
+                        .subscribe();
                 };
                 AdminComponent.prototype.saveToEnd = function (slot, dayIndex, timeListBegin, timeListEnd) {
                     var res = [];

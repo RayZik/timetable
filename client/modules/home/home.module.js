@@ -6,6 +6,9 @@ System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/comm
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
     var __moduleName = context_1 && context_1.id;
     var core_1, http_1, ng_semantic_1, common_1, login_component_1, home_component_1, home_routing_1, HomeModule;
     return {
@@ -56,7 +59,8 @@ System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/comm
                     schemas: [
                         core_1.CUSTOM_ELEMENTS_SCHEMA
                     ]
-                })
+                }),
+                __metadata("design:paramtypes", [])
             ], HomeModule);
             exports_1("HomeModule", HomeModule);
         }

@@ -7,7 +7,7 @@ const Timetable = require("../../../../models/timetable").TimetableModel;
 const cellTimetable = require("../../../../models/cellTimetable").CellTimetableModel;
 const holiday = require("../../../../models/holiday").HolidayModel;
 
-// let h = new holiday({ date: moment().toDate(), name: 'тест' });
+// let h = new holiday({date: moment().toDate()});
 // h.save();
 
 timetableApi.get("/", (req: Request, res: Response, next: NextFunction) => {
@@ -49,12 +49,11 @@ timetableApi.post("/add_time_lesson", (req: Request, res: Response, next: NextFu
 });
 
 timetableApi.put("/save_one", (req: Request, res: Response, next: NextFunction) => {
-    let data = req.body.data;
-    data.forEach(item => {
-        cellTimetable.findOneAndUpdate({ _id: item[0] }, { $push: { time: { begin: item[1].begin, end: item[1].end } } })
-            .exec().then((res) => {
-            }).catch(next);
-    });
+    let id = req.body.id;
+    let time = req.body.time;
+    cellTimetable.findOneAndUpdate({ _id: id }, { $push: { time: { begin: time.begin, end: time.end } } })
+        .exec().then((res) => {
+        }).catch(next);
     res.end();
 });
 

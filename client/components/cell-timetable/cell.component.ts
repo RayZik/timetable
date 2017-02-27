@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { AdminService } from '../../modules/admin/admin.service';
 import { ApiService } from '../../service/api.service';
 
@@ -10,6 +10,8 @@ import { ApiService } from '../../service/api.service';
 
 export class CellComponent implements OnInit {
 	@Input() cell;
+	@Input() showSaveButton: Boolean;
+	@Output() onChangedSaveCell = new EventEmitter<any>();
 	private teachers: any[];
 	private subjects: any[];
 	private offices: any[];
@@ -64,7 +66,7 @@ export class CellComponent implements OnInit {
 			.deleteTeacher(id, idCell)
 			.subscribe();
 	}
-	
+
 	addGroup(): void {
 		this.adminService
 			.addGroup(this.idGroup.id, this.idCell)
@@ -110,6 +112,10 @@ export class CellComponent implements OnInit {
 		this.adminService
 			.deleteCell(id)
 			.subscribe();
+	}
+
+	clicked() {
+		this.onChangedSaveCell.emit(true);
 	}
 
 	showSelectGroup(id: String): void { this.idCell = id; this.idGroup.show = !this.idGroup.show; }

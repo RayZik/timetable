@@ -125,7 +125,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put("/api/admin/timetable/save_one", { data: data }, { headers: headers })
+            .put("/api/admin/timetable/save_one", data, { headers: headers })
     }
 
     saveToEnd(data) {

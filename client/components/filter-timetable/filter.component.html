@@ -1,7 +1,7 @@
 <div>
-    <!--Установка даты-->
-    <input type="date" (change)='configFilter.date.begin = $event.target.value; change(configFilter)'>
-    <input type="date" (change)='configFilter.date.end = $event.target.value; change(configFilter)'>
+    <!--Неделя назад-->
+    <i class="icon Arrow Left" (click)='configFilter.date.next = false; configFilter.date.prev = true; change(configFilter);'></i>
+
 
     <!--Установка предмета-->
     <select class="ui dropdown" #subject (change)='configFilter.subject = subject.value; change(configFilter)'>
@@ -26,4 +26,7 @@
         <option value="">Аудитория</option>
         <option *ngFor="let office of offices" [value]="office.name" >{{office.name}}</option>
     </select>
+
+    <!--Неделя назад-->
+    <i class="icon Arrow Right" (click)='configFilter.date.prev = false; configFilter.date.next = true; change(configFilter);'></i>
 </div>

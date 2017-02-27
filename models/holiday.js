@@ -4,8 +4,7 @@ var mongoose = require('../lib/mongoose');
 var Schema = mongoose.Schema;
 
 var Holiday = new Schema({
-    date: Date,
-    name: String
+    date: [{}]
 });
 
 module.exports.HolidayModel = mongoose.model('Holiday', Holiday);

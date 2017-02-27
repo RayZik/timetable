@@ -11,6 +11,8 @@ import moment from 'moment';
 
 export class FilterComponent implements OnInit {
     @Output() onChanged = new EventEmitter<any>();
+    @Input() dateList;
+    @Input() holidayList;
 
     private teachers: any[] = [];
     private subjects: any[] = [];
@@ -21,8 +23,8 @@ export class FilterComponent implements OnInit {
 
     private configFilter: any = {
         date: {
-            begin: '',
-            end: ''
+            next: false,
+            prev: false
         },
         subject: '',
         teacher: '',
@@ -31,10 +33,7 @@ export class FilterComponent implements OnInit {
     };
 
     private res = {
-        date: {
-            begin: '',
-            end: ''
-        },
+        dateList: [],
         cells: []
     };
 
@@ -82,22 +81,50 @@ export class FilterComponent implements OnInit {
     }
 
     change(configFilter) {
-        if (configFilter.date.begin != '' && configFilter.date.end != '') {
+        if (configFilter.date.next || configFilter.date.prev) {
             this.res = {
-                date: {
-                    begin: configFilter.date.begin,
-                    end: configFilter.date.end
-                },
+                dateList: [],
                 cells: []
             };
 
-            let begin = moment(configFilter.date.begin);
-            let end = moment(configFilter.date.end).utc();
+            let firstDayWeek = moment(this.dateList[0].day);
+            let lastDayWeek = moment(this.dateList[6].day);
+            if (configFilter.date.next) {
+                for (let i = 0; i < 7; i++) {
+                    let endDay = moment(lastDayWeek).day() + 1;
+                    let date = moment(lastDayWeek).day(endDay + i);
+
+                    let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
+                    if (cont) {
+                        this.res.dateList.push({ day: date.toDate(), isHoliday: true });
+                    } else {
+                        this.res.dateList.push({ day: date.toDate(), isHoliday: false });
+                    }
+
+                }
+                this.configFilter.date.next = false;
+            }
+
+            if (configFilter.date.prev) {
+                for (let i = 6; i >= 0; i--) {
+                    let beginDay = moment(firstDayWeek).day() - 1;
+                    let date = moment(firstDayWeek).day(beginDay - i);
+                    let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
+                    if (cont) {
+                        this.res.dateList.push({ day: date.toDate(), isHoliday: true });
+                    } else {
+                        this.res.dateList.push({ day: date.toDate(), isHoliday: false });
+                    }
+
+                }
+                this.configFilter.date.prev = false;
+            }
+
 
             this.cellWithTime.filter((cell) => {
                 let timeCell = [];
                 cell.time.forEach(time => {
-                    if (moment(time.begin).isAfter(begin) && moment(time.end).isBefore(end)) {
+                    if (moment(time.begin).isAfter(this.res.dateList[0].day) && moment(time.end).isBefore(this.res.dateList[6].day)) {
                         timeCell.push(time)
                     }
                 });
@@ -106,15 +133,17 @@ export class FilterComponent implements OnInit {
                     this.res.cells.push(cell)
                 }
             });
-            if (this.res.cells.length > 0) {
-                this.res.cells = this.checkParams(this.res.cells);
-                this.onChanged.emit(this.res);
-            }
+
+
+            this.res.cells = this.checkParams(this.res.cells);
+            this.onChanged.emit(this.res);
+
         } else {
             this.res.cells = this.checkParams(this.cellWithTime);
             this.onChanged.emit(this.res);
         }
     }
+
 
     checkParams(cells) {
         let result = [];

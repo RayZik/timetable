@@ -130,7 +130,7 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .put("/api/admin/timetable/save_one", { data: data }, { headers: headers });
+                        .put("/api/admin/timetable/save_one", data, { headers: headers });
                 };
                 AdminService.prototype.saveToEnd = function (data) {
                     var headers = new http_1.Headers();

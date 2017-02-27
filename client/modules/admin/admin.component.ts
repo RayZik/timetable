@@ -15,14 +15,19 @@ export class AdminComponent implements OnInit {
 
 	private cellTimetable: any[] = [];
 	private validedTimeCell: any[] = [];
-	private dateList: any[] = [];
 	private timeList: any[] = [];
 	private holidayList: any[] = [];
 
 	private lesson: any = {};
 	private newDate: any = {};
 
+	private dateList: any[] = [];
+
 	private data: any;
+
+	//cell
+	private showSaveButton = true;
+	private cellForSave;
 
 	constructor(private adminService: AdminService, private apiService: ApiService, private dragulaService: DragulaService) {
 		dragulaService.dropModel.subscribe((value) => {
@@ -48,7 +53,6 @@ export class AdminComponent implements OnInit {
 			.getHolidays()
 			.subscribe((data) => {
 				this.holidayList = data;
-				console.log(data);
 			})
 
 		this.adminService
@@ -67,30 +71,39 @@ export class AdminComponent implements OnInit {
 			})
 			.subscribe((data) => {
 				this.data = data[0];
+				this.addInDateList(data[0].beginDate);
 				this.outTable(data[0], this.validedTimeCell);
 			});
 	}
 
+	addInDateList(firstDay) {
+		this.dateList = [];
+		for (let i = 0; i < 7; i++) {
+			let beginDay = moment(firstDay).day();
+			let date = moment(firstDay).day(beginDay + i);
+			let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
+			if (cont) {
+				this.dateList.push({ day: date.toDate(), isHoliday: true });
+			} else {
+				this.dateList.push({ day: date.toDate(), isHoliday: false });
+			}
+
+		}
+	}
+
 	outTable(data, validate) {
 		this.timeList = [];
-		this.dateList = [];
-		let countSlots = [];
-		let diffDate: number = moment(data.endDate).diff(data.beginDate, 'days');
-
-		for (let a = 0; a <= diffDate; a++) {
-			countSlots.push([]);
-		}
-
-		for (let i = 0; i <= diffDate; i++) {
-			let beginDay = moment(data.beginDate).day();
-			this.dateList.push(moment(data.beginDate).day(beginDay + i).toDate());
-		}
 
 		for (let i = 0; i < data.lessons.length; i++) {
+			let countSlots = [];
+			for (let a = 0; a < 7; a++) {
+				countSlots.push([]);
+			}
+
 			data.lessons[i].slots = countSlots;
 			for (let j = 0; j < data.lessons[i].slots.length; j++) {
-				let begin = moment(this.dateList[j]).second(data.lessons[i].begin).valueOf();
-				let end = moment(this.dateList[j]).second(data.lessons[i].end).valueOf();
+				let begin = moment(this.dateList[j].day).second(data.lessons[i].begin).valueOf();
+				let end = moment(this.dateList[j].day).second(data.lessons[i].end).valueOf();
 				validate.forEach(cell => {
 					cell.time.forEach(time => {
 						if (moment(time.begin).valueOf() === moment(begin).valueOf()) {
@@ -104,11 +117,16 @@ export class AdminComponent implements OnInit {
 	}
 
 	onChanged(validate) {
-		if (validate.date.begin != '' && validate.date.end != '') {
-			this.data.beginDate = moment.utc(validate.date.begin).toDate();
-			this.data.endDate = moment.utc(validate.date.end).toDate();
+		if (validate.dateList.length > 0) {
+			this.dateList = validate.dateList;
 		}
 		this.outTable(this.data, validate.cells);
+	}
+
+	onChangedSaveCell(bool) {
+		if (bool) {
+			this.showSaveButton = !this.showSaveButton;
+		}
 	}
 
 	addCell(): void {
@@ -152,14 +170,13 @@ export class AdminComponent implements OnInit {
 			.subscribe();
 	}
 
-	saveCell(value, slot, dayIndex, timeListBegin, timeListEnd) {
-
+	saveCell(value, dayIndex, timeListBegin, timeListEnd) {
 		if (value === 'week') {
-			this.saveOneWeek(slot, dayIndex, timeListBegin, timeListEnd);
+			this.saveOneWeek(this.cellForSave, dayIndex, timeListBegin, timeListEnd);
 		}
 
 		if (value === 'everyWeek') {
-			this.saveToEnd(slot, dayIndex, timeListBegin, timeListEnd);
+			this.saveToEnd(this.cellForSave, dayIndex, timeListBegin, timeListEnd);
 		}
 
 		if (value === 'cherezWeek') {
@@ -168,21 +185,19 @@ export class AdminComponent implements OnInit {
 	}
 
 	saveOneWeek(slot, dayIndex, timeListBegin, timeListEnd): void {
-		let res = [];
-		for (let i = 0; i < slot.length; i++) {
-			let begin = moment(this.dateList[dayIndex]).second(timeListBegin).toDate();
-			let end = moment(this.dateList[dayIndex]).second(timeListEnd).toDate();
+		let result = {};
 
-			if (this.contains(slot[i].time, begin) == -1) {
-				slot[i].time = { begin: begin, end: end };
-				res.push([slot[i]._id, slot[i].time]);
-			}
+		let begin = moment(this.dateList[dayIndex].day).second(timeListBegin).toDate();
+		let end = moment(this.dateList[dayIndex].day).second(timeListEnd).toDate();
+
+		if (this.contains(slot.time, begin) == -1) {
+			slot.time = { begin: begin, end: end };
+			result = { id: slot._id, time: slot.time };
 		}
-		if (res.length > 0) {
-			this.adminService
-				.saveOneWeek(res)
-				.subscribe();
-		}
+
+		this.adminService
+			.saveOneWeek(result)
+			.subscribe();
 	}
 
 	saveToEnd(slot, dayIndex, timeListBegin, timeListEnd): void {
