@@ -58,19 +58,18 @@ timetableApi.put("/save_one", (req: Request, res: Response, next: NextFunction) 
 });
 
 timetableApi.put("/save_to_end", (req: Request, res: Response, next: NextFunction) => {
-    let data = req.body.data;
+    let id = req.body.id;
+    let time = req.body.time;
 
-    data.forEach(item => {
-        cellTimetable.findOne({ _id: item[0] })
-            .exec().then((res) => {
+    cellTimetable.findOne({ _id: id })
+        .exec().then((res) => {
 
-                let cell = new cellTimetable(res);
-                item[1].forEach(e => {
-                    cell.time.push({ begin: e.begin, end: e.end });
-                });
-                cell.save();
-            }).catch(next);
-    });
+            let cell = new cellTimetable(res);
+            time.forEach(e => {
+                cell.time.push({ begin: e.begin, end: e.end });
+            });
+            cell.save();
+        }).catch(next);
     res.end();
 });
 

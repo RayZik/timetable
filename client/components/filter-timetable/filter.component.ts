@@ -14,11 +14,12 @@ export class FilterComponent implements OnInit {
     @Input() dateList;
     @Input() holidayList;
 
+    private cellWithTime: any[] = [];
     private teachers: any[] = [];
     private subjects: any[] = [];
     private offices: any[] = [];
     private groups: any[] = [];
-    private cellWithTime: any[] = [];
+
 
 
     private configFilter: any = {
@@ -32,10 +33,6 @@ export class FilterComponent implements OnInit {
         office: ''
     };
 
-    private res = {
-        dateList: [],
-        cells: []
-    };
 
     constructor(private adminService: AdminService, private apiService: ApiService) { }
 
@@ -81,11 +78,11 @@ export class FilterComponent implements OnInit {
     }
 
     change(configFilter) {
+        let res = {
+            dateList: [],
+            cells: []
+        };
         if (configFilter.date.next || configFilter.date.prev) {
-            this.res = {
-                dateList: [],
-                cells: []
-            };
 
             let firstDayWeek = moment(this.dateList[0].day);
             let lastDayWeek = moment(this.dateList[6].day);
@@ -96,9 +93,9 @@ export class FilterComponent implements OnInit {
 
                     let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
                     if (cont) {
-                        this.res.dateList.push({ day: date.toDate(), isHoliday: true });
+                        res.dateList.push({ day: date.toDate(), isHoliday: true });
                     } else {
-                        this.res.dateList.push({ day: date.toDate(), isHoliday: false });
+                        res.dateList.push({ day: date.toDate(), isHoliday: false });
                     }
 
                 }
@@ -111,36 +108,36 @@ export class FilterComponent implements OnInit {
                     let date = moment(firstDayWeek).day(beginDay - i);
                     let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
                     if (cont) {
-                        this.res.dateList.push({ day: date.toDate(), isHoliday: true });
+                        res.dateList.push({ day: date.toDate(), isHoliday: true });
                     } else {
-                        this.res.dateList.push({ day: date.toDate(), isHoliday: false });
+                        res.dateList.push({ day: date.toDate(), isHoliday: false });
                     }
 
                 }
                 this.configFilter.date.prev = false;
             }
 
-
-            this.cellWithTime.filter((cell) => {
+            this.cellWithTime.forEach((cell) => {
                 let timeCell = [];
                 cell.time.forEach(time => {
-                    if (moment(time.begin).isAfter(this.res.dateList[0].day) && moment(time.end).isBefore(this.res.dateList[6].day)) {
+                    if (moment(time.begin).isAfter(res.dateList[0].day) && moment(time.end).isBefore(res.dateList[6].day)) {
                         timeCell.push(time)
                     }
                 });
+
                 if (timeCell.length > 0) {
-                    cell.time = timeCell;
-                    this.res.cells.push(cell)
+                    cell.time.push(timeCell);
+                    res.cells.push(cell)
                 }
             });
 
 
-            this.res.cells = this.checkParams(this.res.cells);
-            this.onChanged.emit(this.res);
+            res.cells = this.checkParams(res.cells);
+            this.onChanged.emit(res);
 
         } else {
-            this.res.cells = this.checkParams(this.cellWithTime);
-            this.onChanged.emit(this.res);
+            res.cells = this.checkParams(this.cellWithTime);
+            this.onChanged.emit(res);
         }
     }
 

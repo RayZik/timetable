@@ -133,7 +133,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put("/api/admin/timetable/save_to_end", { data: data }, { headers: headers })
+            .put("/api/admin/timetable/save_to_end", data, { headers: headers })
     }
 
     deleteLesson(lesson) {

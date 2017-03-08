@@ -21,7 +21,6 @@
             </tr>
         </thead>
         <tbody>
-
             <tr *ngFor="let items of timeList">
                 <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i> {{(items.begin | amFromUnix)|amDateFormat:'LT'}}-{{(items.end|
                     amFromUnix)|amDateFormat:'LT'}}

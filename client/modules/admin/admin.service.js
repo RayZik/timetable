@@ -137,7 +137,7 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .put("/api/admin/timetable/save_to_end", { data: data }, { headers: headers });
+                        .put("/api/admin/timetable/save_to_end", data, { headers: headers });
                 };
                 AdminService.prototype.deleteLesson = function (lesson) {
                     var headers = new http_1.Headers();

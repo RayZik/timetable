@@ -8,13 +8,14 @@ import moment from 'moment';
 	selector: 'tt-admin',
 	templateUrl: "client/modules/admin/admin.component.html",
 	providers: [AdminService, ApiService],
-	viewProviders: [DragulaService]
+	viewProviders: [DragulaService],
+	styles: [`.invisible{'background':'red'}`]
 })
 
 export class AdminComponent implements OnInit {
 
 	private cellTimetable: any[] = [];
-	private validedTimeCell: any[] = [];
+	private cellWithTime: any[] = [];
 	private timeList: any[] = [];
 	private holidayList: any[] = [];
 
@@ -58,11 +59,11 @@ export class AdminComponent implements OnInit {
 		this.adminService
 			.getCellTimetable()
 			.flatMap(cells => {
-				this.validedTimeCell = [];
+				this.cellWithTime = [];
 				this.cellTimetable = [];
 				cells.forEach(cell => {
 					if (cell.time.length > 0) {
-						this.validedTimeCell.push(cell);
+						this.cellWithTime.push(cell);
 					} else {
 						this.cellTimetable.push(cell);
 					}
@@ -71,25 +72,23 @@ export class AdminComponent implements OnInit {
 			})
 			.subscribe((data) => {
 				this.data = data[0];
-				this.addInDateList(data[0].beginDate);
-				this.outTable(data[0], this.validedTimeCell);
+				this.dateList = [];
+
+				for (let i = 0; i < 7; i++) {
+					let beginDay = moment(data[0].beginDate).day();
+					let date = moment(data[0].beginDate).day(beginDay + i);
+					let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
+					if (cont) {
+						this.dateList.push({ day: date.toDate(), isHoliday: true });
+					} else {
+						this.dateList.push({ day: date.toDate(), isHoliday: false });
+					}
+
+				}
+				this.outTable(data[0], this.cellWithTime);
 			});
 	}
 
-	addInDateList(firstDay) {
-		this.dateList = [];
-		for (let i = 0; i < 7; i++) {
-			let beginDay = moment(firstDay).day();
-			let date = moment(firstDay).day(beginDay + i);
-			let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
-			if (cont) {
-				this.dateList.push({ day: date.toDate(), isHoliday: true });
-			} else {
-				this.dateList.push({ day: date.toDate(), isHoliday: false });
-			}
-
-		}
-	}
 
 	outTable(data, validate) {
 		this.timeList = [];
@@ -190,7 +189,7 @@ export class AdminComponent implements OnInit {
 		let begin = moment(this.dateList[dayIndex].day).second(timeListBegin).toDate();
 		let end = moment(this.dateList[dayIndex].day).second(timeListEnd).toDate();
 
-		if (this.contains(slot.time, begin) == -1) {
+		if (this.contains(slot.time, begin) == undefined) {
 			slot.time = { begin: begin, end: end };
 			result = { id: slot._id, time: slot.time };
 		}
@@ -201,39 +200,36 @@ export class AdminComponent implements OnInit {
 	}
 
 	saveToEnd(slot, dayIndex, timeListBegin, timeListEnd): void {
-		let res = [];
+		let res = {};
 
-		let firstDayWeek = moment(this.dateList[0]).utc();
+		let firstDayWeek = moment(this.dateList[0].day).utc();
 		let endDate = moment(this.data.endDate).utc();
 		let diff = Math.ceil(endDate.diff(firstDayWeek, 'days') / 7);
 
-		for (let i = 0; i < slot.length; i++) {
-			let begin = moment(this.dateList[dayIndex]).second(timeListBegin).utc();
-			let end = moment(this.dateList[dayIndex]).second(timeListEnd).utc();
+		let begin = moment(this.dateList[dayIndex].day).second(timeListBegin);
+		let end = moment(this.dateList[dayIndex].day).second(timeListEnd);
 
-			for (let e = 0; e < diff; e++) {
-				if (this.contains(slot[i].time, begin.add(e * 7, 'day').toDate()) == -1) {
-					slot[i].time.push({ begin: begin.add(e * 7, 'day').toDate(), end: end.add(e * 7, 'day').toDate() });
-					begin = moment(this.dateList[dayIndex]).second(timeListBegin).utc();
-					end = moment(this.dateList[dayIndex]).second(timeListEnd).utc();
-				}
+		for (let e = 0; e < diff; e++) {
+			begin = moment(this.dateList[dayIndex].day).add(e * 7, 'day').second(timeListBegin);
+			end = moment(this.dateList[dayIndex].day).add(e * 7, 'day').second(timeListEnd);
+
+			if (this.contains(slot.time, begin) === undefined) {
+				slot.time.push({ begin: begin.toDate(), end: end.toDate() });
 			}
-			res.push([slot[i]._id, slot[i].time]);
 		}
-		console.log(res)
+		res = { id: slot._id, time: slot.time };
 
-		// if (res.length > 0) {
-		// 	this.adminService
-		// 		.saveToEnd(res)
-		// 		.subscribe();
-		// }
+		this.adminService
+			.saveToEnd(res)
+			.subscribe();
+
 	}
 
 	contains(arr, elem) {
 		if (arr.length > 0) {
 			return arr.find((i) => i.begin === elem);
 		} else {
-			return -1;
+			return undefined;
 		}
 	}
 }

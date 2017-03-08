@@ -37,7 +37,7 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.apiService = apiService;
                     this.dragulaService = dragulaService;
                     this.cellTimetable = [];
-                    this.validedTimeCell = [];
+                    this.cellWithTime = [];
                     this.timeList = [];
                     this.holidayList = [];
                     this.lesson = {};
@@ -68,11 +68,11 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.adminService
                         .getCellTimetable()
                         .flatMap(function (cells) {
-                        _this.validedTimeCell = [];
+                        _this.cellWithTime = [];
                         _this.cellTimetable = [];
                         cells.forEach(function (cell) {
                             if (cell.time.length > 0) {
-                                _this.validedTimeCell.push(cell);
+                                _this.cellWithTime.push(cell);
                             }
                             else {
                                 _this.cellTimetable.push(cell);
@@ -82,27 +82,23 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     })
                         .subscribe(function (data) {
                         _this.data = data[0];
-                        _this.addInDateList(data[0].beginDate);
-                        _this.outTable(data[0], _this.validedTimeCell);
+                        _this.dateList = [];
+                        var _loop_1 = function (i) {
+                            var beginDay = moment_1.default(data[0].beginDate).day();
+                            var date = moment_1.default(data[0].beginDate).day(beginDay + i);
+                            var cont = _this.holidayList[0].date.find(function (elem) { return date.isSame(moment_1.default(elem)); });
+                            if (cont) {
+                                _this.dateList.push({ day: date.toDate(), isHoliday: true });
+                            }
+                            else {
+                                _this.dateList.push({ day: date.toDate(), isHoliday: false });
+                            }
+                        };
+                        for (var i = 0; i < 7; i++) {
+                            _loop_1(i);
+                        }
+                        _this.outTable(data[0], _this.cellWithTime);
                     });
-                };
-                AdminComponent.prototype.addInDateList = function (firstDay) {
-                    this.dateList = [];
-                    var _loop_1 = function (i) {
-                        var beginDay = moment_1.default(firstDay).day();
-                        var date = moment_1.default(firstDay).day(beginDay + i);
-                        var cont = this_1.holidayList[0].date.find(function (elem) { return date.isSame(moment_1.default(elem)); });
-                        if (cont) {
-                            this_1.dateList.push({ day: date.toDate(), isHoliday: true });
-                        }
-                        else {
-                            this_1.dateList.push({ day: date.toDate(), isHoliday: false });
-                        }
-                    };
-                    var this_1 = this;
-                    for (var i = 0; i < 7; i++) {
-                        _loop_1(i);
-                    }
                 };
                 AdminComponent.prototype.outTable = function (data, validate) {
                     this.timeList = [];
@@ -113,8 +109,8 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         }
                         data.lessons[i].slots = countSlots;
                         var _loop_3 = function (j) {
-                            var begin = moment_1.default(this_2.dateList[j].day).second(data.lessons[i].begin).valueOf();
-                            var end = moment_1.default(this_2.dateList[j].day).second(data.lessons[i].end).valueOf();
+                            var begin = moment_1.default(this_1.dateList[j].day).second(data.lessons[i].begin).valueOf();
+                            var end = moment_1.default(this_1.dateList[j].day).second(data.lessons[i].end).valueOf();
                             validate.forEach(function (cell) {
                                 cell.time.forEach(function (time) {
                                     if (moment_1.default(time.begin).valueOf() === moment_1.default(begin).valueOf()) {
@@ -126,9 +122,9 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         for (var j = 0; j < data.lessons[i].slots.length; j++) {
                             _loop_3(j);
                         }
-                        this_2.timeList.push(data.lessons[i]);
+                        this_1.timeList.push(data.lessons[i]);
                     };
-                    var this_2 = this;
+                    var this_1 = this;
                     for (var i = 0; i < data.lessons.length; i++) {
                         _loop_2(i);
                     }
@@ -193,7 +189,7 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     var result = {};
                     var begin = moment_1.default(this.dateList[dayIndex].day).second(timeListBegin).toDate();
                     var end = moment_1.default(this.dateList[dayIndex].day).second(timeListEnd).toDate();
-                    if (this.contains(slot.time, begin) == -1) {
+                    if (this.contains(slot.time, begin) == undefined) {
                         slot.time = { begin: begin, end: end };
                         result = { id: slot._id, time: slot.time };
                     }
@@ -202,35 +198,30 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         .subscribe();
                 };
                 AdminComponent.prototype.saveToEnd = function (slot, dayIndex, timeListBegin, timeListEnd) {
-                    var res = [];
-                    var firstDayWeek = moment_1.default(this.dateList[0]).utc();
+                    var res = {};
+                    var firstDayWeek = moment_1.default(this.dateList[0].day).utc();
                     var endDate = moment_1.default(this.data.endDate).utc();
                     var diff = Math.ceil(endDate.diff(firstDayWeek, 'days') / 7);
-                    for (var i = 0; i < slot.length; i++) {
-                        var begin = moment_1.default(this.dateList[dayIndex]).second(timeListBegin).utc();
-                        var end = moment_1.default(this.dateList[dayIndex]).second(timeListEnd).utc();
-                        for (var e = 0; e < diff; e++) {
-                            if (this.contains(slot[i].time, begin.add(e * 7, 'day').toDate()) == -1) {
-                                slot[i].time.push({ begin: begin.add(e * 7, 'day').toDate(), end: end.add(e * 7, 'day').toDate() });
-                                begin = moment_1.default(this.dateList[dayIndex]).second(timeListBegin).utc();
-                                end = moment_1.default(this.dateList[dayIndex]).second(timeListEnd).utc();
-                            }
+                    var begin = moment_1.default(this.dateList[dayIndex].day).second(timeListBegin);
+                    var end = moment_1.default(this.dateList[dayIndex].day).second(timeListEnd);
+                    for (var e = 0; e < diff; e++) {
+                        begin = moment_1.default(this.dateList[dayIndex].day).add(e * 7, 'day').second(timeListBegin);
+                        end = moment_1.default(this.dateList[dayIndex].day).add(e * 7, 'day').second(timeListEnd);
+                        if (this.contains(slot.time, begin) === undefined) {
+                            slot.time.push({ begin: begin.toDate(), end: end.toDate() });
                         }
-                        res.push([slot[i]._id, slot[i].time]);
                     }
-                    console.log(res);
-                    // if (res.length > 0) {
-                    // 	this.adminService
-                    // 		.saveToEnd(res)
-                    // 		.subscribe();
-                    // }
+                    res = { id: slot._id, time: slot.time };
+                    this.adminService
+                        .saveToEnd(res)
+                        .subscribe();
                 };
                 AdminComponent.prototype.contains = function (arr, elem) {
                     if (arr.length > 0) {
                         return arr.find(function (i) { return i.begin === elem; });
                     }
                     else {
-                        return -1;
+                        return undefined;
                     }
                 };
                 return AdminComponent;
@@ -240,7 +231,8 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     selector: 'tt-admin',
                     templateUrl: "client/modules/admin/admin.component.html",
                     providers: [admin_service_1.AdminService, api_service_1.ApiService],
-                    viewProviders: [ng2_dragula_1.DragulaService]
+                    viewProviders: [ng2_dragula_1.DragulaService],
+                    styles: [".invisible{'background':'red'}"]
                 }),
                 __metadata("design:paramtypes", [admin_service_1.AdminService, api_service_1.ApiService, ng2_dragula_1.DragulaService])
             ], AdminComponent);
