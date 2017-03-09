@@ -1,49 +1,48 @@
-<ol class="ui compact message ">
-    <li>
-        <!--subject-->
-        <span *ngFor="let item of cell.subject" (click)="deleteSubject(item._id, cell._id)"> {{item.name}} </span>
-        <button class=" mini circular ui icon button" *ngIf="!idSubject.show" (click)="showSelectSubject(cell._id)"><i class="icon plus"></i></button>
-        <span *ngIf="idSubject.show">
+<div class="ui compact message ">
+    <!--subject-->
+    <span *ngFor="let item of cell.subject" (click)="deleteSubject(item._id, cell._id)"> {{item.name}} </span>
+    <button class=" mini circular ui icon button" *ngIf="!idSubject.show" (click)="showSelectSubject(cell._id)"><i class="icon plus"></i></button>
+    <span *ngIf="idSubject.show">
                 <select (click)="setSubjectId($event.target.value)">
                      <option *ngFor="let subject of subjects" [value]="subject._id" >{{subject.name}}</option>
                  </select>
                 <button class="mini circular ui icon button" (click)="addSubject()"><i class="icon checkmark"></i></button>
             </span>
-        <br>
+    <br>
 
-        <!--teacher-->
-        <span *ngFor="let item of cell.teacher" (click)="deleteTeacher(item._id, cell._id)"> {{item.name}} {{item.lastName}}</span>
-        <button class=" mini circular ui icon button" *ngIf="!idTeacher.show" (click)="showSelectTeacher(cell._id)"><i class="icon plus"></i></button>
-        <span *ngIf="idTeacher.show">
+    <!--teacher-->
+    <span *ngFor="let item of cell.teacher" (click)="deleteTeacher(item._id, cell._id)"> {{item.name}} {{item.lastName}}</span>
+    <button class=" mini circular ui icon button" *ngIf="!idTeacher.show" (click)="showSelectTeacher(cell._id)"><i class="icon plus"></i></button>
+    <span *ngIf="idTeacher.show">
                 <select (click)="setTeacherId($event.target.value)">
                      <option *ngFor="let teacher of teachers" [value]="teacher._id" >{{teacher.name}} {{teacher.lastName}}</option>
                  </select>
                 <button class="mini circular ui icon button" (click)="addTeacher()"><i class="icon checkmark"></i></button>
             </span>
-        <br>
+    <br>
 
-        <!--group-->
-        <span *ngFor="let item of cell.group" (click)="deleteGroup(item._id, cell._id)"> {{item.name}} </span>
-        <button class=" mini circular ui icon button" *ngIf="!idGroup.show" (click)="showSelectGroup(cell._id)"><i class="icon plus"></i></button>
-        <span *ngIf="idGroup.show">
+    <!--group-->
+    <span *ngFor="let item of cell.group" (click)="deleteGroup(item._id, cell._id)"> {{item.name}} </span>
+    <button class=" mini circular ui icon button" *ngIf="!idGroup.show" (click)="showSelectGroup(cell._id)"><i class="icon plus"></i></button>
+    <span *ngIf="idGroup.show">
                 <select (click)="setGroupId($event.target.value)">
                      <option *ngFor="let group of groups" [value]="group._id" >{{group.name}}</option>
                  </select>
                 <button class="mini circular ui icon button" (click)="addGroup()"><i class="icon checkmark"></i></button>
             </span>
-        <br>
+    <br>
 
-        <!--office-->
-        <span *ngFor="let item of cell.office" (click)="deleteOffice(item._id, cell._id)"> {{item.name}}</span>
-        <button class=" mini circular ui icon button" *ngIf="!idOffice.show" (click)="showSelectOffice(cell._id)"><i class="icon plus"></i></button>
-        <span *ngIf="idOffice.show">
+    <!--office-->
+    <span *ngFor="let item of cell.office" (click)="deleteOffice(item._id, cell._id)"> {{item.name}}</span>
+    <button class=" mini circular ui icon button" *ngIf="!idOffice.show" (click)="showSelectOffice(cell._id)"><i class="icon plus"></i></button>
+    <span *ngIf="idOffice.show">
                 <select (click)="setOfficeId($event.target.value)">
                      <option *ngFor="let office of offices" [value]="office._id" >{{office.name}}</option>
                  </select>
                 <button class="mini circular ui icon button" (click)="addOffice()"><i class="icon checkmark"></i></button>
             </span>
-        <br>
-        <button class="mini  ui icon button" (click)="deleteCell(cell._id)"><i class="icon Minus"></i></button>
-    </li>
-    <button *ngIf="showSaveButton" class="mini ui icon button" (click)="clicked()"><i class="icon save"></i></button>
-</ol>
+    <br>
+
+    <button class="mini  ui icon button" (click)="deleteCell(cell._id)"><i class="icon Minus"></i></button>
+    <button *ngIf="showSaveButton" class="mini ui icon button" (click)="clicked()" class="test"><i class="icon save"></i></button>
+</div>

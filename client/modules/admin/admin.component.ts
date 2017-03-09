@@ -6,10 +6,10 @@ import moment from 'moment';
 
 @Component({
 	selector: 'tt-admin',
-	templateUrl: "client/modules/admin/admin.component.html",
+	templateUrl: 'client/modules/admin/admin.component.html',
+	styleUrls: ['client/modules/admin/admin.component.css'],
 	providers: [AdminService, ApiService],
 	viewProviders: [DragulaService],
-	styles: [`.invisible{'background':'red'}`]
 })
 
 export class AdminComponent implements OnInit {
@@ -27,6 +27,7 @@ export class AdminComponent implements OnInit {
 	private data: any;
 
 	//cell
+	private showSaveModal = false;
 	private showSaveButton = true;
 	private cellForSave;
 
@@ -87,6 +88,7 @@ export class AdminComponent implements OnInit {
 				}
 				this.outTable(data[0], this.cellWithTime);
 			});
+			console.log(this.showSaveModal)
 	}
 
 
@@ -115,17 +117,18 @@ export class AdminComponent implements OnInit {
 		}
 	}
 
-	onChanged(validate) {
-		if (validate.dateList.length > 0) {
-			this.dateList = validate.dateList;
+	onChanged(filter) {
+		if (filter.dateList.length > 0) {
+			this.dateList = filter.dateList;
 		}
-		this.outTable(this.data, validate.cells);
+		this.outTable(this.data, filter.cells);
 	}
 
 	onChangedSaveCell(bool) {
 		if (bool) {
-			this.showSaveButton = !this.showSaveButton;
+			this.showSaveModal = true;
 		}
+		console.log(this.showSaveModal)
 	}
 
 	addCell(): void {
@@ -183,28 +186,27 @@ export class AdminComponent implements OnInit {
 		}
 	}
 
-	saveOneWeek(slot, dayIndex, timeListBegin, timeListEnd): void {
+	saveOneWeek(cell, dayIndex, timeListBegin, timeListEnd): void {
 		let result = {};
-
-		let begin = moment(this.dateList[dayIndex].day).second(timeListBegin).toDate();
-		let end = moment(this.dateList[dayIndex].day).second(timeListEnd).toDate();
-
-		if (this.contains(slot.time, begin) == undefined) {
-			slot.time = { begin: begin, end: end };
-			result = { id: slot._id, time: slot.time };
+		let begin = moment(this.dateList[dayIndex].day).second(timeListBegin);
+		let end = moment(this.dateList[dayIndex].day).second(timeListEnd);
+		if (this.contains(cell.time, begin.toISOString()) === undefined) {
+			cell.time = { begin: begin.toDate(), end: end.toDate() };
+			result = { id: cell._id, time: cell.time };
 		}
-
-		this.adminService
-			.saveOneWeek(result)
-			.subscribe();
+		if (result != {}) {
+			this.adminService
+				.saveOneWeek(result)
+				.subscribe();
+		}
 	}
 
-	saveToEnd(slot, dayIndex, timeListBegin, timeListEnd): void {
-		let res = {};
-
+	saveToEnd(cell, dayIndex, timeListBegin, timeListEnd): void {
+		let res: Object = {};
+		let arrTime = [];
 		let firstDayWeek = moment(this.dateList[0].day).utc();
-		let endDate = moment(this.data.endDate).utc();
-		let diff = Math.ceil(endDate.diff(firstDayWeek, 'days') / 7);
+		let lastDate = moment(this.data.endDate).utc();
+		let diff = Math.ceil(lastDate.diff(firstDayWeek, 'days') / 7);
 
 		let begin = moment(this.dateList[dayIndex].day).second(timeListBegin);
 		let end = moment(this.dateList[dayIndex].day).second(timeListEnd);
@@ -213,24 +215,23 @@ export class AdminComponent implements OnInit {
 			begin = moment(this.dateList[dayIndex].day).add(e * 7, 'day').second(timeListBegin);
 			end = moment(this.dateList[dayIndex].day).add(e * 7, 'day').second(timeListEnd);
 
-			if (this.contains(slot.time, begin) === undefined) {
-				slot.time.push({ begin: begin.toDate(), end: end.toDate() });
+			if (this.contains(cell.time, begin.toISOString()) === undefined) {
+				arrTime.push({ begin: begin.toDate(), end: end.toDate() });
 			}
 		}
-		res = { id: slot._id, time: slot.time };
-
-		this.adminService
-			.saveToEnd(res)
-			.subscribe();
-
+		res = { id: cell._id, time: arrTime };
+		if (arrTime.length > 0) {
+			this.adminService
+				.saveToEnd(res)
+				.subscribe();
+		}
 	}
 
 	contains(arr, elem) {
 		if (arr.length > 0) {
 			return arr.find((i) => i.begin === elem);
-		} else {
-			return undefined;
 		}
+		return undefined;
 	}
 }
 

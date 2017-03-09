@@ -15,20 +15,21 @@
             <tr>
                 <th></th>
                 <th *ngFor="let date of dateList;">
-                    <div *ngIf='!date.isHoliday'>{{date.day|amDateFormat:'ll' }}</div>
-                    <div *ngIf='date.isHoliday' [ngStyle]="{'background':'red'}">{{date.day|amDateFormat:'ll' }}</div>
+                    {{date.day|amDateFormat:'ll' }}
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let items of timeList">
+
                 <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i> {{(items.begin | amFromUnix)|amDateFormat:'LT'}}-{{(items.end|
                     amFromUnix)|amDateFormat:'LT'}}
                 </td>
 
-                <td *ngFor="let slot of items.slots; let dayIndex = index" [dragula]='"bag"' [dragulaModel]='slot'>
-                    <tt-cell *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'
-                        (click)="createModal.show({blurring: false,closable: false});cellForSave = cell;"></tt-cell>
+                <ng-container *ngFor="let slot of items.slots; let dayIndex = index">
+                    <td *ngIf='dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot' class="isHoliday">
+                        <tt-cell *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'
+                            (click)="createModal.show({blurring: false,closable: false});cellForSave = cell"></tt-cell>
 
                         <!--Модальное окно сохранения ячейки расписания-->
                         <sm-modal title="Сохранение данных" #createModal>
@@ -53,7 +54,37 @@
                             </modal-actions>
                         </sm-modal>
                         <!---->
-                </td>
+                    </td>
+
+                    <td *ngIf='!dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot'>
+                        <tt-cell *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'
+                            (click)="createModal.show({blurring: false,closable: false});cellForSave = cell;"></tt-cell>
+
+                        <!--Модальное окно сохранения ячейки расписания-->
+                        <sm-modal title="Сохранение данных" #createModal>
+                            <modal-content>
+                                <sm-list>
+                                    <sm-item>
+                                        <div>
+                                            <select class="ui dropdown" #categSave>
+                                            <option value="week">Неделя</option>
+                                            <option value="everyWeek">Каждая неделя</option>
+                                            <option value="cherezWeek">Через неделю</option>
+                                        </select>
+                                        </div>
+                                    </sm-item>
+                                </sm-list>
+                            </modal-content>
+                            <modal-actions>
+                                <div class="ui buttons">
+                                    <div class="ui positive button primary" (click)="saveCell(categSave.value,dayIndex,items.begin,items.end);showSaveButton = true;">Сохранить</div>
+                                    <div class="ui negative button primary" (click)="createModal.hide();showSaveButton = true;">Выйти</div>
+                                </div>
+                            </modal-actions>
+                        </sm-modal>
+                        <!---->
+                    </td>
+                </ng-container>
             </tr>
 
             <tr>

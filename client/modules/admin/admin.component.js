@@ -44,6 +44,7 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.newDate = {};
                     this.dateList = [];
                     //cell
+                    this.showSaveModal = false;
                     this.showSaveButton = true;
                     dragulaService.dropModel.subscribe(function (value) {
                         _this.onDropModel(value.slice(1));
@@ -99,6 +100,7 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         }
                         _this.outTable(data[0], _this.cellWithTime);
                     });
+                    console.log(this.showSaveModal);
                 };
                 AdminComponent.prototype.outTable = function (data, validate) {
                     this.timeList = [];
@@ -129,16 +131,17 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         _loop_2(i);
                     }
                 };
-                AdminComponent.prototype.onChanged = function (validate) {
-                    if (validate.dateList.length > 0) {
-                        this.dateList = validate.dateList;
+                AdminComponent.prototype.onChanged = function (filter) {
+                    if (filter.dateList.length > 0) {
+                        this.dateList = filter.dateList;
                     }
-                    this.outTable(this.data, validate.cells);
+                    this.outTable(this.data, filter.cells);
                 };
                 AdminComponent.prototype.onChangedSaveCell = function (bool) {
                     if (bool) {
-                        this.showSaveButton = !this.showSaveButton;
+                        this.showSaveModal = true;
                     }
+                    console.log(this.showSaveModal);
                 };
                 AdminComponent.prototype.addCell = function () {
                     this.adminService
@@ -185,54 +188,57 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     if (value === 'cherezWeek') {
                     }
                 };
-                AdminComponent.prototype.saveOneWeek = function (slot, dayIndex, timeListBegin, timeListEnd) {
+                AdminComponent.prototype.saveOneWeek = function (cell, dayIndex, timeListBegin, timeListEnd) {
                     var result = {};
-                    var begin = moment_1.default(this.dateList[dayIndex].day).second(timeListBegin).toDate();
-                    var end = moment_1.default(this.dateList[dayIndex].day).second(timeListEnd).toDate();
-                    if (this.contains(slot.time, begin) == undefined) {
-                        slot.time = { begin: begin, end: end };
-                        result = { id: slot._id, time: slot.time };
+                    var begin = moment_1.default(this.dateList[dayIndex].day).second(timeListBegin);
+                    var end = moment_1.default(this.dateList[dayIndex].day).second(timeListEnd);
+                    if (this.contains(cell.time, begin.toISOString()) === undefined) {
+                        cell.time = { begin: begin.toDate(), end: end.toDate() };
+                        result = { id: cell._id, time: cell.time };
                     }
-                    this.adminService
-                        .saveOneWeek(result)
-                        .subscribe();
+                    if (result != {}) {
+                        this.adminService
+                            .saveOneWeek(result)
+                            .subscribe();
+                    }
                 };
-                AdminComponent.prototype.saveToEnd = function (slot, dayIndex, timeListBegin, timeListEnd) {
+                AdminComponent.prototype.saveToEnd = function (cell, dayIndex, timeListBegin, timeListEnd) {
                     var res = {};
+                    var arrTime = [];
                     var firstDayWeek = moment_1.default(this.dateList[0].day).utc();
-                    var endDate = moment_1.default(this.data.endDate).utc();
-                    var diff = Math.ceil(endDate.diff(firstDayWeek, 'days') / 7);
+                    var lastDate = moment_1.default(this.data.endDate).utc();
+                    var diff = Math.ceil(lastDate.diff(firstDayWeek, 'days') / 7);
                     var begin = moment_1.default(this.dateList[dayIndex].day).second(timeListBegin);
                     var end = moment_1.default(this.dateList[dayIndex].day).second(timeListEnd);
                     for (var e = 0; e < diff; e++) {
                         begin = moment_1.default(this.dateList[dayIndex].day).add(e * 7, 'day').second(timeListBegin);
                         end = moment_1.default(this.dateList[dayIndex].day).add(e * 7, 'day').second(timeListEnd);
-                        if (this.contains(slot.time, begin) === undefined) {
-                            slot.time.push({ begin: begin.toDate(), end: end.toDate() });
+                        if (this.contains(cell.time, begin.toISOString()) === undefined) {
+                            arrTime.push({ begin: begin.toDate(), end: end.toDate() });
                         }
                     }
-                    res = { id: slot._id, time: slot.time };
-                    this.adminService
-                        .saveToEnd(res)
-                        .subscribe();
+                    res = { id: cell._id, time: arrTime };
+                    if (arrTime.length > 0) {
+                        this.adminService
+                            .saveToEnd(res)
+                            .subscribe();
+                    }
                 };
                 AdminComponent.prototype.contains = function (arr, elem) {
                     if (arr.length > 0) {
                         return arr.find(function (i) { return i.begin === elem; });
                     }
-                    else {
-                        return undefined;
-                    }
+                    return undefined;
                 };
                 return AdminComponent;
             }());
             AdminComponent = __decorate([
                 core_1.Component({
                     selector: 'tt-admin',
-                    templateUrl: "client/modules/admin/admin.component.html",
+                    templateUrl: 'client/modules/admin/admin.component.html',
+                    styleUrls: ['client/modules/admin/admin.component.css'],
                     providers: [admin_service_1.AdminService, api_service_1.ApiService],
                     viewProviders: [ng2_dragula_1.DragulaService],
-                    styles: [".invisible{'background':'red'}"]
                 }),
                 __metadata("design:paramtypes", [admin_service_1.AdminService, api_service_1.ApiService, ng2_dragula_1.DragulaService])
             ], AdminComponent);

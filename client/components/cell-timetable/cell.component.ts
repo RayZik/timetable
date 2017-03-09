@@ -6,6 +6,7 @@ import { ApiService } from '../../service/api.service';
 	selector: 'tt-cell',
 	templateUrl: "client/components/cell-timetable/cell.component.html",
 	providers: [AdminService, ApiService],
+	 styleUrls: ['client/components/cell-timetable/cell.component.css']
 })
 
 export class CellComponent implements OnInit {
@@ -25,6 +26,7 @@ export class CellComponent implements OnInit {
 	constructor(private adminService: AdminService, private apiService: ApiService) { }
 
 	ngOnInit(): void {
+		
 		this.apiService
 			.getTeachers()
 			.subscribe(
