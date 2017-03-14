@@ -12,8 +12,8 @@ import moment from 'moment';
 export class FilterComponent implements OnInit {
     @Output() onChanged = new EventEmitter<any>();
     @Input() dateList;
-    @Input() holidayList;
 
+    private holidayList: any[] = [];
     private cellWithTime: any[] = [];
     private teachers: any[] = [];
     private subjects: any[] = [];
@@ -37,6 +37,12 @@ export class FilterComponent implements OnInit {
     constructor(private adminService: AdminService, private apiService: ApiService) { }
 
     ngOnInit(): void {
+        this.adminService
+            .getHolidays()
+            .subscribe((data) => {
+                this.holidayList = data;
+            })
+
         this.apiService
             .getTeachers()
             .subscribe(

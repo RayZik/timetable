@@ -43,6 +43,8 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.lesson = {};
                     this.newDate = {};
                     this.dateList = [];
+                    this.dataForModalWindow = {};
+                    this.showModal = false;
                     //cell
                     this.showSaveModal = false;
                     this.showSaveButton = true;
@@ -100,7 +102,6 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         }
                         _this.outTable(data[0], _this.cellWithTime);
                     });
-                    console.log(this.showSaveModal);
                 };
                 AdminComponent.prototype.outTable = function (data, validate) {
                     this.timeList = [];
@@ -141,7 +142,14 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     if (bool) {
                         this.showSaveModal = true;
                     }
-                    console.log(this.showSaveModal);
+                };
+                AdminComponent.prototype.dataCreateModal = function (cell, dayIndex, begin, end, createModal) {
+                    this.cellForSave = cell;
+                    this.dataForModalWindow = { dayIndex: dayIndex, begin: begin, end: end };
+                    if (this.showSaveModal) {
+                        createModal.show({ blurring: false, closable: false });
+                        this.showSaveModal = false;
+                    }
                 };
                 AdminComponent.prototype.addCell = function () {
                     this.adminService
@@ -178,12 +186,13 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         .addDate(newDate)
                         .subscribe();
                 };
-                AdminComponent.prototype.saveCell = function (value, dayIndex, timeListBegin, timeListEnd) {
+                AdminComponent.prototype.saveCell = function (value, dataForModal, createModal) {
+                    this.showSaveButton = true;
                     if (value === 'week') {
-                        this.saveOneWeek(this.cellForSave, dayIndex, timeListBegin, timeListEnd);
+                        this.saveOneWeek(this.cellForSave, dataForModal.dayIndex, dataForModal.begin, dataForModal.end);
                     }
                     if (value === 'everyWeek') {
-                        this.saveToEnd(this.cellForSave, dayIndex, timeListBegin, timeListEnd);
+                        this.saveToEnd(this.cellForSave, dataForModal.dayIndex, dataForModal.begin, dataForModal.end);
                     }
                     if (value === 'cherezWeek') {
                     }
@@ -203,7 +212,7 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     }
                 };
                 AdminComponent.prototype.saveToEnd = function (cell, dayIndex, timeListBegin, timeListEnd) {
-                    var res = {};
+                    var result = {};
                     var arrTime = [];
                     var firstDayWeek = moment_1.default(this.dateList[0].day).utc();
                     var lastDate = moment_1.default(this.data.endDate).utc();
@@ -217,10 +226,10 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                             arrTime.push({ begin: begin.toDate(), end: end.toDate() });
                         }
                     }
-                    res = { id: cell._id, time: arrTime };
+                    result = { id: cell._id, time: arrTime };
                     if (arrTime.length > 0) {
                         this.adminService
-                            .saveToEnd(res)
+                            .saveToEnd(result)
                             .subscribe();
                     }
                 };

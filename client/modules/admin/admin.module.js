@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/platform-browser", "./admin.component", "../../components/cell-timetable/cell.component", "../../components/filter-timetable/filter.component", "../teacher/teacher.module", "../subject/subject.module", "../office/office.module", "../group/group.module", "./admin.routing", "ng2-dragula/ng2-dragula", "angular2-moment"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/platform-browser", "./admin.component", "../../components/cell-timetable/cell.component", "../../components/filter-timetable/filter.component", "../../components/save-cell-timetable/save-cell.component", "../teacher/teacher.module", "../subject/subject.module", "../office/office.module", "../group/group.module", "./admin.routing", "ng2-dragula/ng2-dragula", "angular2-moment"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -7,7 +7,7 @@ System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/plat
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, http_1, ng_semantic_1, platform_browser_1, admin_component_1, cell_component_1, filter_component_1, teacher_module_1, subject_module_1, office_module_1, group_module_1, admin_routing_1, ng2_dragula_1, angular2_moment_1, AdminModule;
+    var core_1, http_1, ng_semantic_1, platform_browser_1, admin_component_1, cell_component_1, filter_component_1, save_cell_component_1, teacher_module_1, subject_module_1, office_module_1, group_module_1, admin_routing_1, ng2_dragula_1, angular2_moment_1, AdminModule;
     return {
         setters: [
             function (core_1_1) {
@@ -30,6 +30,9 @@ System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/plat
             },
             function (filter_component_1_1) {
                 filter_component_1 = filter_component_1_1;
+            },
+            function (save_cell_component_1_1) {
+                save_cell_component_1 = save_cell_component_1_1;
             },
             function (teacher_module_1_1) {
                 teacher_module_1 = teacher_module_1_1;
@@ -76,7 +79,8 @@ System.register(["@angular/core", "@angular/http", "ng-semantic", "@angular/plat
                     declarations: [
                         admin_component_1.AdminComponent,
                         cell_component_1.CellComponent,
-                        filter_component_1.FilterComponent
+                        filter_component_1.FilterComponent,
+                        save_cell_component_1.SaveCellComponent
                     ],
                     bootstrap: [
                         admin_component_1.AdminComponent

@@ -18,14 +18,12 @@ export class AdminComponent implements OnInit {
 	private cellWithTime: any[] = [];
 	private timeList: any[] = [];
 	private holidayList: any[] = [];
-
 	private lesson: any = {};
 	private newDate: any = {};
-
 	private dateList: any[] = [];
-
 	private data: any;
-
+	private dataForModalWindow = {};
+	private showModal: Boolean = false;
 	//cell
 	private showSaveModal = false;
 	private showSaveButton = true;
@@ -55,7 +53,7 @@ export class AdminComponent implements OnInit {
 			.getHolidays()
 			.subscribe((data) => {
 				this.holidayList = data;
-			})
+			});
 
 		this.adminService
 			.getCellTimetable()
@@ -88,7 +86,6 @@ export class AdminComponent implements OnInit {
 				}
 				this.outTable(data[0], this.cellWithTime);
 			});
-			console.log(this.showSaveModal)
 	}
 
 
@@ -128,7 +125,15 @@ export class AdminComponent implements OnInit {
 		if (bool) {
 			this.showSaveModal = true;
 		}
-		console.log(this.showSaveModal)
+	}
+
+	dataCreateModal(cell, dayIndex, begin, end, createModal) {
+		this.cellForSave = cell;
+		this.dataForModalWindow = { dayIndex: dayIndex, begin: begin, end: end };
+		if (this.showSaveModal) {
+			createModal.show({ blurring: false, closable: false });
+			this.showSaveModal = false;
+		}
 	}
 
 	addCell(): void {
@@ -172,13 +177,14 @@ export class AdminComponent implements OnInit {
 			.subscribe();
 	}
 
-	saveCell(value, dayIndex, timeListBegin, timeListEnd) {
+	saveCell(value, dataForModal, createModal) {
+		this.showSaveButton = true;
 		if (value === 'week') {
-			this.saveOneWeek(this.cellForSave, dayIndex, timeListBegin, timeListEnd);
+			this.saveOneWeek(this.cellForSave, dataForModal.dayIndex, dataForModal.begin, dataForModal.end);
 		}
 
 		if (value === 'everyWeek') {
-			this.saveToEnd(this.cellForSave, dayIndex, timeListBegin, timeListEnd);
+			this.saveToEnd(this.cellForSave, dataForModal.dayIndex, dataForModal.begin, dataForModal.end);
 		}
 
 		if (value === 'cherezWeek') {
@@ -190,10 +196,12 @@ export class AdminComponent implements OnInit {
 		let result = {};
 		let begin = moment(this.dateList[dayIndex].day).second(timeListBegin);
 		let end = moment(this.dateList[dayIndex].day).second(timeListEnd);
+
 		if (this.contains(cell.time, begin.toISOString()) === undefined) {
 			cell.time = { begin: begin.toDate(), end: end.toDate() };
 			result = { id: cell._id, time: cell.time };
 		}
+
 		if (result != {}) {
 			this.adminService
 				.saveOneWeek(result)
@@ -202,7 +210,7 @@ export class AdminComponent implements OnInit {
 	}
 
 	saveToEnd(cell, dayIndex, timeListBegin, timeListEnd): void {
-		let res: Object = {};
+		let result: Object = {};
 		let arrTime = [];
 		let firstDayWeek = moment(this.dateList[0].day).utc();
 		let lastDate = moment(this.data.endDate).utc();
@@ -219,10 +227,10 @@ export class AdminComponent implements OnInit {
 				arrTime.push({ begin: begin.toDate(), end: end.toDate() });
 			}
 		}
-		res = { id: cell._id, time: arrTime };
+		result = { id: cell._id, time: arrTime };
 		if (arrTime.length > 0) {
 			this.adminService
-				.saveToEnd(res)
+				.saveToEnd(result)
 				.subscribe();
 		}
 	}

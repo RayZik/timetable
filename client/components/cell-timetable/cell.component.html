@@ -33,14 +33,20 @@
     <br>
 
     <!--office-->
-    <span *ngFor="let item of cell.office" (click)="deleteOffice(item._id, cell._id)"> {{item.name}}</span>
-    <button class=" mini circular ui icon button" *ngIf="!idOffice.show" (click)="showSelectOffice(cell._id)"><i class="icon plus"></i></button>
-    <span *ngIf="idOffice.show">
-                <select (click)="setOfficeId($event.target.value)">
+    <div *ngFor="let item of cell.office" class="myHoverItem">
+        <div (click)="deleteOffice(item._id, cell._id)" class="myDelete myInline">
+            {{item.name}}
+        </div>
+        <div class="myHoverBlock">
+            <button class=" mini circular ui icon button" *ngIf="!idOffice.show" (click)="showSelectOffice(cell._id)"><i class="icon plus"></i></button>
+        </div>
+        <div *ngIf="idOffice.show" class="myInline">
+            <select (click)="setOfficeId($event.target.value)">
                      <option *ngFor="let office of offices" [value]="office._id" >{{office.name}}</option>
                  </select>
-                <button class="mini circular ui icon button" (click)="addOffice()"><i class="icon checkmark"></i></button>
-            </span>
+            <button class="mini circular ui icon button" (click)="addOffice()"><i class="icon checkmark"></i></button>
+        </div>
+    </div>
     <br>
 
     <button class="mini  ui icon button" (click)="deleteCell(cell._id)"><i class="icon Minus"></i></button>

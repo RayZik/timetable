@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AdminComponent } from "./admin.component";
 import { CellComponent } from "../../components/cell-timetable/cell.component";
 import { FilterComponent } from "../../components/filter-timetable/filter.component";
+import { SaveCellComponent } from "../../components/save-cell-timetable/save-cell.component";
 
 import { TeacherModule } from "../teacher/teacher.module";
 import { SubjectModule } from "../subject/subject.module";
@@ -33,7 +34,8 @@ import { MomentModule } from 'angular2-moment';
     declarations: [
         AdminComponent,
         CellComponent,
-        FilterComponent
+        FilterComponent,
+        SaveCellComponent
     ],
     bootstrap: [
         AdminComponent

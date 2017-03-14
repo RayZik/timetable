@@ -1,3 +1,25 @@
 .test{
-    background-color: red;
+
+}
+
+.myHoverItem{
+    min-width:30px;
+    min-height:30px;
+    background:#ff6600;
+}
+
+.myHoverBlock{
+    display:none;
+}
+
+.myHoverItem:hover .myHoverBlock{
+     display:block;
+}
+
+.myInline{
+    float:left;
+}
+
+.myDelete{
+    cursor: not-allowed;
 }
