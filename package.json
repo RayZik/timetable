@@ -29,6 +29,7 @@
     "@types/passport": "^0.2.34",
     "@types/passport-local": "^1.0.29",
     "angular2-moment": "^1.1.0",
+    "@angular/forms": "~2.1.1",
     "atoa": "^1.0.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.3",

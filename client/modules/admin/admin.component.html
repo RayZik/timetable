@@ -10,7 +10,7 @@
 
 
     <!--Таблица-->
-    <table class="ui celled table" id="timetable">
+    <table class="ui celled table myTimetable">
         <thead>
             <tr>
                 <th></th>
@@ -19,21 +19,21 @@
                 </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody >
             <tr *ngFor="let items of timeList">
 
                 <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i> {{(items.begin | amFromUnix)|amDateFormat:'LT'}}-{{(items.end|
                     amFromUnix)|amDateFormat:'LT'}}
                 </td>
 
-                <ng-container *ngFor="let slot of items.slots; let dayIndex = index">
-                    <td *ngIf='dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot' class="isHoliday">
-                        <tt-cell *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'
+                <ng-container  *ngFor="let slot of items.slots; let dayIndex = index">
+                    <td  *ngIf='dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot' class="isHoliday">
+                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'
                             (click)="dataCreateModal(cell,dayIndex,items.begin,items.end, createModal);"></tt-cell>
                     </td>
 
                     <td *ngIf='!dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot'>
-                        <tt-cell *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'
+                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'
                             (click)="dataCreateModal(cell,dayIndex,items.begin,items.end, createModal);"></tt-cell>
                     </td>
                 </ng-container>

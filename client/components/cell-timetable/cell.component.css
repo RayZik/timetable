@@ -3,9 +3,7 @@
 }
 
 .myHoverItem{
-    min-width:30px;
-    min-height:30px;
-    background:#ff6600;
+    position: relative
 }
 
 .myHoverBlock{

@@ -9,7 +9,11 @@ var Teacher = new Schema({
         type: String,
         required: true
     },
-     lastName: {
+    lastName: {
+        type: String,
+        required: true
+    },
+    surname: {
         type: String,
         required: true
     }

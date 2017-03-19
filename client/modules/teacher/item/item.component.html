@@ -2,10 +2,16 @@
     <table class="ui celled table">
         <thead>
             <tr>
-                <th colspan="2">Внесите изменения</th>
+                <th colspan="3">Внесите изменения</th>
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td>Фамилия</td>
+                <td contenteditable="true" (blur)="teacher.surname=$event.target.outerText">
+                    {{teacher.surname}}
+                </td>
+            </tr>
             <tr>
                 <td>Имя</td>
                 <td contenteditable="true" (blur)="teacher.name=$event.target.outerText">
@@ -13,7 +19,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Фамилия</td>
+                <td>Отчество</td>
                 <td contenteditable="true" (blur)="teacher.lastName=$event.target.outerText">
                     {{teacher.lastName}}
                 </td>

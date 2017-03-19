@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/platform-browser", "angular2-jwt", "@angular/http", "ng-semantic", "./app.component", "./routes", "./modules/home/home.module", "./modules/admin/admin.module"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/platform-browser", "angular2-jwt", "@angular/http", "ng-semantic", "@angular/forms", "./app.component", "./routes", "./modules/home/home.module", "./modules/admin/admin.module"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -7,7 +7,7 @@ System.register(["@angular/core", "@angular/platform-browser", "angular2-jwt", "
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, platform_browser_1, angular2_jwt_1, http_1, ng_semantic_1, app_component_1, routes_1, home_module_1, admin_module_1, AppModule;
+    var core_1, platform_browser_1, angular2_jwt_1, http_1, ng_semantic_1, forms_1, app_component_1, routes_1, home_module_1, admin_module_1, AppModule;
     return {
         setters: [
             function (core_1_1) {
@@ -24,6 +24,9 @@ System.register(["@angular/core", "@angular/platform-browser", "angular2-jwt", "
             },
             function (ng_semantic_1_1) {
                 ng_semantic_1 = ng_semantic_1_1;
+            },
+            function (forms_1_1) {
+                forms_1 = forms_1_1;
             },
             function (app_component_1_1) {
                 app_component_1 = app_component_1_1;
@@ -50,6 +53,7 @@ System.register(["@angular/core", "@angular/platform-browser", "angular2-jwt", "
                         platform_browser_1.BrowserModule,
                         http_1.HttpModule,
                         ng_semantic_1.NgSemanticModule,
+                        forms_1.FormsModule,
                         home_module_1.HomeModule,
                         admin_module_1.AdminModule,
                         routes_1.routing

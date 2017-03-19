@@ -1,3 +1,6 @@
-.isHoliday{
-    background-color:coral;
+.isHoliday{background-color:coral;}
+.myTimetable tbody tr:nth-child(even) {
+    background-color:rgba(46, 133, 46,0.4);
 }
+
+

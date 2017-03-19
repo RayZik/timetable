@@ -21,7 +21,7 @@ teacher.get("/:id", (req: Request, res: Response, next: NextFunction) => {
 });
 
 teacher.put("/update/:id", (req: Request, res: Response, next: NextFunction) => {
-    Teacher.update({ _id: req.body._id }, { $set: { name: req.body.name, lastName: req.body.lastName } })
+    Teacher.update({ _id: req.body._id }, { $set: { name: req.body.name, lastName: req.body.lastName, surname: req.body.surname } })
         .exec().then(() => {
             console.info("Teacher Update");
             res.end();
@@ -29,7 +29,7 @@ teacher.put("/update/:id", (req: Request, res: Response, next: NextFunction) => 
 });
 
 teacher.post("/create", (req: Request, res: Response, next: NextFunction) => {
-    var t = new Teacher({ name: req.body.name, lastName: req.body.lastName });
+    var t = new Teacher({ name: req.body.name, lastName: req.body.lastName, surname: req.body.surname });
     t.save()
         .then((result) => {
             console.info(result);

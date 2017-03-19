@@ -1,22 +1,21 @@
 <div class="ui container">
+    <input type="text" name="surname" (blur)="teacher.surname=$event.target.value" />
     <input type="text" name="name" (blur)="teacher.name=$event.target.value" />
     <input type="text" name="lastName" (blur)="teacher.lastName=$event.target.value" />
     <div class="ui right floated button" (click)="newTeacher(teacher)">Добавить</div>
 </div>
 <br>
 <div class="ui container">
-    <ol>
-        <li (click)="goTeacherId(item._id)" *ngFor="let item of teacherList">
-            <div class="ui middle aligned divided list">
-                <div class="item">
-                    <div class="right floated content">
-                        <button class=" compact ui button " (click)="deleteTeacher(item._id);$event.stopPropagation();">Удалить</button>
-                    </div>
-                    <div class="ui content">
-                        {{item.name}} {{item.lastName}}
-                    </div>
+    <div (click)="goTeacherId(item._id)" *ngFor="let item of teacherList">
+        <div class="ui middle aligned divided list">
+            <div class="item">
+                <div class="right floated content">
+                    <button class=" compact ui button " (click)="deleteTeacher(item._id);$event.stopPropagation();">Удалить</button>
+                </div>
+                <div class="ui content">
+                    {{item.surname}} {{item.name}} {{item.lastName}}
                 </div>
             </div>
-        </li>
-    </ol>
+        </div>
+    </div>
 </div>

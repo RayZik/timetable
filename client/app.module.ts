@@ -3,8 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { provideAuth } from "angular2-jwt";
 import { HttpModule } from "@angular/http";
 import { NgSemanticModule } from "ng-semantic";
+import { FormsModule } from '@angular/forms';
 
-import { AppComponent }   from './app.component';
+import { AppComponent } from './app.component';
 
 
 import { routing } from "./routes";
@@ -16,6 +17,7 @@ import { AdminModule } from "./modules/admin/admin.module";
         BrowserModule,
         HttpModule,
         NgSemanticModule,
+        FormsModule,
         HomeModule,
         AdminModule,
         routing

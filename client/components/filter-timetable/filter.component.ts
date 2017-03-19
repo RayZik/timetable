@@ -6,6 +6,7 @@ import moment from 'moment';
 @Component({
     selector: 'tt-filter',
     templateUrl: "client/components/filter-timetable/filter.component.html",
+    styleUrls: ['client/components/filter-timetable/filter.component.css'],
     providers: [ApiService],
 })
 
@@ -15,20 +16,20 @@ export class FilterComponent implements OnInit {
 
     private holidayList: any[] = [];
     private cellWithTime: any[] = [];
-    private teachers: any[] = [];
+    private teachers = [];
     private subjects: any[] = [];
     private offices: any[] = [];
     private groups: any[] = [];
-
-
+    private searchListTeacher: any[] = [];
+    private searchListSubject: any[] = [];
 
     private configFilter: any = {
         date: {
             next: false,
             prev: false
         },
-        subject: '',
-        teacher: '',
+        subject: [],
+        teacher: [],
         group: '',
         office: ''
     };
@@ -46,7 +47,9 @@ export class FilterComponent implements OnInit {
         this.apiService
             .getTeachers()
             .subscribe(
-            (data) => { this.teachers = data; },
+            (data) => {
+                this.teachers = data;
+            },
             (err) => console.log(err)
             );
 
@@ -81,18 +84,109 @@ export class FilterComponent implements OnInit {
                     }
                 });
             });
+
+
+    }
+    //Teacher Search
+    selectTeacher(teacher) {
+        let idxChecked = this.configFilter.teacher.indexOf(teacher.value);
+        let idxSearch = this.searchListTeacher.indexOf(teacher.value);
+
+        if (teacher.checked) {
+            if (idxChecked === -1 && idxSearch != -1) {
+                this.configFilter.teacher.push(teacher.value);
+                this.searchListTeacher.splice(idxSearch, 1);
+            } else {
+                this.searchListTeacher.splice(idxSearch, 1);
+            }
+        } else {
+            if (idxChecked != -1 && idxSearch === -1) {
+                this.searchListTeacher.push(teacher.value);
+                this.configFilter.teacher.splice(idxChecked, 1);
+            } else {
+                this.searchListTeacher.splice(idxSearch, 1);
+            }
+        }
+        this.searchListTeacher.sort();
+        this.configFilter.teacher.sort();
+        this.change();
     }
 
-    change(configFilter) {
+    searchTeacher(term: string) {
+        term = term.toLowerCase();
+        this.searchListTeacher = [];
+
+        if (term.length == 0) {
+            this.searchListTeacher = [];
+        } else {
+            this.teachers.forEach(t => {
+                let result = t.surname + ' ' + t.name + ' ' + t.lastName;
+                let strToLower = (t.surname + t.name + t.lastName).toLowerCase();
+
+                if (strToLower.indexOf(term) != -1) {
+                    this.searchListTeacher.push(result);
+                }
+            });
+
+        }
+        this.searchListTeacher.sort();
+    }
+
+    //Teacher Subject
+    selectSubject(subject) {
+        let idxChecked = this.configFilter.subject.indexOf(subject.value);
+        let idxSearch = this.searchListSubject.indexOf(subject.value);
+
+        if (subject.checked) {
+            if (idxChecked === -1 && idxSearch != -1) {
+                this.configFilter.subject.push(subject.value);
+                this.searchListSubject.splice(idxSearch, 1);
+            } else {
+                this.searchListSubject.splice(idxSearch, 1);
+            }
+        } else {
+            if (idxChecked != -1 && idxSearch === -1) {
+                this.searchListSubject.push(subject.value);
+                this.configFilter.subject.splice(idxChecked, 1);
+            } else {
+                this.searchListSubject.splice(idxSearch, 1);
+            }
+        }
+        this.searchListSubject.sort();
+        this.configFilter.subject.sort();
+        this.change();
+    }
+
+    searchSubject(term: string) {
+        term = term.toLowerCase();
+        this.searchListSubject = [];
+
+        if (term.length == 0) {
+            this.searchListSubject = [];
+        } else {
+            this.subjects.forEach(s => {
+                let result = s.name;
+                let strToLower = (s.name).toLowerCase();
+
+                if (strToLower.indexOf(term) != -1) {
+                    this.searchListSubject.push(result);
+                }
+            });
+
+        }
+        this.searchListSubject.sort();
+    }
+
+    change() {
         let res = {
             dateList: [],
             cells: []
         };
-        if (configFilter.date.next || configFilter.date.prev) {
+        if (this.configFilter.date.next || this.configFilter.date.prev) {
 
             let firstDayWeek = moment(this.dateList[0].day);
             let lastDayWeek = moment(this.dateList[6].day);
-            if (configFilter.date.next) {
+            if (this.configFilter.date.next) {
                 for (let i = 0; i < 7; i++) {
                     let endDay = moment(lastDayWeek).day() + 1;
                     let date = moment(lastDayWeek).day(endDay + i);
@@ -108,7 +202,7 @@ export class FilterComponent implements OnInit {
                 this.configFilter.date.next = false;
             }
 
-            if (configFilter.date.prev) {
+            if (this.configFilter.date.prev) {
                 for (let i = 6; i >= 0; i--) {
                     let beginDay = moment(firstDayWeek).day() - 1;
                     let date = moment(firstDayWeek).day(beginDay - i);
@@ -152,15 +246,6 @@ export class FilterComponent implements OnInit {
         let result = [];
         cells.forEach(cell => {
             let a = [];
-            if (this.configFilter.subject != '') {
-                cell.subject.forEach(subject => {
-                    if (subject.name === this.configFilter.subject) {
-                        a.push(true);
-                    } else {
-                        a.push(false);
-                    }
-                });
-            }
 
             if (this.configFilter.group != '') {
                 cell.group.forEach(group => {
@@ -182,20 +267,38 @@ export class FilterComponent implements OnInit {
                 });
             }
 
-            if (this.configFilter.teacher != '') {
-                cell.teacher.forEach(teacher => {
-                    let str = teacher.name + teacher.lastName;
-                    if (str === this.configFilter.teacher) {
-                        a.push(true);
-                    } else {
-                        a.push(false);
-                    }
+            if (this.configFilter.subject.length > 0) {
+                this.configFilter.subject.forEach(cfsubject => {
+                    cell.subject.forEach(subject => {
+                        let str = subject.name;
+                        if (str === cfsubject) {
+                            a.push(true);
+                        } else {
+                            a.push(false);
+                        }
+                    });
                 });
             }
+
+            if (this.configFilter.teacher.length > 0) {
+                this.configFilter.teacher.forEach(cfteacher => {
+                    cell.teacher.forEach(teacher => {
+                        let str = teacher.surname + ' ' + teacher.name + ' ' + teacher.lastName;
+                        if (str === cfteacher) {
+                            a.push(true);
+                        } else {
+                            a.push(false);
+                        }
+                    });
+                });
+
+            }
+
             if (this.contains(a, false) !== false) {
                 result.push(cell);
             }
         });
+
         return result;
     }
 

@@ -1,32 +1,66 @@
 <div>
     <!--Неделя назад-->
-    <i class="icon Arrow Left" (click)='configFilter.date.next = false; configFilter.date.prev = true; change(configFilter);'></i>
-
+    <div class='myInline'>
+        <i class="icon Arrow Left" (click)='configFilter.date.next = false; configFilter.date.prev = true; change(configFilter);'></i>
+    </div>
 
     <!--Установка предмета-->
-    <select class="ui dropdown" #subject (change)='configFilter.subject = subject.value; change(configFilter)'>
-        <option value="">Предмет</option>
-        <option *ngFor="let subject of subjects" [value]="subject.name" >{{subject.name}}</option>
-    </select>
+    <div class='myInline '>
+        <div class="ui input">
+            <input type="text" placeholder="Предмет" #searchSubj (keyup)="searchSubject(searchSubj.value)">
+        </div>
+        <div class="myTeacherDropDown" *ngIf='searchSubj.value != ""'>
+            <div *ngIf='configFilter.subject.length > 0' class='mySelectedTeacher'>
+                <div *ngFor="let subject of configFilter.subject">
+                    <p><input type="checkbox" [value]='subject' #selSubject (change)='selectSubject(selSubject)' [checked]='true'>{{subject}}</p>
+                </div>
+            </div>
+            <br>
+            <div *ngIf='searchListSubject.length > 0'>
+                <div *ngFor="let subject of searchListSubject">
+                    <p><input type="checkbox" [value]='subject' #selSubject (change)='selectSubject(selSubject)'>{{subject}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--Уствновка Преподавателя-->
-    <select class="ui dropdown" #teacher (change)='configFilter.teacher = teacher.value; change(configFilter)'>
-        <option value="">Преподаватель</option>
-        <option *ngFor="let teacher of teachers" [value]="teacher.name+teacher.lastName" >{{teacher.name}} {{teacher.lastName}}</option>
-    </select>
+    <div class='myInline '>
+        <div class="ui input">
+            <input type="text" placeholder="Преподватель" #searchT (keyup)="searchTeacher(searchT.value)">
+        </div>
+        <div class="myTeacherDropDown" *ngIf='searchT.value != ""'>
+            <div *ngIf='configFilter.teacher.length > 0' class='mySelectedTeacher'>
+                <div *ngFor="let teacher of configFilter.teacher">
+                    <p><input type="checkbox" [value]='teacher' #selTeacher (change)='selectTeacher(selTeacher)' [checked]='true'>{{teacher}}</p>
+                </div>
+            </div>
+            <br>
+            <div *ngIf='searchListTeacher.length > 0'>
+                <div *ngFor="let teacher of searchListTeacher">
+                    <p><input type="checkbox" [value]='teacher' #selTeacher (change)='selectTeacher(selTeacher)'>{{teacher}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--Установка группы-->
-    <select class="ui dropdown" #group (change)='configFilter.group = group.value; change(configFilter)'>
+    <div class='myInline'>
+        <select class="ui dropdown" #group (change)='configFilter.group = group.value; change(configFilter)'>
         <option value="">Группа</option>
         <option *ngFor="let group of groups" [value]="group.name" >{{group.name}}</option>
     </select>
-
+    </div>
     <!--Установка аудитории-->
-    <select class="ui dropdown" #office (change)='configFilter.office = office.value; change(configFilter)'>
+    <div class='myInline'>
+        <select class="ui dropdown" #office (change)='configFilter.office = office.value; change(configFilter)'>
         <option value="">Аудитория</option>
         <option *ngFor="let office of offices" [value]="office.name" >{{office.name}}</option>
     </select>
-
+    </div>
     <!--Неделя назад-->
-    <i class="icon Arrow Right" (click)='configFilter.date.prev = false; configFilter.date.next = true; change(configFilter);'></i>
+    <div class='myInline'>
+        <i class="icon Arrow Right" (click)='configFilter.date.prev = false; configFilter.date.next = true; change(configFilter);'></i>
+    </div>
+
 </div>
