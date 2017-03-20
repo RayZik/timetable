@@ -19,6 +19,7 @@
             <sm-item>
                 <label>Повторяется:</label>
                 <select class="ui dropdown" #repeatWith (change)='configSave.repeat = repeatWith.value'>
+                        <option value="">Выбери</option>
                         <option value="week">Неделя</option>
                         <option value ="everyWeek">Каждая неделя</option>
                     </select>
@@ -26,7 +27,7 @@
 
             <sm-item>
                 <label>Повторять с интервалом:</label>
-                <input type="number" #repeatWithInterval [value]='repeatWithInterval.value' />
+                <input type="number" #repeatWithInterval [value]='repeatWithInterval.value' (change)='configSave.repeatWithInterval = repeatWithInterval.value'/>
             </sm-item>
 
         </sm-list>

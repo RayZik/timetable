@@ -8,7 +8,9 @@ import moment from 'moment';
 })
 
 export class SaveCellComponent implements OnInit {
+
     private configSave: Object = {};
+
     constructor() {
 
     };
@@ -30,6 +32,9 @@ export class SaveCellComponent implements OnInit {
     }
 
     saveCell(config) {
+        console.log(config);
+    }
+    show(config) {
         console.log(config);
     }
 
