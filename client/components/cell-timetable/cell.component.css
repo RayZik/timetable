@@ -12,7 +12,7 @@
 
 .myHoverItem:hover .myHoverBlock{
      display:block;
-}
+} 
 
 .myInline{
     float:left;

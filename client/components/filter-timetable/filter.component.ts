@@ -268,30 +268,21 @@ export class FilterComponent implements OnInit {
             }
 
             if (this.configFilter.subject.length > 0) {
-                this.configFilter.subject.forEach(cfsubject => {
-                    cell.subject.forEach(subject => {
+                a.push(this.configFilter.subject.some(cfsubject =>
+                    cell.subject.some(subject => {
                         let str = subject.name;
-                        if (str === cfsubject) {
-                            a.push(true);
-                        } else {
-                            a.push(false);
-                        }
-                    });
-                });
+                        return str === cfsubject;
+                    })
+                ))
             }
 
             if (this.configFilter.teacher.length > 0) {
-                this.configFilter.teacher.forEach(cfteacher => {
-                    cell.teacher.forEach(teacher => {
+                a.push(this.configFilter.teacher.some(cfteacher =>
+                    cell.teacher.some(teacher => {
                         let str = teacher.surname + ' ' + teacher.name + ' ' + teacher.lastName;
-                        if (str === cfteacher) {
-                            a.push(true);
-                        } else {
-                            a.push(false);
-                        }
-                    });
-                });
-
+                        return str === cfteacher;
+                    })
+                ));
             }
 
             if (this.contains(a, false) !== false) {

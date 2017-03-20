@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ApiService {
+    
     constructor(private authHttp: AuthHttp, private http: Http) { }
 
     getUsers() {
