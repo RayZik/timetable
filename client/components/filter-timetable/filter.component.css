@@ -10,8 +10,5 @@
     position: absolute !important;
     background-color:white;
     padding: 3px 3px 3px 3px;
-    z-index:99999999; 
-}
-.myTeacherDropDown .mySelectedTeacher{
-    border-bottom:1px solid; 
+    z-index:99999999;  
 }

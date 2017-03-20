@@ -1,4 +1,3 @@
-<br>
 <div class="ui container">
 
     <input type="date" name="beginDate" (blur)='newDate.beginDate = $event.target.value'>
@@ -19,22 +18,20 @@
                 </th>
             </tr>
         </thead>
-        <tbody >
+        <tbody>
             <tr *ngFor="let items of timeList">
 
                 <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i> {{(items.begin | amFromUnix)|amDateFormat:'LT'}}-{{(items.end|
                     amFromUnix)|amDateFormat:'LT'}}
                 </td>
 
-                <ng-container  *ngFor="let slot of items.slots; let dayIndex = index">
-                    <td  *ngIf='dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot' class="isHoliday">
-                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'
-                            (click)="dataCreateModal(cell,dayIndex,items.begin,items.end, createModal);"></tt-cell>
+                <ng-container *ngFor="let slot of items.slots; let dayIndex = index">
+                    <td *ngIf='dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot' class="isHoliday">
+                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'></tt-cell>
                     </td>
 
                     <td *ngIf='!dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot'>
-                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'
-                            (click)="dataCreateModal(cell,dayIndex,items.begin,items.end, createModal);"></tt-cell>
+                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'></tt-cell>
                     </td>
                 </ng-container>
             </tr>
@@ -64,25 +61,3 @@
 
 <!--Добавление ячейки-->
 <button class=" container circular ui icon button" (click)="addCell()"><i class="icon plus"></i></button>
-
-<sm-modal title="Сохранение данных" #createModal>
-    <modal-content>
-        <sm-list>
-            <sm-item>
-                <div>
-                    <select class="ui dropdown" #categSave>
-                        <option value="week">Неделя</option>
-                        <option value="everyWeek">Каждая неделя</option>
-                        <option value="cherezWeek">Через неделю</option>
-                    </select>
-                </div>
-            </sm-item>
-        </sm-list>
-    </modal-content>
-    <modal-actions>
-        <div class="ui buttons">
-            <div class="ui positive button primary" (click)="saveCell(categSave.value,dataForModalWindow);">Сохранить</div>
-            <div class="ui negative button primary" (click)="createModal.hide()">Выйти</div>
-        </div>
-    </modal-actions>
-</sm-modal>

@@ -143,14 +143,6 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         this.showSaveModal = true;
                     }
                 };
-                AdminComponent.prototype.dataCreateModal = function (cell, dayIndex, begin, end, createModal) {
-                    this.cellForSave = cell;
-                    this.dataForModalWindow = { dayIndex: dayIndex, begin: begin, end: end };
-                    if (this.showSaveModal) {
-                        createModal.show({ blurring: false, closable: false });
-                        this.showSaveModal = false;
-                    }
-                };
                 AdminComponent.prototype.addCell = function () {
                     this.adminService
                         .addCell()
@@ -185,53 +177,6 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.adminService
                         .addDate(newDate)
                         .subscribe();
-                };
-                AdminComponent.prototype.saveCell = function (value, dataForModal, createModal) {
-                    this.showSaveButton = true;
-                    if (value === 'week') {
-                        this.saveOneWeek(this.cellForSave, dataForModal.dayIndex, dataForModal.begin, dataForModal.end);
-                    }
-                    if (value === 'everyWeek') {
-                        this.saveToEnd(this.cellForSave, dataForModal.dayIndex, dataForModal.begin, dataForModal.end);
-                    }
-                    if (value === 'cherezWeek') {
-                    }
-                };
-                AdminComponent.prototype.saveOneWeek = function (cell, dayIndex, timeListBegin, timeListEnd) {
-                    var result = {};
-                    var begin = moment_1.default(this.dateList[dayIndex].day).second(timeListBegin);
-                    var end = moment_1.default(this.dateList[dayIndex].day).second(timeListEnd);
-                    if (this.contains(cell.time, begin.toISOString()) === undefined) {
-                        cell.time = { begin: begin.toDate(), end: end.toDate() };
-                        result = { id: cell._id, time: cell.time };
-                    }
-                    if (result != {}) {
-                        this.adminService
-                            .saveOneWeek(result)
-                            .subscribe();
-                    }
-                };
-                AdminComponent.prototype.saveToEnd = function (cell, dayIndex, timeListBegin, timeListEnd) {
-                    var result = {};
-                    var arrTime = [];
-                    var firstDayWeek = moment_1.default(this.dateList[0].day).utc();
-                    var lastDate = moment_1.default(this.data.endDate).utc();
-                    var diff = Math.ceil(lastDate.diff(firstDayWeek, 'days') / 7);
-                    var begin = moment_1.default(this.dateList[dayIndex].day).second(timeListBegin);
-                    var end = moment_1.default(this.dateList[dayIndex].day).second(timeListEnd);
-                    for (var e = 0; e < diff; e++) {
-                        begin = moment_1.default(this.dateList[dayIndex].day).add(e * 7, 'day').second(timeListBegin);
-                        end = moment_1.default(this.dateList[dayIndex].day).add(e * 7, 'day').second(timeListEnd);
-                        if (this.contains(cell.time, begin.toISOString()) === undefined) {
-                            arrTime.push({ begin: begin.toDate(), end: end.toDate() });
-                        }
-                    }
-                    result = { id: cell._id, time: arrTime };
-                    if (arrTime.length > 0) {
-                        this.adminService
-                            .saveToEnd(result)
-                            .subscribe();
-                    }
                 };
                 AdminComponent.prototype.contains = function (arr, elem) {
                     if (arr.length > 0) {

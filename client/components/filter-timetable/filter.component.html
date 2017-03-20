@@ -10,12 +10,13 @@
             <input type="text" placeholder="Предмет" #searchSubj (keyup)="searchSubject(searchSubj.value)">
         </div>
         <div class="myTeacherDropDown" *ngIf='searchSubj.value != ""'>
-            <div *ngIf='configFilter.subject.length > 0' class='mySelectedTeacher'>
+            <div *ngIf='configFilter.subject.length > 0'>
                 <div *ngFor="let subject of configFilter.subject">
                     <p><input type="checkbox" [value]='subject' #selSubject (change)='selectSubject(selSubject)' [checked]='true'>{{subject}}</p>
                 </div>
+                <div class='ui divider'></div>
             </div>
-            <br>
+            <div class='ui divider'></div>
             <div *ngIf='searchListSubject.length > 0'>
                 <div *ngFor="let subject of searchListSubject">
                     <p><input type="checkbox" [value]='subject' #selSubject (change)='selectSubject(selSubject)'>{{subject}}</p>
@@ -30,12 +31,13 @@
             <input type="text" placeholder="Преподватель" #searchT (keyup)="searchTeacher(searchT.value)">
         </div>
         <div class="myTeacherDropDown" *ngIf='searchT.value != ""'>
-            <div *ngIf='configFilter.teacher.length > 0' class='mySelectedTeacher'>
+            <div *ngIf='configFilter.teacher.length > 0'>
                 <div *ngFor="let teacher of configFilter.teacher">
                     <p><input type="checkbox" [value]='teacher' #selTeacher (change)='selectTeacher(selTeacher)' [checked]='true'>{{teacher}}</p>
                 </div>
+                <div class='ui divider'></div>
             </div>
-            <br>
+
             <div *ngIf='searchListTeacher.length > 0'>
                 <div *ngFor="let teacher of searchListTeacher">
                     <p><input type="checkbox" [value]='teacher' #selTeacher (change)='selectTeacher(selTeacher)'>{{teacher}}</p>

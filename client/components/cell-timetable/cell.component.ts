@@ -1,12 +1,12 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { AdminService } from '../../modules/admin/admin.service';
 import { ApiService } from '../../service/api.service';
-
+import { Router } from "@angular/router";
 @Component({
 	selector: 'tt-cell',
 	templateUrl: "client/components/cell-timetable/cell.component.html",
 	providers: [AdminService, ApiService],
-	 styleUrls: ['client/components/cell-timetable/cell.component.css']
+	styleUrls: ['client/components/cell-timetable/cell.component.css']
 })
 
 export class CellComponent implements OnInit {
@@ -23,10 +23,9 @@ export class CellComponent implements OnInit {
 	private idGroup: any = { id: "", show: false };
 	private idCell: String = "";
 
-	constructor(private adminService: AdminService, private apiService: ApiService) { }
+	constructor(private adminService: AdminService, private apiService: ApiService, private router: Router) { }
 
 	ngOnInit(): void {
-		
 		this.apiService
 			.getTeachers()
 			.subscribe(
@@ -108,16 +107,15 @@ export class CellComponent implements OnInit {
 			.subscribe();
 	}
 
-
-
 	deleteCell(id: String): void {
 		this.adminService
 			.deleteCell(id)
 			.subscribe();
 	}
 
-	clicked() {
+	clicked(id) {
 		this.onChangedSaveCell.emit(true);
+		this.router.navigate(['/admin/save-cell/', id]);
 	}
 
 	showSelectGroup(id: String): void { this.idCell = id; this.idGroup.show = !this.idGroup.show; }
