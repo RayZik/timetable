@@ -22,6 +22,7 @@ export class CellComponent implements OnInit {
 	private idOffice: any = { id: "", show: false };
 	private idGroup: any = { id: "", show: false };
 	private idCell: String = "";
+	private configSave: object = {};
 
 	constructor(private adminService: AdminService, private apiService: ApiService, private router: Router) { }
 
@@ -113,9 +114,17 @@ export class CellComponent implements OnInit {
 			.subscribe();
 	}
 
-	clicked(id) {
-		this.onChangedSaveCell.emit(true);
-		this.router.navigate(['/admin/save-cell/', id]);
+	clickSaveCell(repeatModal, cell) {
+		//this.onChangedSaveCell.emit(true);
+		this.configSave['id'] = cell._id;
+		repeatModal.show({ blurring: false, closable: false });
+	}
+
+	saveCell(config) {
+		console.log(config);
+	}
+	show(config) {
+		console.log(config);
 	}
 
 	showSelectGroup(id: String): void { this.idCell = id; this.idGroup.show = !this.idGroup.show; }

@@ -1,7 +1,7 @@
-System.register(["@angular/router", "./admin.component", "../../components/cell-timetable/save-cell/save-cell.component"], function (exports_1, context_1) {
+System.register(["@angular/router", "./admin.component"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var router_1, admin_component_1, save_cell_component_1, routes, routing;
+    var router_1, admin_component_1, routes, routing;
     return {
         setters: [
             function (router_1_1) {
@@ -9,15 +9,11 @@ System.register(["@angular/router", "./admin.component", "../../components/cell-
             },
             function (admin_component_1_1) {
                 admin_component_1 = admin_component_1_1;
-            },
-            function (save_cell_component_1_1) {
-                save_cell_component_1 = save_cell_component_1_1;
             }
         ],
         execute: function () {
             exports_1("routes", routes = [
                 { path: 'admin', component: admin_component_1.AdminComponent, pathMatch: 'full' },
-                { path: 'admin/save-cell/:id', component: save_cell_component_1.SaveCellComponent, pathMatch: 'full' }
             ]);
             exports_1("routing", routing = router_1.RouterModule.forRoot(routes, { useHash: true }));
         }

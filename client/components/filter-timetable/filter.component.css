@@ -2,7 +2,7 @@
     display: inline-block;
 }
 
-.myTeacherDropDown{
+.myDropDown{
     display: block;
     border-left: 1px solid gray;
     border-right: 1px solid gray;

@@ -30,6 +30,7 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                 function ApiService(authHttp, http) {
                     this.authHttp = authHttp;
                     this.http = http;
+                    this.cache = {};
                 }
                 ApiService.prototype.getUsers = function () {
                     return this
@@ -39,10 +40,19 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                 };
                 //subject
                 ApiService.prototype.getSubjects = function () {
-                    return this
-                        .http
-                        .get('/api/admin/subject')
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['subjects']) {
+                        return this.cache['subjects'];
+                    }
+                    else {
+                        return this
+                            .http
+                            .get('/api/admin/subject')
+                            .map(function (response) {
+                            _this.cache['subjects'] = response.json();
+                            return _this.cache['subjects'];
+                        });
+                    }
                 };
                 ApiService.prototype.getSubject = function (id) {
                     return this

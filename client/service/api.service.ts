@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ApiService {
-    
+    private cache = {};
     constructor(private authHttp: AuthHttp, private http: Http) { }
 
     getUsers() {
@@ -21,10 +21,17 @@ export class ApiService {
 
     //subject
     getSubjects() {
-        return this
-            .http
-            .get('/api/admin/subject')
-            .map((response: Response) => response.json());
+        if (this.cache['subjects']) {
+            return this.cache['subjects'];
+        } else {
+            return this
+                .http
+                .get('/api/admin/subject')
+                .map((response: Response) => {
+                    this.cache['subjects'] = response.json();
+                    return this.cache['subjects'];
+                });
+        }
     }
 
     getSubject(id: any) {
@@ -128,7 +135,7 @@ export class ApiService {
             .map((response: Response) => response);
     }
 
-     createOffice(office: any) {
+    createOffice(office: any) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this

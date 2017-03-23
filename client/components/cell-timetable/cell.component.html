@@ -126,6 +126,35 @@
     </div>
 
     <div>
-        <button *ngIf="showSaveButton" class="mini ui icon button" (click)="clicked(cell._id)" class="test"><i class="icon save"></i></button>
+        <button *ngIf="showSaveButton" class="mini ui icon button" (click)="clickSaveCell(repeatModal,cell)" class="test"><i class="icon save"></i></button>
     </div>
 </div>
+
+
+
+<sm-modal title="Повторяющееся событие" #repeatModal>
+    <modal-content>
+        <sm-list>
+            <sm-item>
+                <label>Повторяется:</label>
+                <select class="ui dropdown" #repeatWith (change)='configSave.repeat = repeatWith.value'>
+                        <option value="">Выбери</option>
+                        <option value="week">Неделя</option>
+                        <option value ="everyWeek">Каждая неделя</option>
+                    </select>
+            </sm-item>
+
+            <sm-item>
+                <label>Повторять с интервалом:</label>
+                <input type="number" #repeatWithInterval [value]='repeatWithInterval.value' (change)='configSave.repeatWithInterval = repeatWithInterval.value'/>
+            </sm-item>
+
+        </sm-list>
+    </modal-content>
+    <modal-actions>
+        <div class="ui buttons">
+            <div class="ui button" (click)="deleteCell(configSave.id);">Удалить</div>
+            <div class="ui positive button primary" (click)="saveCell(configSave);">Сохранить</div>
+        </div>
+    </modal-actions>
+</sm-modal>
