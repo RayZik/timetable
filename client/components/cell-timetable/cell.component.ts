@@ -51,7 +51,7 @@ export class CellComponent implements OnInit {
 		this.apiService
 			.getSubjects()
 			.subscribe(
-			(data) => { this.subjects = data; },
+			(data) => { this.subjects = data;},
 			(err) => console.log(err)
 			);
 	}

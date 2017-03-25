@@ -1,6 +1,7 @@
 
 .myHoverItem{
-    position: relative
+    position: relative;
+    cursor: not-allowed;
 }
 
 .myHoverBlock{
@@ -15,6 +16,7 @@
     float:left;
 }
 
-.myDelete{
-    cursor: not-allowed;
+.myCell{
+    padding: 10px; 
+    margin: 1px;
 }

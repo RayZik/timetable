@@ -3,13 +3,16 @@ import { Http, Headers } from "@angular/http";
 import { AuthHttp } from "angular2-jwt";
 import { Response, Request } from "@angular/http";
 import "rxjs/add/operator/map";
+import "rxjs/add/observable/of";
+import "rxjs/add/operator/share";
 import { Observable } from 'rxjs/Observable';
 
 
 
 @Injectable()
 export class ApiService {
-    private cache = {};
+    private cache: Object = {};
+
     constructor(private authHttp: AuthHttp, private http: Http) { }
 
     getUsers() {
@@ -22,15 +25,19 @@ export class ApiService {
     //subject
     getSubjects() {
         if (this.cache['subjects']) {
-            return this.cache['subjects'];
+            console.log('1')
+            return Observable.of(this.cache['subjects']);
         } else {
+            console.log('2')
+
             return this
                 .http
                 .get('/api/admin/subject')
                 .map((response: Response) => {
                     this.cache['subjects'] = response.json();
                     return this.cache['subjects'];
-                });
+                })
+                .share()
         }
     }
 

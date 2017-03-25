@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/operator/map"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/operator/map", "rxjs/add/observable/of", "rxjs/add/operator/share", "rxjs/Observable"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, http_1, angular2_jwt_1, ApiService;
+    var core_1, http_1, angular2_jwt_1, Observable_1, ApiService;
     return {
         setters: [
             function (core_1_1) {
@@ -23,6 +23,13 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                 angular2_jwt_1 = angular2_jwt_1_1;
             },
             function (_1) {
+            },
+            function (_2) {
+            },
+            function (_3) {
+            },
+            function (Observable_1_1) {
+                Observable_1 = Observable_1_1;
             }
         ],
         execute: function () {
@@ -42,16 +49,19 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                 ApiService.prototype.getSubjects = function () {
                     var _this = this;
                     if (this.cache['subjects']) {
-                        return this.cache['subjects'];
+                        console.log('1');
+                        return Observable_1.Observable.of(this.cache['subjects']);
                     }
                     else {
+                        console.log('2');
                         return this
                             .http
                             .get('/api/admin/subject')
                             .map(function (response) {
                             _this.cache['subjects'] = response.json();
                             return _this.cache['subjects'];
-                        });
+                        })
+                            .share();
                     }
                 };
                 ApiService.prototype.getSubject = function (id) {
