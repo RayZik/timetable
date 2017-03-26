@@ -20,3 +20,8 @@
     padding: 10px; 
     margin: 1px;
 }
+
+.myTableModal td {
+   padding: 5px;
+   text-align: left;
+}

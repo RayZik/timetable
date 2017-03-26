@@ -27,11 +27,13 @@
 
                 <ng-container *ngFor="let slot of items.slots; let dayIndex = index">
                     <td *ngIf='dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot' class="isHoliday">
-                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'></tt-cell>
+                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [dateList]='dateList' [dayIndex]='dayIndex' [showSaveButton]='showSaveButton'
+                            (onChangedSaveCell)='onChangedSaveCell($event)'></tt-cell>
                     </td>
 
                     <td *ngIf='!dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot'>
-                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'></tt-cell>
+                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [dateList]='dateList' [dayIndex]='dayIndex' [showSaveButton]='showSaveButton'
+                            (onChangedSaveCell)='onChangedSaveCell($event)'></tt-cell>
                     </td>
                 </ng-container>
             </tr>

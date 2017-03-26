@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var passport = require("passport");
 var passport_local_1 = require("passport-local");
 var User = require("../../../models/user").UserModel;

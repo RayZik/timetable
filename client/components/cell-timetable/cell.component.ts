@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { AdminService } from '../../modules/admin/admin.service';
 import { ApiService } from '../../service/api.service';
 import { Router } from "@angular/router";
+import moment from 'moment';
 @Component({
 	selector: 'tt-cell',
 	templateUrl: "client/components/cell-timetable/cell.component.html",
@@ -11,6 +12,8 @@ import { Router } from "@angular/router";
 
 export class CellComponent implements OnInit {
 	@Input() cell;
+	@Input() dateList;
+	@Input() dayIndex;
 	@Input() showSaveButton: Boolean;
 	@Output() onChangedSaveCell = new EventEmitter<any>();
 	private teachers: any[];
@@ -22,11 +25,18 @@ export class CellComponent implements OnInit {
 	private idOffice: any = { id: "", show: false };
 	private idGroup: any = { id: "", show: false };
 	private idCell: String = "";
-	private configSave: object = {};
+	private configSave: Object = {};
+	private arrRepWithInter: any[] = [];
+	private daysName: any[] = ['Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб.', 'Вс.'];
 
 	constructor(private adminService: AdminService, private apiService: ApiService, private router: Router) { }
 
 	ngOnInit(): void {
+
+		for (let i = 2; i <= 30; i++) {
+			this.arrRepWithInter.push(i);
+		}
+
 		this.apiService
 			.getTeachers()
 			.subscribe(
@@ -51,7 +61,7 @@ export class CellComponent implements OnInit {
 		this.apiService
 			.getSubjects()
 			.subscribe(
-			(data) => { this.subjects = data;},
+			(data) => { this.subjects = data; },
 			(err) => console.log(err)
 			);
 	}
@@ -115,14 +125,25 @@ export class CellComponent implements OnInit {
 	}
 
 	clickSaveCell(repeatModal, cell) {
+		this.configSave = {};
 		//this.onChangedSaveCell.emit(true);
 		this.configSave['id'] = cell._id;
+		this.configSave['repeat'] = 'week';
+		this.configSave['beginDate'] = moment(this.dateList[this.dayIndex].day).format("YYYY-MM-DD").toString();
 		repeatModal.show({ blurring: false, closable: false });
+		console.log(this.configSave['beginDate']);
+	}
+
+	settings(repeatWith) {
+		this.configSave = {};
+		this.configSave['repeat'] = repeatWith;
+		this.configSave['beginDate'] = moment(this.dateList[this.dayIndex].day).format("YYYY-MM-DD").toString();
 	}
 
 	saveCell(config) {
 		console.log(config);
 	}
+
 	show(config) {
 		console.log(config);
 	}

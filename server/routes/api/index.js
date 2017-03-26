@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var home_1 = require("./home");
 var admin_1 = require("./admin");

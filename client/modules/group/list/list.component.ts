@@ -13,10 +13,13 @@ export class GroupListComponent implements OnInit {
     private groupList: any[] = [];
     private group: any = {};
 
+
     constructor(private groupService: ApiService, private router: Router) { }
     ngOnInit() {
         this.refresh();
     }
+
+
 
     goGroupId(id: any) {
         this.router.navigate(['/group', id]);

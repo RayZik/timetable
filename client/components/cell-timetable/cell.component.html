@@ -135,21 +135,53 @@
 <sm-modal title="Повторяющееся событие" #repeatModal>
     <modal-content>
         <sm-list>
-            <sm-item>
-                <label>Повторяется:</label>
-                <select class="ui dropdown" #repeatWith (change)='configSave.repeat = repeatWith.value'>
-                        <option value="">Выбери</option>
-                        <option value="week">Неделя</option>
-                        <option value ="everyWeek">Каждая неделя</option>
-                    </select>
-            </sm-item>
+            <table width="100%" cellspacing="0" cellpadding="5" class="myTableModal">
+                <tr>
+                    <td valign="top">Повторяется:</td>
+                    <td valign="top">
+                        <select class="ui dropdown" #repeatWith (click)='settings(repeatWith.value)'>
+                            <option value="week" selected >каждую неделю</option>
+                            <option value ="month">каждый месяц</option>
+                        </select></td>
+                </tr>
 
-            <sm-item>
-                <label>Повторять с интервалом:</label>
-                <input type="number" #repeatWithInterval [value]='repeatWithInterval.value' (change)='configSave.repeatWithInterval = repeatWithInterval.value'
-                />
-            </sm-item>
+                <tr>
+                    <td valign="top">Повторять с интервалом:</td>
+                    <td valign="top">
+                        <select class="ui dropdown" #repeatWithInterval (change)='configSave.repeatWithInterval = repeatWithInterval.value'>
+                            <option  value='1' selected>1</option>
+                            <option *ngFor='let el of arrRepWithInter' value='el'>{{el}}</option>
+                        </select>
+                    </td>
+                </tr>
 
+                <tr *ngIf='configSave.repeat === "week"'>
+                    <td width="200" valign="top">Дни повторения:</td>
+                    <td valign="top">
+                        <div class="ui form">
+                            <div class="inline fields">
+                                <div class="field" *ngFor='let dName of daysName'>
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" >
+                                        <label>{{dName}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr *ngIf='configSave.repeat === "week"'>
+                    <td width="200" valign="top">Дата начала:</td>
+                    <td valign="top">
+                        <div class="ui input">
+                            <input type="date" [value]="configSave.beginDate" #begin (change)='configSave.beginDate = begin.value'>
+                        </div>
+                    </td>
+                </tr>
+
+
+            </table>
         </sm-list>
     </modal-content>
     <modal-actions>

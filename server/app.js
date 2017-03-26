@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
