@@ -139,47 +139,68 @@
                 <tr>
                     <td valign="top">Повторяется:</td>
                     <td valign="top">
-                        <select class="ui dropdown" #repeatWith (click)='settings(repeatWith.value)'>
+                        <select class="ui dropdown" #repeatWith (click)='settings(repeatWith.value, cell)'>
                             <option value="week" selected >каждую неделю</option>
                             <option value ="month">каждый месяц</option>
                         </select></td>
                 </tr>
 
-                <tr>
-                    <td valign="top">Повторять с интервалом:</td>
-                    <td valign="top">
-                        <select class="ui dropdown" #repeatWithInterval (change)='configSave.repeatWithInterval = repeatWithInterval.value'>
+                <ng-container *ngIf='configSave.repeat === "week"'>
+                    <tr>
+                        <td valign="top">Повторять с интервалом:</td>
+                        <td valign="top">
+                            <select class="ui dropdown" #repeatWithInterval (change)='configSave.repeatWithInterval = repeatWithInterval.value'>
                             <option  value='1' selected>1</option>
-                            <option *ngFor='let el of arrRepWithInter' value='el'>{{el}}</option>
+                            <option *ngFor='let el of arrRepWithInter'>{{el}}</option>
                         </select>
-                    </td>
-                </tr>
-
-                <tr *ngIf='configSave.repeat === "week"'>
-                    <td width="200" valign="top">Дни повторения:</td>
-                    <td valign="top">
-                        <div class="ui form">
-                            <div class="inline fields">
-                                <div class="field" *ngFor='let dName of daysName'>
-                                    <div class="ui checkbox">
-                                        <input type="checkbox" >
-                                        <label>{{dName}}</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="200" valign="top">Дни повторения:</td>
+                        <td valign="top">
+                            <div class="ui form">
+                                <div class="inline fields">
+                                    <div class="field" *ngFor='let dName of daysName'>
+                                        <div class="ui checkbox">
+                                            <input type="checkbox">
+                                            <label>{{dName}}</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
 
-                <tr *ngIf='configSave.repeat === "week"'>
-                    <td width="200" valign="top">Дата начала:</td>
-                    <td valign="top">
-                        <div class="ui input">
-                            <input type="date" [value]="configSave.beginDate" #begin (change)='configSave.beginDate = begin.value'>
-                        </div>
-                    </td>
-                </tr>
+                    <tr>
+                        <td width="200" valign="top">Дата начала:</td>
+                        <td valign="top">
+                            <div class="ui input">
+                                <input type="date" [value]="configSave.beginDate" #begin (change)='configSave.beginDate = begin.value'>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
 
+                <ng-container *ngIf='configSave.repeat === "month"'>
+                    <tr>
+                        <td valign="top">Повторять с интервалом:</td>
+                        <td valign="top">
+                            <select class="ui dropdown" #repeatWithInterval (change)='configSave.repeatWithInterval = repeatWithInterval.value'>
+                            <option selected>1</option>
+                            <option *ngFor='let el of arrRepWithInter'>{{el}}</option>
+                        </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="200" valign="top">Дата начала:</td>
+                        <td valign="top">
+                            <div class="ui input">
+                                <input type="date" [value]="configSave.beginDate" #begin (change)='configSave.beginDate = begin.value'>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
 
             </table>
         </sm-list>
@@ -187,7 +208,7 @@
     <modal-actions>
         <div class="ui buttons">
             <div class="ui button" (click)="deleteCell(configSave.id);">Удалить</div>
-            <div class="ui positive button primary" (click)="saveCell(configSave);">Сохранить</div>
+            <div class="ui positive button primary" (click)="saveCell(configSave,cell);">Сохранить</div>
         </div>
     </modal-actions>
 </sm-modal>

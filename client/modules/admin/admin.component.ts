@@ -21,13 +21,13 @@ export class AdminComponent implements OnInit {
 	private lesson: any = {};
 	private newDate: any = {};
 	private dateList: any[] = [];
-	private data: any;
+	private data: any = [];
 	private dataForModalWindow = {};
 	private showModal: Boolean = false;
 	//cell
-	private showSaveModal = false;
 	private showSaveButton = true;
 	private cellForSave;
+
 
 	constructor(private adminService: AdminService, private apiService: ApiService, private dragulaService: DragulaService) {
 		dragulaService.dropModel.subscribe((value) => {
@@ -41,7 +41,6 @@ export class AdminComponent implements OnInit {
 
 	private onDropModel(args) {
 		let [el, target, source] = args;
-
 	}
 
 	private onRemoveModel(args) {
@@ -123,7 +122,7 @@ export class AdminComponent implements OnInit {
 
 	onChangedSaveCell(bool) {
 		if (bool) {
-			this.showSaveModal = true;
+
 		}
 	}
 

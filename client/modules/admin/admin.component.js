@@ -43,10 +43,10 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     this.lesson = {};
                     this.newDate = {};
                     this.dateList = [];
+                    this.data = [];
                     this.dataForModalWindow = {};
                     this.showModal = false;
                     //cell
-                    this.showSaveModal = false;
                     this.showSaveButton = true;
                     dragulaService.dropModel.subscribe(function (value) {
                         _this.onDropModel(value.slice(1));
@@ -140,7 +140,6 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                 };
                 AdminComponent.prototype.onChangedSaveCell = function (bool) {
                     if (bool) {
-                        this.showSaveModal = true;
                     }
                 };
                 AdminComponent.prototype.addCell = function () {

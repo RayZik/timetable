@@ -125,19 +125,12 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                         .get('/api/admin/timetable')
                         .map(function (response) { return response.json(); });
                 };
-                AdminService.prototype.saveOneWeek = function (data) {
+                AdminService.prototype.saveCell = function (data) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .put("/api/admin/timetable/save_one", data, { headers: headers });
-                };
-                AdminService.prototype.saveToEnd = function (data) {
-                    var headers = new http_1.Headers();
-                    headers.append('Content-Type', 'application/json');
-                    return this
-                        .http
-                        .put("/api/admin/timetable/save_to_end", data, { headers: headers });
+                        .put("/api/admin/timetable/save_cell", data, { headers: headers });
                 };
                 AdminService.prototype.deleteLesson = function (lesson) {
                     var headers = new http_1.Headers();

@@ -48,15 +48,6 @@ timetableApi.post("/add_time_lesson", (req: Request, res: Response, next: NextFu
         }).catch(next);
 });
 
-timetableApi.put("/save_one", (req: Request, res: Response, next: NextFunction) => {
-    let id = req.body.id;
-    let time = req.body.time;
-    cellTimetable.findOneAndUpdate({ _id: id }, { $push: { time: { begin: time.begin, end: time.end } } })
-        .exec().then((res) => {
-        }).catch(next);
-    res.end();
-});
-
 timetableApi.put("/save_to_end", (req: Request, res: Response, next: NextFunction) => {
     let id = req.body.id;
     let time = req.body.time;

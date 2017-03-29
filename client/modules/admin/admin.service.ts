@@ -120,20 +120,12 @@ export class AdminService {
             .map((response: Response) => response.json());
     }
 
-    saveOneWeek(data) {
+    saveCell(data) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put("/api/admin/timetable/save_one", data, { headers: headers })
-    }
-
-    saveToEnd(data) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this
-            .http
-            .put("/api/admin/timetable/save_to_end", data, { headers: headers })
+            .put("/api/admin/timetable/save_cell", data, { headers: headers })
     }
 
     deleteLesson(lesson) {

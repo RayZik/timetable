@@ -14,6 +14,8 @@ export class CellComponent implements OnInit {
 	@Input() cell;
 	@Input() dateList;
 	@Input() dayIndex;
+	@Input() time;
+	@Input() data;
 	@Input() showSaveButton: Boolean;
 	@Output() onChangedSaveCell = new EventEmitter<any>();
 	private teachers: any[];
@@ -124,30 +126,6 @@ export class CellComponent implements OnInit {
 			.subscribe();
 	}
 
-	clickSaveCell(repeatModal, cell) {
-		this.configSave = {};
-		//this.onChangedSaveCell.emit(true);
-		this.configSave['id'] = cell._id;
-		this.configSave['repeat'] = 'week';
-		this.configSave['beginDate'] = moment(this.dateList[this.dayIndex].day).format("YYYY-MM-DD").toString();
-		repeatModal.show({ blurring: false, closable: false });
-		console.log(this.configSave['beginDate']);
-	}
-
-	settings(repeatWith) {
-		this.configSave = {};
-		this.configSave['repeat'] = repeatWith;
-		this.configSave['beginDate'] = moment(this.dateList[this.dayIndex].day).format("YYYY-MM-DD").toString();
-	}
-
-	saveCell(config) {
-		console.log(config);
-	}
-
-	show(config) {
-		console.log(config);
-	}
-
 	showSelectGroup(id: String): void { this.idCell = id; this.idGroup.show = !this.idGroup.show; }
 	showSelectOffice(id: String): void { this.idCell = id; this.idOffice.show = !this.idOffice.show; }
 	showSelectSubject(id: String): void { this.idCell = id; this.idSubject.show = !this.idSubject.show; }
@@ -158,5 +136,75 @@ export class CellComponent implements OnInit {
 	setSubjectId(id: String): void { this.idSubject.id = id; }
 	setOfficeId(id: String): void { this.idOffice.id = id; }
 
+	clickSaveCell(repeatModal, cell) {
+		this.configSave = {};
+		//this.onChangedSaveCell.emit(true);
+		this.configSave['id'] = cell._id;
+		this.configSave['repeat'] = 'week';
+		this.configSave['beginDate'] = moment(this.dateList[this.dayIndex].day).format("YYYY-MM-DD").toString();
+		this.configSave['endDate'] = moment(this.data.endDate).format("YYYY-MM-DD").toString();
+		repeatModal.show({ blurring: false, closable: false });
+	}
 
+	settings(repeatWith) {
+		this.configSave['repeat'] = repeatWith;
+	}
+
+	saveCell(config, cell) {
+		let reWiIter = config['repeatWithInterval'];
+		let repeat = config['repeat'];
+		let res = {};
+
+		if (repeat === 'week') {
+			config['repeatWithInterval'] = +reWiIter;
+		}
+
+		if (repeat === 'month') {
+			config['repeatWithInterval'] = +reWiIter;
+		}
+
+		this.saveWithParam(config, cell);
+	}
+
+	saveWithParam(params, cell) {
+		let result = {};
+		let arrTime = [];
+		let interval = params.repeatWithInterval;
+
+		let firstDayWeek = moment(this.dateList[this.dayIndex].day).utc();
+		let lastDate = moment(this.data.endDate).utc();
+		let diff = Math.ceil(lastDate.diff(firstDayWeek, params.repeat) / interval);
+
+		// let begin = moment(this.dateList[this.dayIndex].day).second(this.time.begin);
+		// let end = moment(this.dateList[this.dayIndex].day).second(this.time.end);
+
+		for (let e = 0; e < diff; e++) {
+
+			let begin = moment(this.dateList[this.dayIndex].day).add(e * interval, params.repeat).second(this.time.begin);
+			let end = moment(this.dateList[this.dayIndex].day).add(e * interval, params.repeat).second(this.time.end);
+			console.log(e, begin)
+			if (this.contains(cell.time, begin.toISOString()) === undefined) {
+				arrTime.push({ begin: begin.toDate(), end: end.toDate() });
+			}
+		}
+
+		// console.log(arrTime)
+
+	}
+
+	contains(arr, elem) {
+		if (arr.length > 0) {
+			return arr.find((i) => i.begin === elem);
+		}
+		return undefined;
+	}
+
+	save(res) {
+
+		// 		this.adminService
+		// 			.saveOneWeek(result)
+		// 			.subscribe();
+		// 	}
+		console.log(res);
+	}
 }
