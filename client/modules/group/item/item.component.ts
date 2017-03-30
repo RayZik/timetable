@@ -5,8 +5,7 @@ import { Location } from '@angular/common';
 
 @Component({
     selector: 'tt-list-group',
-    templateUrl: "client/modules/group/item/item.component.html",
-    providers: [ApiService]
+    templateUrl: "client/modules/group/item/item.component.html"
 })
 
 export class GroupItemComponent implements OnInit { 

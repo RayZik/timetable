@@ -40,20 +40,28 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                     this.cache = {};
                 }
                 ApiService.prototype.getUsers = function () {
-                    return this
-                        .http
-                        .get('/api/home')
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['users']) {
+                        return Observable_1.Observable.of(this.cache['users']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get('/api/home')
+                            .map(function (response) {
+                            _this.cache['users'] = response.json();
+                            return _this.cache['users'];
+                        })
+                            .share();
+                    }
                 };
                 //subject
                 ApiService.prototype.getSubjects = function () {
                     var _this = this;
                     if (this.cache['subjects']) {
-                        console.log('1');
                         return Observable_1.Observable.of(this.cache['subjects']);
                     }
                     else {
-                        console.log('2');
                         return this
                             .http
                             .get('/api/admin/subject')
@@ -65,10 +73,20 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                     }
                 };
                 ApiService.prototype.getSubject = function (id) {
-                    return this
-                        .http
-                        .get("/api/admin/subject/" + id)
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['subject']) {
+                        return Observable_1.Observable.of(this.cache['subject']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get("/api/admin/subject/" + id)
+                            .map(function (response) {
+                            _this.cache['subject'] = response.json();
+                            return _this.cache['subject'];
+                        })
+                            .share();
+                    }
                 };
                 ApiService.prototype.updateSubject = function (subject) {
                     var headers = new http_1.Headers();
@@ -96,16 +114,36 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                 };
                 //teacher
                 ApiService.prototype.getTeachers = function () {
-                    return this
-                        .http
-                        .get('/api/admin/teacher')
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['teachers']) {
+                        return Observable_1.Observable.of(this.cache['teachers']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get('/api/admin/teacher')
+                            .map(function (response) {
+                            _this.cache['teachers'] = response.json();
+                            return _this.cache['teachers'];
+                        })
+                            .share();
+                    }
                 };
                 ApiService.prototype.getTeacher = function (id) {
-                    return this
-                        .http
-                        .get("/api/admin/teacher/" + id)
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['teacher']) {
+                        return Observable_1.Observable.of(this.cache['teacher']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get("/api/admin/teacher/" + id)
+                            .map(function (response) {
+                            _this.cache['teacher'] = response.json();
+                            return _this.cache['teacher'];
+                        })
+                            .share();
+                    }
                 };
                 ApiService.prototype.updateTeacher = function (teacher) {
                     var headers = new http_1.Headers();
@@ -133,16 +171,36 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                 };
                 //office
                 ApiService.prototype.getOffices = function () {
-                    return this
-                        .http
-                        .get('/api/admin/office')
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['offices']) {
+                        return Observable_1.Observable.of(this.cache['offices']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get('/api/admin/office')
+                            .map(function (response) {
+                            _this.cache['offices'] = response.json();
+                            return _this.cache['offices'];
+                        })
+                            .share();
+                    }
                 };
                 ApiService.prototype.getOffice = function (id) {
-                    return this
-                        .http
-                        .get("/api/admin/office/" + id)
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['office']) {
+                        return Observable_1.Observable.of(this.cache['office']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get("/api/admin/office/" + id)
+                            .map(function (response) {
+                            _this.cache['office'] = response.json();
+                            return _this.cache['office'];
+                        })
+                            .share();
+                    }
                 };
                 ApiService.prototype.updateOffice = function (office) {
                     var headers = new http_1.Headers();
@@ -170,16 +228,36 @@ System.register(["@angular/core", "@angular/http", "angular2-jwt", "rxjs/add/ope
                 };
                 //group
                 ApiService.prototype.getGroups = function () {
-                    return this
-                        .http
-                        .get('/api/admin/group')
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['groups']) {
+                        return Observable_1.Observable.of(this.cache['groups']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get('/api/admin/group')
+                            .map(function (response) {
+                            _this.cache['groups'] = response.json();
+                            return _this.cache['groups'];
+                        })
+                            .share();
+                    }
                 };
                 ApiService.prototype.getGroup = function (id) {
-                    return this
-                        .http
-                        .get("/api/admin/group/" + id)
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['group']) {
+                        return Observable_1.Observable.of(this.cache['group']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get("/api/admin/group/" + id)
+                            .map(function (response) {
+                            _this.cache['group'] = response.json();
+                            return _this.cache['group'];
+                        })
+                            .share();
+                    }
                 };
                 ApiService.prototype.updateGroup = function (group) {
                     var headers = new http_1.Headers();

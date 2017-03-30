@@ -4,8 +4,7 @@ import { Router } from "@angular/router";
 
 @Component({
     selector: 'tt-list-teacher',
-    templateUrl: "client/modules/teacher/list/list.component.html",
-    providers: [ApiService],
+    templateUrl: "client/modules/teacher/list/list.component.html"
 })
 
 export class TeacherListComponent implements OnInit {

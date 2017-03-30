@@ -3,8 +3,7 @@ import { ApiService } from "../../service/api.service";
 
 @Component({
     selector: "tt-home",
-    templateUrl: "client/modules/home/home.component.html",
-    providers: [ApiService]
+    templateUrl: "client/modules/home/home.component.html"
 })
 export class HomeComponent implements OnInit {
     private usersArray: any[];

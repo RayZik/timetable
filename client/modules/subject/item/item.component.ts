@@ -5,8 +5,7 @@ import { Location } from '@angular/common';
 
 @Component({
     selector: 'tt-list-subject',
-    templateUrl: "client/modules/subject/item/item.component.html",
-    providers: [ApiService]
+    templateUrl: "client/modules/subject/item/item.component.html"
 })
 
 export class SubjectItemComponent implements OnInit {

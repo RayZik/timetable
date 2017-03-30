@@ -190,8 +190,7 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     selector: 'tt-admin',
                     templateUrl: 'client/modules/admin/admin.component.html',
                     styleUrls: ['client/modules/admin/admin.component.css'],
-                    providers: [admin_service_1.AdminService, api_service_1.ApiService],
-                    viewProviders: [ng2_dragula_1.DragulaService],
+                    viewProviders: [ng2_dragula_1.DragulaService]
                 }),
                 __metadata("design:paramtypes", [admin_service_1.AdminService, api_service_1.ApiService, ng2_dragula_1.DragulaService])
             ], AdminComponent);

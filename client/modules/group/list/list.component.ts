@@ -4,8 +4,7 @@ import { Router } from "@angular/router";
 
 @Component({
     selector: 'tt-list-group',
-    templateUrl: "client/modules/group/list/list.component.html",
-    providers: [ApiService]
+    templateUrl: "client/modules/group/list/list.component.html"
 })
 
 export class GroupListComponent implements OnInit {

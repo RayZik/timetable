@@ -5,8 +5,7 @@ import { Location } from '@angular/common';
 
 @Component({
     selector: 'tt-list-teacher',
-    templateUrl: "client/modules/teacher/item/item.component.html",
-    providers: [ApiService]
+    templateUrl: "client/modules/teacher/item/item.component.html"
 })
 
 export class TeacherItemComponent implements OnInit {

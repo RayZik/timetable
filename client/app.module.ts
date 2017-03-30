@@ -4,10 +4,7 @@ import { provideAuth } from "angular2-jwt";
 import { HttpModule } from "@angular/http";
 import { NgSemanticModule } from "ng-semantic";
 import { FormsModule } from '@angular/forms';
-
 import { AppComponent } from './app.component';
-
-
 import { routing } from "./routes";
 import { HomeModule } from "./modules/home/home.module";
 import { AdminModule } from "./modules/admin/admin.module";

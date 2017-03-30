@@ -6,8 +6,7 @@ import moment from 'moment';
 @Component({
     selector: 'tt-filter',
     templateUrl: "client/components/filter-timetable/filter.component.html",
-    styleUrls: ['client/components/filter-timetable/filter.component.css'],
-    providers: [ApiService],
+    styleUrls: ['client/components/filter-timetable/filter.component.css']
 })
 
 export class FilterComponent implements OnInit {

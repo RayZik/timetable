@@ -6,14 +6,23 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AdminService {
+    private cache: Object = {};
     constructor(private http: Http) { }
 
-    //ceel-timetable
+    //cell-timetable
     getCellTimetable() {
-        return this
-            .http
-            .get('/api/admin/cellTimetable')
-            .map((response: Response) => response.json());
+        if (this.cache['cells']) {
+            return Observable.of(this.cache['cells']);
+        } else {
+            return this
+                .http
+                .get('/api/admin/cellTimetable')
+                .map((response: Response) => {
+                    this.cache['cells'] = response.json();
+                    return this.cache['cells'];
+                })
+                .share()
+        }
     }
 
     addTeacher(id: String, cellTimetableId: String) {
@@ -114,10 +123,18 @@ export class AdminService {
     }
 
     getTimeLesson() {
-        return this
-            .http
-            .get('/api/admin/timetable')
-            .map((response: Response) => response.json());
+        if (this.cache['tLesson']) {
+            return Observable.of(this.cache['tLesson']);
+        } else {
+            return this
+                .http
+                .get('/api/admin/timetable')
+                .map((response: Response) => {
+                    this.cache['tLesson'] = response.json();
+                    return this.cache['tLesson'];
+                })
+                .share()
+        }
     }
 
     saveCell(data) {
@@ -137,9 +154,17 @@ export class AdminService {
     }
 
     getHolidays() {
-        return this
-            .http
-            .get('/api/admin/timetable/holidays')
-            .map((response: Response) => response.json());
+        if (this.cache['holidays']) {
+            return Observable.of(this.cache['holidays']);
+        } else {
+            return this
+                .http
+                .get('/api/admin/timetable/holidays')
+                .map((response: Response) => {
+                    this.cache['holidays'] = response.json();
+                    return this.cache['holidays'];
+                })
+                .share()
+        }
     }
 }

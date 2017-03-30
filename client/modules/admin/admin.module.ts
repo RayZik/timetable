@@ -8,7 +8,6 @@ import { AdminComponent } from "./admin.component";
 import { CellComponent } from "../../components/cell-timetable/cell.component";
 import { FilterComponent } from "../../components/filter-timetable/filter.component";
 
-
 import { TeacherModule } from "../teacher/teacher.module";
 import { SubjectModule } from "../subject/subject.module";
 import { OfficeModule } from "../office/office.module";

@@ -44,8 +44,7 @@ System.register(["@angular/core", "../../service/api.service"], function (export
             HomeComponent = __decorate([
                 core_1.Component({
                     selector: "tt-home",
-                    templateUrl: "client/modules/home/home.component.html",
-                    providers: [api_service_1.ApiService]
+                    templateUrl: "client/modules/home/home.component.html"
                 }),
                 __metadata("design:paramtypes", [api_service_1.ApiService])
             ], HomeComponent);

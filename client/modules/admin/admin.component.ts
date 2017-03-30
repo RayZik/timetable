@@ -8,8 +8,7 @@ import moment from 'moment';
 	selector: 'tt-admin',
 	templateUrl: 'client/modules/admin/admin.component.html',
 	styleUrls: ['client/modules/admin/admin.component.css'],
-	providers: [AdminService, ApiService],
-	viewProviders: [DragulaService],
+	viewProviders: [DragulaService]
 })
 
 export class AdminComponent implements OnInit {

@@ -6,7 +6,6 @@ import moment from 'moment';
 @Component({
 	selector: 'tt-cell',
 	templateUrl: "client/components/cell-timetable/cell.component.html",
-	providers: [AdminService, ApiService],
 	styleUrls: ['client/components/cell-timetable/cell.component.css']
 })
 
@@ -187,9 +186,6 @@ export class CellComponent implements OnInit {
 				arrTime.push({ begin: begin.toDate(), end: end.toDate() });
 			}
 		}
-
-		// console.log(arrTime)
-
 	}
 
 	contains(arr, elem) {

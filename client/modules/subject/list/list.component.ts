@@ -4,8 +4,7 @@ import { Router } from "@angular/router";
 
 @Component({
     selector: 'tt-list-subject',
-    templateUrl: "client/modules/subject/list/list.component.html",
-    providers: [ApiService]
+    templateUrl: "client/modules/subject/list/list.component.html"
 })
 
 export class SubjectListComponent implements OnInit {

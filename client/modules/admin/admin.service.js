@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map", "rxjs/Observable"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, http_1, AdminService;
+    var core_1, http_1, Observable_1, AdminService;
     return {
         setters: [
             function (core_1_1) {
@@ -20,19 +20,33 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                 http_1 = http_1_1;
             },
             function (_1) {
+            },
+            function (Observable_1_1) {
+                Observable_1 = Observable_1_1;
             }
         ],
         execute: function () {
             AdminService = (function () {
                 function AdminService(http) {
                     this.http = http;
+                    this.cache = {};
                 }
-                //ceel-timetable
+                //cell-timetable
                 AdminService.prototype.getCellTimetable = function () {
-                    return this
-                        .http
-                        .get('/api/admin/cellTimetable')
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['cells']) {
+                        return Observable_1.Observable.of(this.cache['cells']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get('/api/admin/cellTimetable')
+                            .map(function (response) {
+                            _this.cache['cells'] = response.json();
+                            return _this.cache['cells'];
+                        })
+                            .share();
+                    }
                 };
                 AdminService.prototype.addTeacher = function (id, cellTimetableId) {
                     var headers = new http_1.Headers();
@@ -120,10 +134,20 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                         .post("/api/admin/timetable/add_date", newDate, { headers: headers });
                 };
                 AdminService.prototype.getTimeLesson = function () {
-                    return this
-                        .http
-                        .get('/api/admin/timetable')
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['tLesson']) {
+                        return Observable_1.Observable.of(this.cache['tLesson']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get('/api/admin/timetable')
+                            .map(function (response) {
+                            _this.cache['tLesson'] = response.json();
+                            return _this.cache['tLesson'];
+                        })
+                            .share();
+                    }
                 };
                 AdminService.prototype.saveCell = function (data) {
                     var headers = new http_1.Headers();
@@ -140,10 +164,20 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map"], fun
                         .post("/api/admin/timetable/delete_time_lesson", { lesson: lesson }, { headers: headers });
                 };
                 AdminService.prototype.getHolidays = function () {
-                    return this
-                        .http
-                        .get('/api/admin/timetable/holidays')
-                        .map(function (response) { return response.json(); });
+                    var _this = this;
+                    if (this.cache['holidays']) {
+                        return Observable_1.Observable.of(this.cache['holidays']);
+                    }
+                    else {
+                        return this
+                            .http
+                            .get('/api/admin/timetable/holidays')
+                            .map(function (response) {
+                            _this.cache['holidays'] = response.json();
+                            return _this.cache['holidays'];
+                        })
+                            .share();
+                    }
                 };
                 return AdminService;
             }());

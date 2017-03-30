@@ -5,8 +5,7 @@ import { Location } from '@angular/common';
 
 @Component({
     selector: 'tt-list-office',
-    templateUrl: "client/modules/office/item/item.component.html",
-    providers: [ApiService]
+    templateUrl: "client/modules/office/item/item.component.html"
 })
 
 export class OfficeItemComponent implements OnInit {

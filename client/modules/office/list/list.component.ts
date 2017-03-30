@@ -4,8 +4,7 @@ import { Router } from "@angular/router";
 
 @Component({
     selector: 'tt-list-office',
-    templateUrl: "client/modules/office/list/list.component.html",
-    providers: [ApiService]
+    templateUrl: "client/modules/office/list/list.component.html"
 })
 
 export class OfficeListComponent implements OnInit {

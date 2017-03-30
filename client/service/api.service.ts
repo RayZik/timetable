@@ -16,20 +16,25 @@ export class ApiService {
     constructor(private authHttp: AuthHttp, private http: Http) { }
 
     getUsers() {
-        return this
-            .http
-            .get('/api/home')
-            .map((response: Response) => response.json());
+        if (this.cache['users']) {
+            return Observable.of(this.cache['users']);
+        } else {
+            return this
+                .http
+                .get('/api/home')
+                .map((response: Response) => {
+                    this.cache['users'] = response.json();
+                    return this.cache['users'];
+                })
+                .share()
+        }
     }
 
     //subject
     getSubjects() {
         if (this.cache['subjects']) {
-            console.log('1')
             return Observable.of(this.cache['subjects']);
         } else {
-            console.log('2')
-
             return this
                 .http
                 .get('/api/admin/subject')
@@ -42,10 +47,19 @@ export class ApiService {
     }
 
     getSubject(id: any) {
-        return this
-            .http
-            .get(`/api/admin/subject/${id}`)
-            .map((response: Response) => response.json());
+        if (this.cache['subject']) {
+
+            return Observable.of(this.cache['subject']);
+        } else {
+            return this
+                .http
+                .get(`/api/admin/subject/${id}`)
+                .map((response: Response) => {
+                    this.cache['subject'] = response.json();
+                    return this.cache['subject'];
+                })
+                .share()
+        }
     }
 
     updateSubject(subject: any) {
@@ -78,17 +92,33 @@ export class ApiService {
     //teacher
 
     getTeachers() {
-        return this
-            .http
-            .get('/api/admin/teacher')
-            .map((response: Response) => response.json());
+        if (this.cache['teachers']) {
+            return Observable.of(this.cache['teachers']);
+        } else {
+            return this
+                .http
+                .get('/api/admin/teacher')
+                .map((response: Response) => {
+                    this.cache['teachers'] = response.json();
+                    return this.cache['teachers'];
+                })
+                .share()
+        }
     }
 
     getTeacher(id: any) {
-        return this
-            .http
-            .get(`/api/admin/teacher/${id}`)
-            .map((response: Response) => response.json());
+        if (this.cache['teacher']) {
+            return Observable.of(this.cache['teacher']);
+        } else {
+            return this
+                .http
+                .get(`/api/admin/teacher/${id}`)
+                .map((response: Response) => {
+                    this.cache['teacher'] = response.json();
+                    return this.cache['teacher'];
+                })
+                .share()
+        }
     }
 
     updateTeacher(teacher: any) {
@@ -120,17 +150,33 @@ export class ApiService {
 
     //office
     getOffices() {
-        return this
-            .http
-            .get('/api/admin/office')
-            .map((response: Response) => response.json());
+        if (this.cache['offices']) {
+            return Observable.of(this.cache['offices']);
+        } else {
+            return this
+                .http
+                .get('/api/admin/office')
+                .map((response: Response) => {
+                    this.cache['offices'] = response.json();
+                    return this.cache['offices'];
+                })
+                .share()
+        }
     }
 
     getOffice(id: any) {
-        return this
-            .http
-            .get(`/api/admin/office/${id}`)
-            .map((response: Response) => response.json());
+        if (this.cache['office']) {
+            return Observable.of(this.cache['office']);
+        } else {
+            return this
+                .http
+                .get(`/api/admin/office/${id}`)
+                .map((response: Response) => {
+                    this.cache['office'] = response.json();
+                    return this.cache['office'];
+                })
+                .share()
+        }
     }
 
     updateOffice(office: any) {
@@ -162,17 +208,33 @@ export class ApiService {
 
     //group
     getGroups() {
-        return this
-            .http
-            .get('/api/admin/group')
-            .map((response: Response) => response.json());
+        if (this.cache['groups']) {
+            return Observable.of(this.cache['groups']);
+        } else {
+            return this
+                .http
+                .get('/api/admin/group')
+                .map((response: Response) => {
+                    this.cache['groups'] = response.json();
+                    return this.cache['groups'];
+                })
+                .share()
+        }
     }
 
     getGroup(id: any) {
-        return this
-            .http
-            .get(`/api/admin/group/${id}`)
-            .map((response: Response) => response.json());
+        if (this.cache['group']) {
+            return Observable.of(this.cache['group']);
+        } else {
+            return this
+                .http
+                .get(`/api/admin/group/${id}`)
+                .map((response: Response) => {
+                    this.cache['group'] = response.json();
+                    return this.cache['group'];
+                })
+                .share()
+        }
     }
 
     updateGroup(group: any) {
