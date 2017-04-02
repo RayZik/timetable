@@ -119,7 +119,7 @@ export class CellComponent implements OnInit {
 			.subscribe();
 	}
 
-	deleteCell(id: String): void {
+	deleteCell(id: String, repeatModal): void {
 		this.adminService
 			.deleteCell(id)
 			.subscribe();
@@ -135,54 +135,41 @@ export class CellComponent implements OnInit {
 	setSubjectId(id: String): void { this.idSubject.id = id; }
 	setOfficeId(id: String): void { this.idOffice.id = id; }
 
-	clickSaveCell(repeatModal, cell) {
+	setDefaultConfig() {
 		this.configSave = {};
-		//this.onChangedSaveCell.emit(true);
-		this.configSave['id'] = cell._id;
-		this.configSave['repeat'] = 'week';
+		this.configSave['repeat'] = 'day';
+		this.configSave['repeatWithInterval'] = '1';
 		this.configSave['beginDate'] = moment(this.dateList[this.dayIndex].day).format("YYYY-MM-DD").toString();
 		this.configSave['endDate'] = moment(this.data.endDate).format("YYYY-MM-DD").toString();
+	}
+
+	clickSaveCell(repeatModal, cell) {
+		this.setDefaultConfig();
+		this.configSave['id'] = cell._id;
 		repeatModal.show({ blurring: false, closable: false });
 	}
 
 	settings(repeatWith) {
+		this.setDefaultConfig();
 		this.configSave['repeat'] = repeatWith;
 	}
 
 	saveCell(config, cell) {
-		let reWiIter = config['repeatWithInterval'];
-		let repeat = config['repeat'];
-		let res = {};
-
-		if (repeat === 'week') {
-			config['repeatWithInterval'] = +reWiIter;
-		}
-
-		if (repeat === 'month') {
-			config['repeatWithInterval'] = +reWiIter;
-		}
-
-		this.saveWithParam(config, cell);
-	}
-
-	saveWithParam(params, cell) {
 		let result = {};
 		let arrTime = [];
-		let interval = params.repeatWithInterval;
+		let begin: moment.Moment;
+		let end: moment.Moment;
+		let interval = config.repeatWithInterval;
 
 		let firstDayWeek = moment(this.dateList[this.dayIndex].day).utc();
 		let lastDate = moment(this.data.endDate).utc();
-		let diff = Math.ceil(lastDate.diff(firstDayWeek, params.repeat) / interval);
+		let diff = Math.ceil(lastDate.diff(firstDayWeek, config.repeat) / interval);
 
-		// let begin = moment(this.dateList[this.dayIndex].day).second(this.time.begin);
-		// let end = moment(this.dateList[this.dayIndex].day).second(this.time.end);
+		for (let e = 0; e <= diff; e++) {
+			begin = moment(config.beginDate).add(e * interval, config.repeat).second(this.time.begin);
+			end = moment(config.beginDate).add(e * interval, config.repeat).second(this.time.end);
 
-		for (let e = 0; e < diff; e++) {
-
-			let begin = moment(this.dateList[this.dayIndex].day).add(e * interval, params.repeat).second(this.time.begin);
-			let end = moment(this.dateList[this.dayIndex].day).add(e * interval, params.repeat).second(this.time.end);
-			console.log(e, begin)
-			if (this.contains(cell.time, begin.toISOString()) === undefined) {
+			if (this.contains(cell.time, begin.toISOString()) === undefined && end.isBetween(config.beginDate, lastDate)) {
 				arrTime.push({ begin: begin.toDate(), end: end.toDate() });
 			}
 		}

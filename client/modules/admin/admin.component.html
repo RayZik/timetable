@@ -52,14 +52,13 @@
         </tfoot>
     </table>
     <br>
+</div>
 
-    <div class="ui message" [dragula]='"bag"' [dragulaModel]='cellTimetable'>
+<div class="myBoxAddCell">
+    <div class="ui button myButtonAdd" (click)="addCell()"><i class="icon plus"></i></div>
+    <div class='myBagAddedCall' [dragula]='"bag"' [dragulaModel]='cellTimetable'>
         <div *ngFor="let item of cellTimetable">
             <tt-cell [cell]='item'></tt-cell>
         </div>
     </div>
-
 </div>
-
-<!--Добавление ячейки-->
-<button class=" container circular ui icon button" (click)="addCell()"><i class="icon plus"></i></button>

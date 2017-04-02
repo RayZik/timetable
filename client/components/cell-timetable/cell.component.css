@@ -10,18 +10,31 @@
 
 .myHoverItem:hover .myHoverBlock{
      display:block;
-} 
+}
+
+.myLine{
+    /*border-bottom: 1px solid #666666;*/
+}
 
 .myInline{
-    float:left;
+   text-align: center;
+}
+
+.myLine:hover{
+    background-color: lightcyan;
+    box-shadow: inset 0 0 6px;
 }
 
 .myCell{
+    text-align: center;
     padding: 10px; 
     margin: 1px;
+    cursor: pointer;
 }
 
 .myTableModal td {
    padding: 5px;
    text-align: left;
 }
+
+

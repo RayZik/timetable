@@ -69,11 +69,22 @@ export class AdminComponent implements OnInit {
 			})
 			.subscribe((data) => {
 				this.data = data[0];
+				let bDay = moment(data[0].beginDate);
 				this.dateList = [];
 
+				if (bDay.day() === 0) {
+					this.data.beginDate = bDay.add(-6, 'day');
+				}
+
+				if (bDay.day() !== 1 && bDay.day() !== 0) {
+					let diff = 1 - bDay.day();
+					this.data.beginDate = bDay.add(diff, 'day');
+				}
+
+
 				for (let i = 0; i < 7; i++) {
-					let beginDay = moment(data[0].beginDate).day();
-					let date = moment(data[0].beginDate).day(beginDay + i);
+					let beginDay = moment(this.data.beginDate).day();
+					let date = moment(this.data.beginDate).day(beginDay + i);
 					let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
 					if (cont) {
 						this.dateList.push({ day: date.toDate(), isHoliday: true });
@@ -82,7 +93,7 @@ export class AdminComponent implements OnInit {
 					}
 
 				}
-				this.outTable(data[0], this.cellWithTime);
+				this.outTable(this.data, this.cellWithTime);
 			});
 	}
 

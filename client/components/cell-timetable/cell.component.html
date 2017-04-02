@@ -1,6 +1,6 @@
 <div class="ui compact message myCell">
     <!--subject-->
-    <div>
+    <div class="myLine">
         <div *ngIf="cell.subject.length>0">
             <div *ngFor="let item of cell.subject" class="myHoverItem">
                 <div (click)="deleteSubject(item._id, cell._id)" class="myDelete">
@@ -32,7 +32,7 @@
     </div>
 
     <!--teacher-->
-    <div>
+    <div class="myLine">
         <div *ngIf="cell.teacher.length>0">
             <div *ngFor="let item of cell.teacher" class="myHoverItem">
                 <div (click)="deleteTeacher(item._id, cell._id)" class="myDelete">
@@ -63,7 +63,7 @@
     </div>
 
     <!--group-->
-    <div>
+    <div class="myLine">
         <div *ngIf="cell.group.length>0">
             <div *ngFor="let item of cell.group" class="myHoverItem">
                 <div (click)="deleteGroup(item._id, cell._id)" class="myDelete">
@@ -95,7 +95,7 @@
     </div>
 
     <!--office-->
-    <div>
+    <div class="myLine">
         <div *ngIf="cell.office.length>0">
             <div *ngFor="let item of cell.office" class="myHoverItem">
                 <div (click)="deleteOffice(item._id, cell._id)" class="myDelete">
@@ -140,10 +140,29 @@
                     <td valign="top">Повторяется:</td>
                     <td valign="top">
                         <select class="ui dropdown" #repeatWith (click)='settings(repeatWith.value, cell)'>
-                            <option value="week" selected >каждую неделю</option>
+                            <option value="day">каждый день</option>
+                            <option value="week">каждую неделю</option>
                             <option value ="month">каждый месяц</option>
                         </select></td>
                 </tr>
+
+                <ng-container *ngIf='configSave.repeat === "day"'>
+                    <tr>
+                        <td width="200" valign="top">Дни повторения:</td>
+                        <td valign="top">
+                            <div class="ui form">
+                                <div class="inline fields">
+                                    <div class="field" *ngFor='let dName of daysName'>
+                                        <div class="ui checkbox">
+                                            <input type="checkbox">
+                                            <label>{{dName}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
 
                 <ng-container *ngIf='configSave.repeat === "week"'>
                     <tr>
@@ -207,7 +226,7 @@
     </modal-content>
     <modal-actions>
         <div class="ui buttons">
-            <div class="ui button" (click)="deleteCell(configSave.id);">Удалить</div>
+            <div class="ui button" (click)="deleteCell(configSave.id);repeatModal.hide();">Удалить</div>
             <div class="ui positive button primary" (click)="saveCell(configSave,cell);">Сохранить</div>
         </div>
     </modal-actions>

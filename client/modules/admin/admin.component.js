@@ -85,10 +85,18 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                     })
                         .subscribe(function (data) {
                         _this.data = data[0];
+                        var bDay = moment_1.default(data[0].beginDate);
                         _this.dateList = [];
+                        if (bDay.day() === 0) {
+                            _this.data.beginDate = bDay.add(-6, 'day');
+                        }
+                        if (bDay.day() !== 1 && bDay.day() !== 0) {
+                            var diff = 1 - bDay.day();
+                            _this.data.beginDate = bDay.add(diff, 'day');
+                        }
                         var _loop_1 = function (i) {
-                            var beginDay = moment_1.default(data[0].beginDate).day();
-                            var date = moment_1.default(data[0].beginDate).day(beginDay + i);
+                            var beginDay = moment_1.default(_this.data.beginDate).day();
+                            var date = moment_1.default(_this.data.beginDate).day(beginDay + i);
                             var cont = _this.holidayList[0].date.find(function (elem) { return date.isSame(moment_1.default(elem)); });
                             if (cont) {
                                 _this.dateList.push({ day: date.toDate(), isHoliday: true });
@@ -100,7 +108,7 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                         for (var i = 0; i < 7; i++) {
                             _loop_1(i);
                         }
-                        _this.outTable(data[0], _this.cellWithTime);
+                        _this.outTable(_this.data, _this.cellWithTime);
                     });
                 };
                 AdminComponent.prototype.outTable = function (data, validate) {
