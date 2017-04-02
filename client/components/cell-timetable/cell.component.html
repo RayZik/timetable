@@ -152,9 +152,9 @@
                         <td valign="top">
                             <div class="ui form">
                                 <div class="inline fields">
-                                    <div class="field" *ngFor='let dName of daysName'>
+                                    <div class="field" *ngFor='let dName of daysName; let idx = index'>
                                         <div class="ui checkbox">
-                                            <input type="checkbox">
+                                            <input type="checkbox" #selDays (change)='selectDays(selDays,idx)'>
                                             <label>{{dName}}</label>
                                         </div>
                                     </div>
@@ -179,9 +179,9 @@
                         <td valign="top">
                             <div class="ui form">
                                 <div class="inline fields">
-                                    <div class="field" *ngFor='let dName of daysName'>
+                                    <div class="field" *ngFor='let dName of daysName; let idx = index'>
                                         <div class="ui checkbox">
-                                            <input type="checkbox">
+                                            <input type="checkbox" #selDays (change)='selectDays(selDays,idx)'>
                                             <label>{{dName}}</label>
                                         </div>
                                     </div>

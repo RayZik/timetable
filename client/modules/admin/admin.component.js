@@ -99,10 +99,10 @@ System.register(["@angular/core", "./admin.service", "../../service/api.service"
                             var date = moment_1.default(_this.data.beginDate).day(beginDay + i);
                             var cont = _this.holidayList[0].date.find(function (elem) { return date.isSame(moment_1.default(elem)); });
                             if (cont) {
-                                _this.dateList.push({ day: date.toDate(), isHoliday: true });
+                                _this.dateList.push({ day: date.toISOString(), isHoliday: true });
                             }
                             else {
-                                _this.dateList.push({ day: date.toDate(), isHoliday: false });
+                                _this.dateList.push({ day: date.toISOString(), isHoliday: false });
                             }
                         };
                         for (var i = 0; i < 7; i++) {

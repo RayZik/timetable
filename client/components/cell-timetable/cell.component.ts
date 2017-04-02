@@ -141,6 +141,8 @@ export class CellComponent implements OnInit {
 		this.configSave['repeatWithInterval'] = '1';
 		this.configSave['beginDate'] = moment(this.dateList[this.dayIndex].day).format("YYYY-MM-DD").toString();
 		this.configSave['endDate'] = moment(this.data.endDate).format("YYYY-MM-DD").toString();
+		this.configSave['begin'] = moment(this.dateList[this.dayIndex].day).format();
+		this.configSave['selectedDay'] = [];
 	}
 
 	clickSaveCell(repeatModal, cell) {
@@ -154,24 +156,70 @@ export class CellComponent implements OnInit {
 		this.configSave['repeat'] = repeatWith;
 	}
 
+	selectDays(day, idx) {
+		if (day.checked) {
+			this.configSave['selectedDay'].push(idx);
+		} else {
+			let indElem = this.configSave['selectedDay'].indexOf(idx);
+			if (indElem != -1) {
+				this.configSave['selectedDay'].splice(indElem, 1);
+			}
+		}
+	}
+
 	saveCell(config, cell) {
-		let result = {};
-		let arrTime = [];
-		let begin: moment.Moment;
-		let end: moment.Moment;
+		let arrTime = { id: cell._id, time: [] };
 		let interval = config.repeatWithInterval;
 
-		let firstDayWeek = moment(this.dateList[this.dayIndex].day).utc();
-		let lastDate = moment(this.data.endDate).utc();
-		let diff = Math.ceil(lastDate.diff(firstDayWeek, config.repeat) / interval);
+		if (config.repeat !== 'day') {
+			let firstDayWeek = moment(this.dateList[this.dayIndex].day).utc();
+			let lastDate = moment(config.endDate).utc();
 
-		for (let e = 0; e <= diff; e++) {
-			begin = moment(config.beginDate).add(e * interval, config.repeat).second(this.time.begin);
-			end = moment(config.beginDate).add(e * interval, config.repeat).second(this.time.end);
+			let diff = Math.ceil(lastDate.diff(firstDayWeek, config.repeat) / interval);
 
-			if (this.contains(cell.time, begin.toISOString()) === undefined && end.isBetween(config.beginDate, lastDate)) {
-				arrTime.push({ begin: begin.toDate(), end: end.toDate() });
+			for (let e = 0; e <= diff; e++) {
+
+				if (config.selectedDay.length > 0) {
+					let sDay = config.selectedDay;
+					for (let i = 0; i < sDay.length; i++) {
+						let begin = moment(this.dateList[sDay[i]].day).add(e * interval, config.repeat).second(this.time.begin);
+						let end = moment(this.dateList[sDay[i]].day).add(e * interval, config.repeat).second(this.time.end);
+
+						if (this.contains(cell.time, begin.toISOString()) === undefined) {
+							arrTime.time.push({ begin: begin.toDate(), end: end.toDate() });
+						}
+					}
+				} else {
+					let begin = moment(config.begin).add(e * interval, config.repeat).second(this.time.begin);
+					let end = moment(config.begin).add(e * interval, config.repeat).second(this.time.end);
+					if (this.contains(cell.time, begin.toISOString()) === undefined && end.isBetween(config.beginDate, config.endDate)) {
+						arrTime.time.push({ begin: begin.toDate(), end: end.toDate() });
+					}
+				}
+
 			}
+		}
+
+		if (config.repeat === 'day' && config.selectedDay.length > 0) {
+			let sDay = config.selectedDay;
+
+			for (let i = 0; i < sDay.length; i++) {
+				let begin = moment(this.dateList[sDay[i]].day).second(this.time.begin);
+				let end = moment(this.dateList[sDay[i]].day).second(this.time.end);
+
+				if (this.contains(cell.time, begin.toISOString()) === undefined) {
+					arrTime.time.push({ begin: begin.toDate(), end: end.toDate() });
+				}
+			}
+		}
+
+		// arrTime.time.forEach(e => {
+		// 	console.log(e.begin)
+		// });
+		if (arrTime.time.length > 0) {
+			this.adminService
+				.saveCell(arrTime)
+				.subscribe();
 		}
 	}
 
@@ -180,14 +228,5 @@ export class CellComponent implements OnInit {
 			return arr.find((i) => i.begin === elem);
 		}
 		return undefined;
-	}
-
-	save(res) {
-
-		// 		this.adminService
-		// 			.saveOneWeek(result)
-		// 			.subscribe();
-		// 	}
-		console.log(res);
 	}
 }

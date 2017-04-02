@@ -87,9 +87,9 @@ export class AdminComponent implements OnInit {
 					let date = moment(this.data.beginDate).day(beginDay + i);
 					let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
 					if (cont) {
-						this.dateList.push({ day: date.toDate(), isHoliday: true });
+						this.dateList.push({ day: date.toISOString(), isHoliday: true });
 					} else {
-						this.dateList.push({ day: date.toDate(), isHoliday: false });
+						this.dateList.push({ day: date.toISOString(), isHoliday: false });
 					}
 
 				}
