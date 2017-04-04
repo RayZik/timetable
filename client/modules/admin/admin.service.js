@@ -111,12 +111,12 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map", "rxj
                         .http
                         .post("/api/admin/cellTimetable/add_cell", { headers: headers });
                 };
-                AdminService.prototype.deleteCell = function (id) {
+                AdminService.prototype.deleteCell = function (id, obj) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .delete("/api/admin/cellTimetable/delete_cell/" + id, { headers: headers });
+                        .post("/api/admin/cellTimetable/delete_cell/" + id, obj, { headers: headers });
                 };
                 //timetable
                 AdminService.prototype.addTimeLesson = function (lesson) {
@@ -154,7 +154,7 @@ System.register(["@angular/core", "@angular/http", "rxjs/add/operator/map", "rxj
                     headers.append('Content-Type', 'application/json');
                     return this
                         .http
-                        .put("/api/admin/timetable/save_cell", data, { headers: headers });
+                        .put("/api/admin/cellTimetable/save_cell", data, { headers: headers });
                 };
                 AdminService.prototype.deleteLesson = function (lesson) {
                     var headers = new http_1.Headers();

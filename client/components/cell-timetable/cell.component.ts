@@ -119,9 +119,41 @@ export class CellComponent implements OnInit {
 			.subscribe();
 	}
 
-	deleteCell(id: String, repeatModal): void {
+	deleteCellToEnd(id): void {
+		let obj = { time: [] };
 		this.adminService
-			.deleteCell(id)
+			.deleteCell(id, obj)
+			.subscribe();
+	}
+
+	deleteCellMoment(cell): void {
+		let beginDate = moment(this.dateList[this.dayIndex].day).second(this.time.begin).toISOString();
+		let id = cell._id;
+		let res = [];
+		cell.time.find((el, idx) => {
+			if (!moment(el.begin).isSameOrAfter(beginDate)) {
+				res.push(el);
+			}
+		});
+		let obj = { time: res };
+		this.adminService
+			.deleteCell(id, obj)
+			.subscribe();
+	}
+
+	deleteThisCell(cell): void {
+		let beginDate = moment(this.dateList[this.dayIndex].day).second(this.time.begin).toISOString();
+		let id = cell._id;
+		let res = [];
+		cell.time.find((el, idx) => {
+			if (el.begin !== beginDate) {
+				res.push(el);
+			}
+		});
+		let obj = { time: res };
+
+		this.adminService
+			.deleteCell(id, obj)
 			.subscribe();
 	}
 

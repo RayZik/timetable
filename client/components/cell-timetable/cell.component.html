@@ -126,7 +126,8 @@
     </div>
 
     <div>
-        <button *ngIf="showSaveButton" class="mini ui icon button" (click)="clickSaveCell(repeatModal,cell)" class="test"><i class="icon save"></i></button>
+        <button *ngIf="showSaveButton" class="mini ui icon button" (click)="clickSaveCell(repeatModal,cell)"><i class="icon save"></i></button>
+        <button *ngIf="!showSaveButton" class="mini ui icon button" (click)="deleteCellToEnd(cell._id)"><i class="icon minus"></i></button>
     </div>
 </div>
 
@@ -225,9 +226,10 @@
         </sm-list>
     </modal-content>
     <modal-actions>
-        <div class="ui buttons">
-            <div class="ui button" (click)="deleteCell(configSave.id);repeatModal.hide();">Удалить</div>
-            <div class="ui positive button primary" (click)="saveCell(configSave,cell);">Сохранить</div>
-        </div>
+        <div class="ui button" (click)="deleteCellToEnd(cell._id);repeatModal.hide();">Удалить Все </div>
+        <div class="ui button" (click)="deleteCellMoment(cell);repeatModal.hide();">Удалить с этой до кон</div>
+        <div class="ui button" (click)="deleteThisCell(cell);repeatModal.hide();">Удалить только эту</div>
+
+        <div class="ui right floated  positive button primary" (click)="saveCell(configSave,cell);">Сохранить</div>
     </modal-actions>
 </sm-modal>

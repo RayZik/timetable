@@ -97,12 +97,12 @@ export class AdminService {
             .post("/api/admin/cellTimetable/add_cell", { headers: headers })
     }
 
-    deleteCell(id: String) {
+    deleteCell(id, obj) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .delete(`/api/admin/cellTimetable/delete_cell/${id}`, { headers: headers })
+            .post(`/api/admin/cellTimetable/delete_cell/${id}`, obj, { headers: headers })
     }
 
     //timetable
@@ -142,7 +142,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put("/api/admin/timetable/save_cell", data, { headers: headers })
+            .put("/api/admin/cellTimetable/save_cell", data, { headers: headers })
     }
 
     deleteLesson(lesson) {

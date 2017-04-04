@@ -48,20 +48,6 @@ timetableApi.post("/add_time_lesson", (req: Request, res: Response, next: NextFu
         }).catch(next);
 });
 
-timetableApi.put("/save_cell", (req: Request, res: Response, next: NextFunction) => {
-    let id = req.body.id;
-    let time = req.body.time;
-    cellTimetable.findOne({ _id: id })
-        .exec().then((res) => {
-            let cell = new cellTimetable(res);
-            time.forEach(e => {
-                cell.time.push({ begin: e.begin, end: e.end });
-            });
-            cell.save();
-        }).catch(next);
-    res.end();
-});
-
 timetableApi.post("/delete_time_lesson", (req: Request, res: Response, next: NextFunction) => {
     let lesson = req.body.lesson;
 

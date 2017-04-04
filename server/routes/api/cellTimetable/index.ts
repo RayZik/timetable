@@ -99,13 +99,29 @@ cellTimetableApi.post("/add_cell", (req: Request, res: Response, next: NextFunct
     res.end();
 });
 
-cellTimetableApi.delete("/delete_cell/:id", (req: Request, res: Response, next: NextFunction) => {
-    cellTimetable.findById({ _id: req.params.id })
-        .then((r) => {
-            r.remove();
+cellTimetableApi.post("/delete_cell/:id", (req: Request, res: Response, next: NextFunction) => {
+    let time = req.body.time;
+    cellTimetable.update({ _id: req.params.id }, { $set: { "time": time } })
+        .then(() => {
             res.end();
         })
         .catch(next)
+});
+
+
+
+cellTimetableApi.put("/save_cell", (req: Request, res: Response, next: NextFunction) => {
+    let id = req.body.id;
+    let time = req.body.time;
+    cellTimetable.findOne({ _id: id })
+        .exec().then((res) => {
+            let cell = new cellTimetable(res);
+            time.forEach(e => {
+                cell.time.push({ begin: e.begin, end: e.end });
+            });
+            cell.save();
+        }).catch(next);
+    res.end();
 });
 
 export { cellTimetableApi };
