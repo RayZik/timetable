@@ -23,7 +23,8 @@ export class FilterComponent implements OnInit {
     private searchListSubject: any[] = [];
     private searchListGroup: any[] = [];
     private searchListOffice: any[] = [];
-
+    private idForSearch: any[] = [];
+    private obj: Object = {};
     private configFilter: any = {
         date: {
             next: false,
@@ -105,155 +106,175 @@ export class FilterComponent implements OnInit {
 
         if (term.length != 0) {
             if (sign === 't') {
-                this.teachers.forEach(t => {
-                    let result = t.surname + ' ' + t.name + ' ' + t.lastName;
+                this.obj['searchListTeacher'] = this.teachers.filter(t => {
                     let strToLower = (t.surname + t.name + t.lastName).toLowerCase();
-
-                    if (strToLower.indexOf(term) != -1) {
-                        this.searchListTeacher.push(result);
-                    }
-                    this.searchListTeacher.sort();
+                    return strToLower.indexOf(term) != -1;
                 });
+
+                this.searchListTeacher = this.obj['searchListTeacher'].filter(el => {
+                    return this.idForSearch.indexOf(el._id) === -1;
+                });
+                this.searchListTeacher.sort();
             }
 
             if (sign === 'g') {
-                this.groups.forEach(g => {
-                    let result = g.name;
+                this.obj['searchListGroup'] = this.groups.filter(g => {
                     let strToLower = (g.name).toLowerCase();
+                    return strToLower.indexOf(term) != -1;
+                });
 
-                    if (strToLower.indexOf(term) != -1) {
-                        this.searchListGroup.push(result);
-                    }
+                this.searchListGroup = this.obj['searchListGroup'].filter(el => {
+                    return this.idForSearch.indexOf(el._id) === -1;
                 });
                 this.searchListGroup.sort();
             }
 
             if (sign === 's') {
-                this.subjects.forEach(s => {
-                    let result = s.name;
+                this.obj['searchListSubject'] = this.subjects.filter(s => {
                     let strToLower = (s.name).toLowerCase();
-
-                    if (strToLower.indexOf(term) != -1) {
-                        this.searchListSubject.push(result);
-                    }
+                    return strToLower.indexOf(term) != -1;
                 });
+
+                this.searchListSubject = this.obj['searchListSubject'].filter(el => {
+                    return this.idForSearch.indexOf(el._id) === -1;
+                });
+
                 this.searchListSubject.sort();
             }
 
             if (sign === 'o') {
-                this.offices.forEach(o => {
-                    let result = o.name;
+                this.obj['searchListOffice'] = this.offices.filter(o => {
                     let strToLower = (o.name).toLowerCase();
-
-                    if (strToLower.indexOf(term) != -1) {
-                        this.searchListOffice.push(result);
-                    }
+                    return strToLower.indexOf(term) != -1;
                 });
+
+                this.searchListOffice = this.obj['searchListOffice'].filter(el => {
+                    return this.idForSearch.indexOf(el._id) === -1;
+                });
+
                 this.searchListOffice.sort();
             }
         }
     }
 
     //Teacher Search
-    selectTeacher(teacher) {
-        let idxChecked = this.configFilter.teacher.indexOf(teacher.value);
-        let idxSearch = this.searchListTeacher.indexOf(teacher.value);
+    selectTeacher(t, teacher) {
+        if (t.checked) {
+            this.idForSearch.push(teacher._id);
+            this.configFilter.teacher = this.teachers.filter(el => {
+                return this.idForSearch.indexOf(el._id) !== -1;
+            });
 
-        if (teacher.checked) {
-            if (idxChecked === -1 && idxSearch != -1) {
-                this.configFilter.teacher.push(teacher.value);
-                this.searchListTeacher.splice(idxSearch, 1);
-            } else {
-                this.searchListTeacher.splice(idxSearch, 1);
-            }
+            this.searchListTeacher = this.obj['searchListTeacher'].filter(el => {
+                return this.idForSearch.indexOf(el._id) === -1;
+            });
+
         } else {
-            if (idxChecked != -1 && idxSearch === -1) {
-                this.searchListTeacher.push(teacher.value);
-                this.configFilter.teacher.splice(idxChecked, 1);
-            } else {
-                this.searchListTeacher.splice(idxSearch, 1);
-            }
+            this.idForSearch = this.idForSearch.filter(el => { return el !== teacher._id });
+            this.configFilter.teacher = this.teachers.filter(el => {
+                return this.idForSearch.indexOf(el._id) !== -1;
+            });
+
+            this.searchListTeacher = this.obj['searchListTeacher'].filter(el => {
+                return this.idForSearch.indexOf(el._id) === -1;
+            });
         }
+
         this.searchListTeacher.sort();
         this.configFilter.teacher.sort();
         this.change();
     }
 
-
-
     //search Subject
-    selectSubject(subject) {
-        let idxChecked = this.configFilter.subject.indexOf(subject.value);
-        let idxSearch = this.searchListSubject.indexOf(subject.value);
+    selectSubject(s, subject) {
+        if (s.checked) {
+            this.idForSearch.push(subject._id);
+            this.configFilter.subject = this.subjects.filter(el => {
+                return this.idForSearch.indexOf(el._id) !== -1;
+            });
 
-        if (subject.checked) {
-            if (idxChecked === -1 && idxSearch != -1) {
-                this.configFilter.subject.push(subject.value);
-                this.searchListSubject.splice(idxSearch, 1);
-            } else {
-                this.searchListSubject.splice(idxSearch, 1);
-            }
+            this.searchListSubject = this.obj['searchListSubject'].filter(el => {
+                return this.idForSearch.indexOf(el._id) === -1;
+            });
+
         } else {
-            if (idxChecked != -1 && idxSearch === -1) {
-                this.searchListSubject.push(subject.value);
-                this.configFilter.subject.splice(idxChecked, 1);
-            } else {
-                this.searchListSubject.splice(idxSearch, 1);
-            }
+            this.idForSearch = this.idForSearch.filter(el => { return el !== subject._id });
+            this.configFilter.subject = this.subjects.filter(el => {
+                return this.idForSearch.indexOf(el._id) !== -1;
+            });
+
+            this.searchListSubject = this.obj['searchListSubject'].filter(el => {
+                return this.idForSearch.indexOf(el._id) === -1;
+            });
         }
+
         this.searchListSubject.sort();
         this.configFilter.subject.sort();
         this.change();
     }
 
     //search group
-    selectGroup(group) {
-        let idxChecked = this.configFilter.group.indexOf(group.value);
-        let idxSearch = this.searchListGroup.indexOf(group.value);
+    selectGroup(g, group) {
+        if (g.checked) {
+            this.idForSearch.push(group._id);
+            this.configFilter.group = this.groups.filter(el => {
+                return this.idForSearch.indexOf(el._id) !== -1;
+            });
 
-        if (group.checked) {
-            if (idxChecked === -1 && idxSearch != -1) {
-                this.configFilter.group.push(group.value);
-                this.searchListGroup.splice(idxSearch, 1);
-            } else {
-                this.searchListGroup.splice(idxSearch, 1);
-            }
+            this.searchListGroup = this.obj['searchListGroup'].filter(el => {
+                return this.idForSearch.indexOf(el._id) === -1;
+            });
+
         } else {
-            if (idxChecked != -1 && idxSearch === -1) {
-                this.searchListGroup.push(group.value);
-                this.configFilter.group.splice(idxChecked, 1);
-            } else {
-                this.searchListGroup.splice(idxSearch, 1);
-            }
+            this.idForSearch = this.idForSearch.filter(el => { return el !== group._id });
+            this.configFilter.group = this.groups.filter(el => {
+                return this.idForSearch.indexOf(el._id) !== -1;
+            });
+
+            this.searchListGroup = this.obj['searchListGroup'].filter(el => {
+                return this.idForSearch.indexOf(el._id) === -1;
+            });
         }
+
         this.searchListGroup.sort();
         this.configFilter.group.sort();
         this.change();
     }
 
     //search office
-    selectOffice(office) {
-        let idxChecked = this.configFilter.office.indexOf(office.value);
-        let idxSearch = this.searchListOffice.indexOf(office.value);
+    selectOffice(o, office) {
 
-        if (office.checked) {
-            if (idxChecked === -1 && idxSearch != -1) {
-                this.configFilter.office.push(office.value);
-                this.searchListOffice.splice(idxSearch, 1);
-            } else {
-                this.searchListOffice.splice(idxSearch, 1);
-            }
+        if (o.checked) {
+            this.idForSearch.push(office._id);
+            this.configFilter.office = this.offices.filter(el => {
+                return this.idForSearch.indexOf(el._id) !== -1;
+            });
+
+            this.searchListOffice = this.obj['searchListOffice'].filter(el => {
+                return this.idForSearch.indexOf(el._id) === -1;
+            });
+
         } else {
-            if (idxChecked != -1 && idxSearch === -1) {
-                this.searchListOffice.push(office.value);
-                this.configFilter.office.splice(idxChecked, 1);
-            } else {
-                this.searchListOffice.splice(idxSearch, 1);
-            }
+            this.idForSearch = this.idForSearch.filter(el => { return el !== office._id });
+            this.configFilter.office = this.offices.filter(el => {
+                return this.idForSearch.indexOf(el._id) !== -1;
+            });
+
+            this.searchListOffice = this.obj['searchListOffice'].filter(el => {
+                return this.idForSearch.indexOf(el._id) === -1;
+            });
         }
+
         this.searchListOffice.sort();
         this.configFilter.office.sort();
+
         this.change();
+        this.test(this.searchListOffice);
+
+    }
+
+    test(searchListOffice) {
+        searchListOffice = [];
     }
 
     change() {
@@ -328,8 +349,7 @@ export class FilterComponent implements OnInit {
             if (this.configFilter.group.length > 0) {
                 a.push(this.configFilter.group.some(cfGroup =>
                     cell.group.some(group => {
-                        let str = group.name;
-                        return str === cfGroup;
+                        return group._id === cfGroup._id;
                     })
                 ))
             }
@@ -337,8 +357,7 @@ export class FilterComponent implements OnInit {
             if (this.configFilter.office.length > 0) {
                 a.push(this.configFilter.office.some(cfOffice =>
                     cell.office.some(office => {
-                        let str = office.name;
-                        return str === cfOffice;
+                        return office._id === cfOffice._id;
                     })
                 ))
             }
@@ -346,8 +365,7 @@ export class FilterComponent implements OnInit {
             if (this.configFilter.subject.length > 0) {
                 a.push(this.configFilter.subject.some(cfSubject =>
                     cell.subject.some(subject => {
-                        let str = subject.name;
-                        return str === cfSubject;
+                        return subject._id === cfSubject._id;
                     })
                 ))
             }
@@ -355,8 +373,7 @@ export class FilterComponent implements OnInit {
             if (this.configFilter.teacher.length > 0) {
                 a.push(this.configFilter.teacher.some(cfTeacher =>
                     cell.teacher.some(teacher => {
-                        let str = teacher.surname + ' ' + teacher.name + ' ' + teacher.lastName;
-                        return str === cfTeacher;
+                        return teacher._id === cfTeacher._id;
                     })
                 ));
             }

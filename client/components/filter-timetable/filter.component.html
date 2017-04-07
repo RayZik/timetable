@@ -12,14 +12,14 @@
         <div class="myDropDown" *ngIf='searchSubj.value != ""'>
             <div *ngIf='configFilter.subject.length > 0'>
                 <div *ngFor="let subject of configFilter.subject">
-                    <p><input type="checkbox" [value]='subject' #selSubject (change)='selectSubject(selSubject)' [checked]='true'>{{subject}}</p>
+                    <p><input type="checkbox" #selSubject (change)='selectSubject(selSubject,subject)' [checked]='true'>{{subject.name}}</p>
                 </div>
                 <div class='ui divider'></div>
             </div>
 
             <div *ngIf='searchListSubject.length > 0'>
                 <div *ngFor="let subject of searchListSubject">
-                    <p><input type="checkbox" [value]='subject' #selSubject (change)='selectSubject(selSubject)'>{{subject}}</p>
+                    <p><input type="checkbox" #selSubject (change)='selectSubject(selSubject,subject)'>{{subject.name}}</p>
                 </div>
             </div>
         </div>
@@ -33,14 +33,18 @@
         <div class="myDropDown" *ngIf='searchT.value != ""'>
             <div *ngIf='configFilter.teacher.length > 0'>
                 <div *ngFor="let teacher of configFilter.teacher">
-                    <p><input type="checkbox" [value]='teacher' #selTeacher (change)='selectTeacher(selTeacher)' [checked]='true'>{{teacher}}</p>
+                    <p><input type="checkbox" #selTeacher (change)='selectTeacher(selTeacher,teacher)' [checked]='true'>{{teacher.surname}}
+                        {{teacher.name}} {{teacher.lastName}}
+                    </p>
                 </div>
                 <div class='ui divider'></div>
             </div>
 
             <div *ngIf='searchListTeacher.length > 0'>
                 <div *ngFor="let teacher of searchListTeacher">
-                    <p><input type="checkbox" [value]='teacher' #selTeacher (change)='selectTeacher(selTeacher)'>{{teacher}}</p>
+                    <p><input type="checkbox" #selTeacher (change)='selectTeacher(selTeacher,teacher)'>{{teacher.surname}} {{teacher.name}}
+                        {{teacher.lastName}}
+                    </p>
                 </div>
             </div>
         </div>
@@ -54,14 +58,14 @@
         <div class="myDropDown" *ngIf='searchG.value != ""'>
             <div *ngIf='configFilter.group.length > 0'>
                 <div *ngFor="let group of configFilter.group">
-                    <p><input type="checkbox" [value]='group' #selGroup (change)='selectGroup(selGroup)' [checked]='true'>{{group}}</p>
+                    <p><input type="checkbox" #selGroup (change)='selectGroup(selGroup,group)' [checked]='true'>{{group.name}}</p>
                 </div>
                 <div class='ui divider'></div>
             </div>
 
             <div *ngIf='searchListGroup.length > 0'>
                 <div *ngFor="let group of searchListGroup">
-                    <p><input type="checkbox" [value]='group' #selGroup (change)='selectGroup(selGroup)'>{{group}}</p>
+                    <p><input type="checkbox" #selGroup (change)='selectGroup(selGroup,group)'>{{group.name}}</p>
                 </div>
             </div>
         </div>
@@ -75,14 +79,14 @@
         <div class="myDropDown" *ngIf='searchO.value != ""'>
             <div *ngIf='configFilter.office.length > 0'>
                 <div *ngFor="let office of configFilter.office">
-                    <p><input type="checkbox" [value]='office' #selOffice (change)='selectOffice(selOffice)' [checked]='true'>{{office}}</p>
+                    <p><input type="checkbox" #selOffice (change)='selectOffice(selOffice,office)' [checked]='true'>{{office.name}}</p>
                 </div>
                 <div class='ui divider'></div>
             </div>
 
             <div *ngIf='searchListOffice.length > 0'>
                 <div *ngFor="let office of searchListOffice">
-                    <p><input type="checkbox" [value]='office' #selOffice (change)='selectOffice(selOffice)'>{{office}}</p>
+                    <p><input type="checkbox" #selOffice (change)='selectOffice(selOffice,office)'>{{office.name}}</p>
                 </div>
             </div>
         </div>
