@@ -1,0 +1,17 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "indent": [true, "spaces"],
+        "no-require-imports": true,
+        "member-ordering": [true, { "order": "fields-first" }],
+        "no-magic-numbers": [true, 1, 2, 3, 0, -1],
+        "class-name": true,
+        "no-trailing-whitespace": true,
+        "ordered-imports": [true, {"import-sources-order": "lowercase-last", "named-imports-order": "lowercase-first"}]
+    },
+    "rulesDirectory": []
+}
