@@ -1,15 +1,17 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { AdminService } from '../../modules/admin/admin.service';
 import { ApiService } from '../../service/api.service';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import moment from 'moment';
+
 @Component({
 	selector: 'tt-cell',
-	templateUrl: "client/components/cell-timetable/cell.component.html",
+	templateUrl: 'client/components/cell-timetable/cell.component.html',
 	styleUrls: ['client/components/cell-timetable/cell.component.css']
 })
 
 export class CellComponent implements OnInit {
+
 	@Input() cell;
 	@Input() dateList;
 	@Input() dayIndex;
@@ -21,11 +23,11 @@ export class CellComponent implements OnInit {
 	private subjects: any[];
 	private offices: any[];
 	private groups: any[];
-	private idTeacher: any = { id: "", show: false };
-	private idSubject: any = { id: "", show: false };
-	private idOffice: any = { id: "", show: false };
-	private idGroup: any = { id: "", show: false };
-	private idCell: String = "";
+	private idTeacher: any = { id: '', show: false };
+	private idSubject: any = { id: '', show: false };
+	private idOffice: any = { id: '', show: false };
+	private idGroup: any = { id: '', show: false };
+	private idCell: String = '';
 	private configSave: Object = {};
 	private arrRepWithInter: any[] = [];
 	private daysName: any[] = ['Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб.', 'Вс.'];
@@ -171,8 +173,8 @@ export class CellComponent implements OnInit {
 		this.configSave = {};
 		this.configSave['repeat'] = 'day';
 		this.configSave['repeatWithInterval'] = '1';
-		this.configSave['beginDate'] = moment(this.dateList[this.dayIndex].day).format("YYYY-MM-DD").toString();
-		this.configSave['endDate'] = moment(this.data.endDate).format("YYYY-MM-DD").toString();
+		this.configSave['beginDate'] = moment(this.dateList[this.dayIndex].day).format('YYYY-MM-DD').toString();
+		this.configSave['endDate'] = moment(this.data.endDate).format('YYYY-MM-DD').toString();
 		this.configSave['begin'] = moment(this.dateList[this.dayIndex].day).format();
 		this.configSave['selectedDay'] = [];
 	}
@@ -193,7 +195,7 @@ export class CellComponent implements OnInit {
 			this.configSave['selectedDay'].push(idx);
 		} else {
 			let indElem = this.configSave['selectedDay'].indexOf(idx);
-			if (indElem != -1) {
+			if (indElem !== -1) {
 				this.configSave['selectedDay'].splice(indElem, 1);
 			}
 		}
@@ -245,9 +247,6 @@ export class CellComponent implements OnInit {
 			}
 		}
 
-		// arrTime.time.forEach(e => {
-		// 	console.log(e.begin)
-		// });
 		if (arrTime.time.length > 0) {
 			this.adminService
 				.saveCell(arrTime)

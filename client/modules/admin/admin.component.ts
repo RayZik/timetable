@@ -23,7 +23,7 @@ export class AdminComponent implements OnInit {
 	private data: any = [];
 	private dataForModalWindow = {};
 	private showModal: Boolean = false;
-	//cell
+
 	private showSaveButton = true;
 	private cellForSave;
 
@@ -81,7 +81,6 @@ export class AdminComponent implements OnInit {
 					this.data.beginDate = bDay.add(diff, 'day');
 				}
 
-
 				for (let i = 0; i < 7; i++) {
 					let beginDay = moment(this.data.beginDate).day();
 					let date = moment(this.data.beginDate).day(beginDay + i);
@@ -109,11 +108,10 @@ export class AdminComponent implements OnInit {
 
 			data.lessons[i].slots = countSlots;
 			for (let j = 0; j < data.lessons[i].slots.length; j++) {
-				let begin = moment(this.dateList[j].day).second(data.lessons[i].begin).valueOf();
-				let end = moment(this.dateList[j].day).second(data.lessons[i].end).valueOf();
+				let begin = moment(this.dateList[j].day).second(data.lessons[i].begin).unix();
 				validate.forEach(cell => {
 					cell.time.forEach(time => {
-						if (moment(time.begin).valueOf() === moment(begin).valueOf()) {
+						if (moment(time.begin).unix() === begin) {
 							data.lessons[i].slots[j].push(cell);
 						}
 					});

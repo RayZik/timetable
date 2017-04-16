@@ -1,13 +1,13 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { provideAuth } from "angular2-jwt";
-import { HttpModule } from "@angular/http";
-import { NgSemanticModule } from "ng-semantic";
+import { provideAuth } from 'angular2-jwt';
+import { HttpModule } from '@angular/http';
+import { NgSemanticModule } from 'ng-semantic';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
-import { routing } from "./routes";
-import { HomeModule } from "./modules/home/home.module";
-import { AdminModule } from "./modules/admin/admin.module";
+import { routing } from './routes';
+import { HomeModule } from './modules/home/home.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @NgModule({
     imports: [
@@ -21,7 +21,7 @@ import { AdminModule } from "./modules/admin/admin.module";
     ],
     providers: [
         provideAuth({
-            globalHeaders: [{ "Content-type": "application/json" }],
+            globalHeaders: [{ 'Content-type': 'application/json' }],
             newJwtError: true,
             noTokenScheme: true
         })

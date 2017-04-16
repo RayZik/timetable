@@ -1,10 +1,10 @@
-import { Router, Response, Request, NextFunction } from "express";
+import { Router, Response, Request, NextFunction } from 'express';
 
 const office: Router = Router();
 
-const Office = require("../../../../models/office").OfficeModel;
+const Office = require('../../../../models/office').OfficeModel;
 
-office.get("/", (req: Request, res: Response, next: NextFunction) => {
+office.get('/', (req: Request, res: Response, next: NextFunction) => {
     Office.find({})
         .exec().then((result) => {
             res.json(result);
@@ -12,7 +12,7 @@ office.get("/", (req: Request, res: Response, next: NextFunction) => {
         }).catch(next);
 });
 
-office.get("/:id", (req: Request, res: Response, next: NextFunction) => {
+office.get('/:id', (req: Request, res: Response, next: NextFunction) => {
     Office.findById(req.params.id)
         .exec().then((result) => {
             res.json(result);
@@ -20,24 +20,22 @@ office.get("/:id", (req: Request, res: Response, next: NextFunction) => {
         }).catch(next);
 });
 
-office.put("/update/:id", (req: Request, res: Response, next: NextFunction) => {
+office.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
     Office.update({ _id: req.body._id }, { $set: { name: req.body.name } })
         .exec().then(() => {
-            console.info("Office Update");
             res.end();
         }).catch(next);
 });
 
-office.post("/create", (req: Request, res: Response, next: NextFunction) => {
-    var o = new Office({ name: req.body.name });
+office.post('/create', (req: Request, res: Response, next: NextFunction) => {
+    let o = new Office({ name: req.body.name });
     o.save()
         .then((result) => {
-            console.info(result);
             res.end();
         }).catch(next);
 });
 
-office.delete("/remove/:id", (req: Request, res: Response, next: NextFunction) => {
+office.delete('/remove/:id', (req: Request, res: Response, next: NextFunction) => {
     Office.findById(req.params.id)
         .exec().then((result) => {
             if (result != null) {
@@ -47,4 +45,4 @@ office.delete("/remove/:id", (req: Request, res: Response, next: NextFunction) =
         }).catch(next);
 });
 
-export { office }; 
+export { office };

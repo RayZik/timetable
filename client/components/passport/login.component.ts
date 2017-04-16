@@ -1,14 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: "tt-login",
-    templateUrl: "client/components/passport/login.component.html"
+    selector: 'tt-login',
+    templateUrl: 'client/components/passport/login.component.html'
 })
-export class LoginComponent{
-
+export class LoginComponent {
 
     constructor() { }
-  
-   
 }

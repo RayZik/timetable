@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var passport = require("passport");
 var passport_local_1 = require("passport-local");
-var User = require("../../../models/user").UserModel;
+var User = require('../../../models/user').UserModel;
 passport.serializeUser(function (user, done) {
     done(null, user._id);
 });

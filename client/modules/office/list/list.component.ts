@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'tt-list-office',
-    templateUrl: "client/modules/office/list/list.component.html"
+    templateUrl: 'client/modules/office/list/list.component.html'
 })
 
 export class OfficeListComponent implements OnInit {

@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { Http, Headers } from "@angular/http";
-import { AuthHttp } from "angular2-jwt";
-import { Response, Request } from "@angular/http";
-import "rxjs/add/operator/map";
-import "rxjs/add/observable/of";
-import "rxjs/add/operator/share";
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
+import { AuthHttp } from 'angular2-jwt';
+import { Response, Request } from '@angular/http';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/share';
 import { Observable } from 'rxjs/Observable';
 
 

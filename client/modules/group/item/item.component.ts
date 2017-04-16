@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
     selector: 'tt-list-group',
-    templateUrl: "client/modules/group/item/item.component.html"
+    templateUrl: 'client/modules/group/item/item.component.html'
 })
 
-export class GroupItemComponent implements OnInit { 
+export class GroupItemComponent implements OnInit {
 
     private group: any = {};
 

@@ -1,16 +1,16 @@
-import { Router, Response, Request, NextFunction } from "express";
+import { Router, Response, Request, NextFunction } from 'express';
 import * as moment from 'moment';
 
 const timetableApi: Router = Router();
 
-const Timetable = require("../../../../models/timetable").TimetableModel;
-const cellTimetable = require("../../../../models/cellTimetable").CellTimetableModel;
-const holiday = require("../../../../models/holiday").HolidayModel;
+const Timetable = require('../../../../models/timetable').TimetableModel;
+const cellTimetable = require('../../../../models/cellTimetable').CellTimetableModel;
+const holiday = require('../../../../models/holiday').HolidayModel;
 
 // let h = new holiday({date: moment().toDate()});
 // h.save();
 
-timetableApi.get("/", (req: Request, res: Response, next: NextFunction) => {
+timetableApi.get('/', (req: Request, res: Response, next: NextFunction) => {
     Timetable.find({})
         .exec().then((result) => {
             res.send(result);
@@ -18,7 +18,7 @@ timetableApi.get("/", (req: Request, res: Response, next: NextFunction) => {
         }).catch(next);
 });
 
-timetableApi.get("/holidays", (req: Request, res: Response, next: NextFunction) => {
+timetableApi.get('/holidays', (req: Request, res: Response, next: NextFunction) => {
     holiday.find({})
         .exec().then((result) => {
             res.send(result);
@@ -26,7 +26,7 @@ timetableApi.get("/holidays", (req: Request, res: Response, next: NextFunction) 
         }).catch(next);
 });
 
-timetableApi.post("/add_date", (req: Request, res: Response, next: NextFunction) => {
+timetableApi.post('/add_date', (req: Request, res: Response, next: NextFunction) => {
     let begin: Date = moment.utc(req.body.beginDate).toDate();
     let end: Date = moment.utc(req.body.endDate).toDate();
 
@@ -38,7 +38,7 @@ timetableApi.post("/add_date", (req: Request, res: Response, next: NextFunction)
     res.end();
 });
 
-timetableApi.post("/add_time_lesson", (req: Request, res: Response, next: NextFunction) => {
+timetableApi.post('/add_time_lesson', (req: Request, res: Response, next: NextFunction) => {
     let date: Date = moment(0).hour(0).toDate();
     let begin: Number = moment(date).minute(req.body.begin).unix();
     let end: Number = moment(date).minute(req.body.end).unix();
@@ -48,13 +48,13 @@ timetableApi.post("/add_time_lesson", (req: Request, res: Response, next: NextFu
         }).catch(next);
 });
 
-timetableApi.post("/delete_time_lesson", (req: Request, res: Response, next: NextFunction) => {
+timetableApi.post('/delete_time_lesson', (req: Request, res: Response, next: NextFunction) => {
     let lesson = req.body.lesson;
 
     Timetable.findOne({})
         .exec().then((result) => {
             result.lessons.forEach(les => {
-                if (les._id == lesson[0]) {
+                if (les._id === lesson[0]) {
                     les.remove();
                     lesson[1].forEach(cellId => {
                         cellTimetable.findOneAndUpdate({ _id: cellId }, { $set: { time: [] } })
@@ -66,4 +66,4 @@ timetableApi.post("/delete_time_lesson", (req: Request, res: Response, next: Nex
     res.end();
 });
 
-export { timetableApi }; 
+export { timetableApi };

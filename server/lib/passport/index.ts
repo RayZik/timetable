@@ -1,6 +1,6 @@
-import * as passport from "passport";
-import { Strategy } from "passport-local";
-const User: any = require("../../../models/user").UserModel;
+import * as passport from 'passport';
+import { Strategy } from 'passport-local';
+const User: any = require('../../../models/user').UserModel;
 
 passport.serializeUser((user, done) => {
     done(null, user._id);

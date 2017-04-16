@@ -1,27 +1,30 @@
-import * as express from "express";
-import * as session from "express-session";
-import * as cookieParser from "cookie-parser";
-import * as passport from "passport";
+import * as express from 'express';
+import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
+import * as passport from 'passport';
+import * as cors from 'cors';
 
 const flash: any = require('connect-flash');
 const config: any = require('../config');
-var mongoose: any = require('../lib/mongoose');
-var MongoStore = require('connect-mongo')(session);
+let mongoose: any = require('../lib/mongoose');
+let MongoStore = require('connect-mongo')(session);
 
-import { join } from "path";
-import { json, urlencoded } from "body-parser";
+import { join } from 'path';
+import { json, urlencoded } from 'body-parser';
 
-import { restApi } from "./routes/api";
-import { login } from "./routes/auth/local";
+import { restApi } from './routes/api';
+import { login } from './routes/auth/local';
 
 import './typesext';
 
 const app: express.Application = express();
-app.disable("x-powered-by");
+app.disable('x-powered-by');
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
-//настройки пасспорта
+app.use(cors({ origin: '*' }));
+
+// настройки пасспорта
 app.use(cookieParser());
 app.use(session(
     {
@@ -37,11 +40,11 @@ app.use(flash());
 
 app.use(express.static(join(__dirname, '../public')));
 
-app.use("/api", restApi);
-app.use("/user", login);
+app.use('/api', restApi);
+app.use('/user', login);
 app.use('/client', express.static(join(__dirname, '../client')));
 
-if (app.get("env") === "development") {
+if (app.get('env') === 'development') {
 
     app.use(express.static(join(__dirname, '../node_modules')));
     app.use(express.static(join(__dirname, '../tools')));
@@ -57,7 +60,7 @@ if (app.get("env") === "development") {
 
 // Error 404
 app.use(function (req: express.Request, res: express.Response, next) {
-    let err = new Error("Not Found");
+    let err = new Error('Not Found');
     next(err);
 });
 

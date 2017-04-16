@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
     selector: 'tt-list-office',
-    templateUrl: "client/modules/office/item/item.component.html"
+    templateUrl: 'client/modules/office/item/item.component.html'
 })
 
 export class OfficeItemComponent implements OnInit {

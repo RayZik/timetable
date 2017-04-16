@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'tt-list-teacher',
-    templateUrl: "client/modules/teacher/list/list.component.html"
+    templateUrl: 'client/modules/teacher/list/list.component.html'
 })
 
 export class TeacherListComponent implements OnInit {

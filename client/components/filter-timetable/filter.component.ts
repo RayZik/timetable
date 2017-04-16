@@ -5,7 +5,7 @@ import moment from 'moment';
 
 @Component({
     selector: 'tt-filter',
-    templateUrl: "client/components/filter-timetable/filter.component.html",
+    templateUrl: 'client/components/filter-timetable/filter.component.html',
     styleUrls: ['client/components/filter-timetable/filter.component.css']
 })
 
@@ -104,11 +104,11 @@ export class FilterComponent implements OnInit {
             this.searchListOffice = [];
         }
 
-        if (term.length != 0) {
+        if (term.length !== 0) {
             if (sign === 't') {
                 this.obj['searchListTeacher'] = this.teachers.filter(t => {
                     let strToLower = (t.surname + t.name + t.lastName).toLowerCase();
-                    return strToLower.indexOf(term) != -1;
+                    return strToLower.indexOf(term) !== -1;
                 });
 
                 this.searchListTeacher = this.obj['searchListTeacher'].filter(el => {
@@ -120,7 +120,7 @@ export class FilterComponent implements OnInit {
             if (sign === 'g') {
                 this.obj['searchListGroup'] = this.groups.filter(g => {
                     let strToLower = (g.name).toLowerCase();
-                    return strToLower.indexOf(term) != -1;
+                    return strToLower.indexOf(term) !== -1;
                 });
 
                 this.searchListGroup = this.obj['searchListGroup'].filter(el => {
@@ -132,7 +132,7 @@ export class FilterComponent implements OnInit {
             if (sign === 's') {
                 this.obj['searchListSubject'] = this.subjects.filter(s => {
                     let strToLower = (s.name).toLowerCase();
-                    return strToLower.indexOf(term) != -1;
+                    return strToLower.indexOf(term) !== -1;
                 });
 
                 this.searchListSubject = this.obj['searchListSubject'].filter(el => {
@@ -145,7 +145,7 @@ export class FilterComponent implements OnInit {
             if (sign === 'o') {
                 this.obj['searchListOffice'] = this.offices.filter(o => {
                     let strToLower = (o.name).toLowerCase();
-                    return strToLower.indexOf(term) != -1;
+                    return strToLower.indexOf(term) !== -1;
                 });
 
                 this.searchListOffice = this.obj['searchListOffice'].filter(el => {
@@ -157,7 +157,7 @@ export class FilterComponent implements OnInit {
         }
     }
 
-    //Teacher Search
+
     selectTeacher(t, teacher) {
         if (t.checked) {
             this.idForSearch.push(teacher._id);
@@ -185,7 +185,7 @@ export class FilterComponent implements OnInit {
         this.change();
     }
 
-    //search Subject
+
     selectSubject(s, subject) {
         if (s.checked) {
             this.idForSearch.push(subject._id);
@@ -213,7 +213,6 @@ export class FilterComponent implements OnInit {
         this.change();
     }
 
-    //search group
     selectGroup(g, group) {
         if (g.checked) {
             this.idForSearch.push(group._id);
@@ -241,7 +240,6 @@ export class FilterComponent implements OnInit {
         this.change();
     }
 
-    //search office
     selectOffice(o, office) {
 
         if (o.checked) {
@@ -269,12 +267,6 @@ export class FilterComponent implements OnInit {
         this.configFilter.office.sort();
 
         this.change();
-        this.test(this.searchListOffice);
-
-    }
-
-    test(searchListOffice) {
-        searchListOffice = [];
     }
 
     change() {
@@ -284,9 +276,9 @@ export class FilterComponent implements OnInit {
         };
 
         if (this.configFilter.date.next || this.configFilter.date.prev) {
-
             let firstDayWeek = moment(this.dateList[0].day);
             let lastDayWeek = moment(this.dateList[6].day);
+
             if (this.configFilter.date.next) {
                 for (let i = 0; i < 7; i++) {
                     let endDay = moment(lastDayWeek).day() + 1;
@@ -294,9 +286,9 @@ export class FilterComponent implements OnInit {
 
                     let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
                     if (cont) {
-                        res.dateList.push({ day: date.toDate(), isHoliday: true });
+                        res.dateList.push({ day: date.toISOString(), isHoliday: true });
                     } else {
-                        res.dateList.push({ day: date.toDate(), isHoliday: false });
+                        res.dateList.push({ day: date.toISOString(), isHoliday: false });
                     }
 
                 }
@@ -309,9 +301,9 @@ export class FilterComponent implements OnInit {
                     let date = moment(firstDayWeek).day(beginDay - i);
                     let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
                     if (cont) {
-                        res.dateList.push({ day: date.toDate(), isHoliday: true });
+                        res.dateList.push({ day: date.toISOString(), isHoliday: true });
                     } else {
-                        res.dateList.push({ day: date.toDate(), isHoliday: false });
+                        res.dateList.push({ day: date.toISOString(), isHoliday: false });
                     }
                 }
                 this.configFilter.date.prev = false;
@@ -320,8 +312,11 @@ export class FilterComponent implements OnInit {
             this.cellWithTime.forEach((cell) => {
                 let timeCell = [];
                 cell.time.forEach(time => {
-                    if (moment(time.begin).isAfter(res.dateList[0].day) && moment(time.end).isBefore(res.dateList[6].day)) {
-                        timeCell.push(time)
+                    let isBef = moment(time.end).isBefore(moment(res.dateList[6].day).add(1, 'day'));
+                    let isAf = moment(time.begin).isAfter(res.dateList[0].day);
+
+                    if (isAf && isBef) {
+                        timeCell.push(time);
                     }
                 });
 
@@ -330,6 +325,7 @@ export class FilterComponent implements OnInit {
                     res.cells.push(cell)
                 }
             });
+
 
             res.cells = this.checkParams(res.cells);
             this.onChanged.emit(res);
