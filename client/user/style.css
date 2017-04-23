@@ -6,6 +6,10 @@
     max-width:125px;
 }
 
+#table  tr:nth-child(even) {
+    background-color:rgba(46, 133, 46,0.4);
+}
+
 .cell{
     max-width: 300px;
     border:1px solid gray;
@@ -23,10 +27,6 @@
 
 #filter{
     margin-bottom: 10px;
-}
-
-#table  tr:nth-child(even) {
-    background-color:rgba(46, 133, 46,0.4);
 }
 
 #filter select{

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class GroupListComponent implements OnInit {
 
     private groupList: any[] = [];
-    private group: any = {};
+    private group: Object = {};
 
 
     constructor(private groupService: ApiService, private router: Router) { }
@@ -20,25 +20,25 @@ export class GroupListComponent implements OnInit {
 
 
 
-    goGroupId(id: any) {
+    goGroupId(id: any): void {
         this.router.navigate(['/group', id]);
     }
 
-    newGroup(group) {
+    newGroup(group): void {
         this.groupService
             .createGroup(group)
             .subscribe();
         this.refresh();
     }
 
-    deleteGroup(id) {
+    deleteGroup(id): void {
         this.groupService
             .deleteGroup(id)
             .subscribe();
         this.refresh();
     }
 
-    refresh() {
+    refresh(): void {
         this.groupService
             .getGroups()
             .subscribe(

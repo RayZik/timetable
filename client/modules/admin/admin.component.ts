@@ -17,11 +17,11 @@ export class AdminComponent implements OnInit {
 	private cellWithTime: any[] = [];
 	private timeList: any[] = [];
 	private holidayList: any[] = [];
-	private lesson: any = {};
-	private newDate: any = {};
+	private lesson: Object = {};
+	private newDate: Object = {};
 	private dateList: any[] = [];
 	private data: any = [];
-	private dataForModalWindow = {};
+	private dataForModalWindow: Object = {};
 	private showModal: Boolean = false;
 
 	private showSaveButton = true;

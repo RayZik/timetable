@@ -12,13 +12,13 @@ import moment from 'moment';
 
 export class CellComponent implements OnInit {
 
-	@Input() cell;
-	@Input() dateList;
+    @Input() cell;
+    @Input() dateList;
 	@Input() dayIndex;
 	@Input() time;
 	@Input() data;
 	@Input() showSaveButton: Boolean;
-	@Output() onChangedSaveCell = new EventEmitter<any>();
+	@Output() onChangedSaveCell: EventEmitter<any> = new EventEmitter<any>();
 	private teachers: any[];
 	private subjects: any[];
 	private offices: any[];

@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
 
 export class GroupItemComponent implements OnInit {
 
-    private group: any = {};
+    private group: Object = {};
 
     constructor(
         private groupService: ApiService,
@@ -26,7 +26,7 @@ export class GroupItemComponent implements OnInit {
         });
     }
 
-    updateGroup(group: any) {
+    updateGroup(group: any): void {
         this.groupService
             .updateGroup(group)
             .subscribe();
