@@ -10,6 +10,7 @@
 
 .myHoverItem:hover .myHoverBlock{
      display:block;
+     position: absolute;
 }
 
 .myInline{
@@ -17,8 +18,7 @@
 }
 
 .myLine:hover{
-    background-color: lightcyan;
-    box-shadow: inset 0 0 6px;
+    border-bottom: 1px solid gray;
 }
 
 .myCell{

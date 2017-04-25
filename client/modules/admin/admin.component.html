@@ -54,11 +54,15 @@
     <br>
 </div>
 
-<div class="myBoxAddCell">
-    <div class="ui button myButtonAdd" (click)="addCell()"><i class="icon plus"></i></div>
-    <div class='myBagAddedCall' [dragula]='"bag"' [dragulaModel]='cellTimetable'>
-        <div *ngFor="let item of cellTimetable">
-            <tt-cell [cell]='item'></tt-cell>
+<div id="myBoxCell">
+    <div id='takeBox'></div>
+    <div id='collapseBox' (click)='collapseCellBox()'>-</div>
+    <div *ngIf = 'collapse'>
+        <div class="ui button myButtonAdd" (click)="addCell()"><i class="icon plus"></i></div>
+        <div class='myBagAddedCall' [dragula]='"bag"' [dragulaModel]='cellTimetable'>
+            <div *ngFor="let item of cellTimetable">
+                <tt-cell [cell]='item'></tt-cell>
+            </div>
         </div>
     </div>
 </div>

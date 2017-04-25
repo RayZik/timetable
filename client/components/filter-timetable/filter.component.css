@@ -12,3 +12,9 @@
     padding: 3px 3px 3px 3px;
     z-index:99999999;  
 }
+
+.week{
+ cursor: pointer;
+ margin-left: 10px;
+ margin-right: 10px;
+}

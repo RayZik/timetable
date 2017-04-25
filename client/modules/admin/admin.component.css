@@ -4,16 +4,31 @@
     background-color:rgba(46, 133, 46,0.4);
 }
 
-.myBoxAddCell{
+#myBoxCell{
     min-width:200px;
     max-width:300px;
-    height:70%;
     background:white;
     border: 2px solid gray;
-    position:fixed;
+    position: absolute;
     top:200px;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    /*overflow-y: scroll;*/
+    /*overflow-x: hidden;*/
+}
+
+#takeBox{
+    height: 30px;
+    width: 90%;
+    float:left;
+    background-color: greenyellow;
+    cursor: move;
+}
+
+#collapseBox{
+    float:right;
+     width: 10%;
+     height: 30px;
+    background-color: red;
+    cursor:pointer;
 }
 
 .myButtonAdd{

@@ -26,7 +26,7 @@ export class AdminComponent implements OnInit {
 
 	private showSaveButton = true;
 	private cellForSave;
-
+	private collapse: Boolean = true;
 
 	constructor(private adminService: AdminService, private apiService: ApiService, private dragulaService: DragulaService) {
 		dragulaService.dropModel.subscribe((value) => {
@@ -94,6 +94,8 @@ export class AdminComponent implements OnInit {
 				}
 				this.outTable(this.data, this.cellWithTime);
 			});
+
+		this.dragCellBox();
 	}
 
 
@@ -181,5 +183,39 @@ export class AdminComponent implements OnInit {
 		}
 		return undefined;
 	}
+
+	/////////////////////////////////////////////
+	dragCellBox() {
+		let box = document.getElementById('myBoxCell');
+		let takeBox = document.getElementById('takeBox');
+
+		takeBox.onmousedown = function (e) {
+			box.style.position = 'absolute';
+
+			function moveAt(e) {
+				box.style.left = e.pageX - takeBox.offsetWidth / 2 + 'px';
+				box.style.top = e.pageY - takeBox.offsetHeight / 2 + 'px';
+			}
+
+			document.onmousemove = function (e) {
+				moveAt(e);
+			}
+
+			takeBox.onmouseup = function () {
+				document.onmousemove = null;
+				takeBox.onmouseup = null;
+			}
+
+			takeBox.ondragstart = function () {
+				return false;
+			};
+		}
+
+	}
+
+	collapseCellBox() {
+		this.collapse = !this.collapse;
+	}
+
 }
 
