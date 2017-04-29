@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../service/api.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
+
+import { ApiService } from '../../../service/index';
 
 @Component({
     selector: 'tt-list-subject',
@@ -9,28 +10,27 @@ import { Location } from '@angular/common';
 })
 
 export class SubjectItemComponent implements OnInit {
-
-    private subject: any = {};
+    private subject: Object = {};
 
     constructor(
-        private subjectService: ApiService,
-        private router: ActivatedRoute,
-        private rout: Router,
+        private apiService: ApiService,
+        private activedRouter: ActivatedRoute,
+        private router: Router,
         private location: Location) { }
 
     ngOnInit() {
-        this.router.params.forEach((params: Params) => {
-            this.subjectService
+        this.activedRouter.params.forEach((params: Params) => {
+            this.apiService
                 .getSubject(params.id)
                 .subscribe((data) => { this.subject = data; });
         });
     }
 
-    updateSubject(subject: any) {
-        this.subjectService
+    updateSubject(subject: any): void {
+        this.apiService
             .updateSubject(subject)
             .subscribe();
-        this.rout.navigate(['/subject']);
+        this.router.navigate(['/subject']);
     }
 
     goBack(): void {

@@ -1,8 +1,8 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { AdminService } from '../../modules/admin/admin.service';
-import { ApiService } from '../../service/api.service';
 import { Router } from '@angular/router';
 import moment from 'moment';
+
+import { ApiService, MainService } from '../../service/index';
 
 @Component({
 	selector: 'tt-cell',
@@ -12,8 +12,8 @@ import moment from 'moment';
 
 export class CellComponent implements OnInit {
 
-    @Input() cell;
-    @Input() dateList;
+	@Input() cell;
+	@Input() dateList;
 	@Input() dayIndex;
 	@Input() time;
 	@Input() data;
@@ -32,7 +32,7 @@ export class CellComponent implements OnInit {
 	private arrRepWithInter: any[] = [];
 	private daysName: any[] = ['Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб.', 'Вс.'];
 
-	constructor(private adminService: AdminService, private apiService: ApiService, private router: Router) { }
+	constructor(private adminService: MainService, private apiService: ApiService, private router: Router) { }
 
 	ngOnInit(): void {
 

@@ -1,17 +1,17 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AdminService } from './admin.service';
-import { ApiService } from '../../service/api.service';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import moment from 'moment';
 
+import { ApiService, MainService } from '../../service/index';
+
 @Component({
-	selector: 'tt-admin',
-	templateUrl: 'client/modules/admin/admin.component.html',
-	styleUrls: ['client/modules/admin/admin.component.css'],
+	selector: 'tt-main',
+	templateUrl: 'client/modules/main/main.component.html',
+	styleUrls: ['client/modules/main/main.component.css'],
 	viewProviders: [DragulaService]
 })
 
-export class AdminComponent implements OnInit {
+export class MainComponent implements OnInit {
 
 	private cellTimetable: any[] = [];
 	private cellWithTime: any[] = [];
@@ -28,7 +28,7 @@ export class AdminComponent implements OnInit {
 	private cellForSave;
 	private collapse: Boolean = true;
 
-	constructor(private adminService: AdminService, private apiService: ApiService, private dragulaService: DragulaService) {
+	constructor(private adminService: MainService, private apiService: ApiService, private dragulaService: DragulaService) {
 		dragulaService.dropModel.subscribe((value) => {
 			this.onDropModel(value.slice(1));
 		});

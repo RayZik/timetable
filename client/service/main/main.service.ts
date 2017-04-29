@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 import { AuthHttp } from 'angular2-jwt';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
-import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 
+import 'rxjs/add/operator/map';
+
 @Injectable()
-export class AdminService {
+export class MainService {
     private cache: Object = {};
+    
     constructor(private http: Http) { }
 
-    //cell-timetable
     getCellTimetable() {
         if (this.cache['cells']) {
             return Observable.of(this.cache['cells']);
         } else {
             return this
                 .http
-                .get('/api/admin/cellTimetable')
+                .get('/api/main/cellTimetable')
                 .map((response: Response) => {
                     this.cache['cells'] = response.json();
                     return this.cache['cells'];
@@ -30,7 +31,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post('/api/admin/cellTimetable/add_teacher', { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
+            .post('/api/main/cellTimetable/add_teacher', { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
     deleteTeacher(id: String, cellTimetableId: String) {
@@ -38,7 +39,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/cellTimetable/delete_teacher/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
+            .post(`/api/main/cellTimetable/delete_teacher/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
     addOffice(id: String, cellTimetableId: String) {
@@ -46,7 +47,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post('/api/admin/cellTimetable/add_office', { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
+            .post('/api/main/cellTimetable/add_office', { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
     deleteOffice(id: String, cellTimetableId: String) {
@@ -54,7 +55,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/cellTimetable/delete_office/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
+            .post(`/api/main/cellTimetable/delete_office/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
     addGroup(id: String, cellTimetableId: String) {
@@ -62,7 +63,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post('/api/admin/cellTimetable/add_group', { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
+            .post('/api/main/cellTimetable/add_group', { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
     deleteGroup(id: String, cellTimetableId: String) {
@@ -70,7 +71,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/cellTimetable/delete_group/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
+            .post(`/api/main/cellTimetable/delete_group/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
     addSubject(id: String, cellTimetableId: String) {
@@ -78,7 +79,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post('/api/admin/cellTimetable/add_subject', { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
+            .post('/api/main/cellTimetable/add_subject', { id: id, cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
     deleteSubject(id: String, cellTimetableId: String) {
@@ -86,7 +87,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/cellTimetable/delete_subject/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
+            .post(`/api/main/cellTimetable/delete_subject/${id}`, { cellTimetableId: cellTimetableId }, { headers: headers })
     }
 
     addCell() {
@@ -94,7 +95,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post('/api/admin/cellTimetable/add_cell', { headers: headers })
+            .post('/api/main/cellTimetable/add_cell', { headers: headers })
     }
 
     deleteCell(id, obj) {
@@ -102,16 +103,15 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/cellTimetable/delete_cell/${id}`, obj, { headers: headers })
+            .post(`/api/main/cellTimetable/delete_cell/${id}`, obj, { headers: headers })
     }
 
-    //timetable
     addTimeLesson(lesson) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post('/api/admin/timetable/add_time_lesson', lesson, { headers: headers })
+            .post('/api/main/timetable/add_time_lesson', lesson, { headers: headers })
     }
 
     addDate(newDate) {
@@ -119,7 +119,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post('/api/admin/timetable/add_date', newDate, { headers: headers })
+            .post('/api/main/timetable/add_date', newDate, { headers: headers })
     }
 
     getTimeLesson() {
@@ -128,7 +128,7 @@ export class AdminService {
         } else {
             return this
                 .http
-                .get('/api/admin/timetable')
+                .get('/api/main/timetable')
                 .map((response: Response) => {
                     this.cache['tLesson'] = response.json();
                     return this.cache['tLesson'];
@@ -142,7 +142,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put('/api/admin/cellTimetable/save_cell', data, { headers: headers })
+            .put('/api/main/cellTimetable/save_cell', data, { headers: headers })
     }
 
     deleteLesson(lesson) {
@@ -150,7 +150,7 @@ export class AdminService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post('/api/admin/timetable/delete_time_lesson', { lesson: lesson }, { headers: headers })
+            .post('/api/main/timetable/delete_time_lesson', { lesson: lesson }, { headers: headers })
     }
 
     getHolidays() {
@@ -159,7 +159,7 @@ export class AdminService {
         } else {
             return this
                 .http
-                .get('/api/admin/timetable/holidays')
+                .get('/api/main/timetable/holidays')
                 .map((response: Response) => {
                     this.cache['holidays'] = response.json();
                     return this.cache['holidays'];

@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { AdminService } from '../../modules/admin/admin.service';
-import { ApiService } from '../../service/api.service';
 import moment from 'moment';
+
+import { ApiService, MainService } from '../../service/index';
 
 @Component({
     selector: 'tt-filter',
@@ -37,7 +37,7 @@ export class FilterComponent implements OnInit {
     };
 
 
-    constructor(private adminService: AdminService, private apiService: ApiService) { }
+    constructor(private adminService: MainService, private apiService: ApiService) { }
 
     ngOnInit(): void {
         this.adminService

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ApiService } from '../../../service/api.service';
 import { Router } from '@angular/router';
+
+import { ApiService } from '../../../service/index';
 
 @Component({
     selector: 'tt-list-teacher',
@@ -12,35 +13,28 @@ export class TeacherListComponent implements OnInit {
     teacherList: any[];
     private teacher: any = {};
 
-    constructor(private teacherService: ApiService, private router: Router) { }
+    constructor(private apiService: ApiService, private router: Router) { }
+
     ngOnInit() {
-        this.refresh();
+        this.apiService
+            .getTeachers()
+            .subscribe(
+            (data) => { this.teacherList = data; });
     }
 
-    goTeacherId(id: any) {
+    goTeacherId(id: String) {
         this.router.navigate(['/teacher', id]);
     }
 
     newTeacher(teacher) {
-        this.teacherService
+        this.apiService
             .createTeacher(teacher)
             .subscribe();
-        this.refresh();
     }
 
-    deleteTeacher(id) {
-        this.teacherService
+    deleteTeacher(id: String) {
+        this.apiService
             .deleteTeacher(id)
             .subscribe();
-        this.refresh();
-    }
-
-    refresh() {
-        this.teacherService
-            .getTeachers()
-            .subscribe(
-            (data) => { this.teacherList = data; },
-            (err) => console.log(err)
-            );
     }
 }

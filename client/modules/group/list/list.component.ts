@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../service/api.service';
 import { Router } from '@angular/router';
+
+import { ApiService } from '../../../service/index';
 
 @Component({
     selector: 'tt-list-group',
@@ -8,42 +9,31 @@ import { Router } from '@angular/router';
 })
 
 export class GroupListComponent implements OnInit {
-
     private groupList: any[] = [];
     private group: Object = {};
 
+    constructor(private apiService: ApiService, private router: Router) { }
 
-    constructor(private groupService: ApiService, private router: Router) { }
     ngOnInit() {
-        this.refresh();
+        this.apiService
+            .getGroups()
+            .subscribe(
+            (data) => { this.groupList = data; });
     }
 
-
-
-    goGroupId(id: any): void {
+    goGroupId(id: String): void {
         this.router.navigate(['/group', id]);
     }
 
     newGroup(group): void {
-        this.groupService
+        this.apiService
             .createGroup(group)
             .subscribe();
-        this.refresh();
     }
 
-    deleteGroup(id): void {
-        this.groupService
+    deleteGroup(id: String): void {
+        this.apiService
             .deleteGroup(id)
             .subscribe();
-        this.refresh();
-    }
-
-    refresh(): void {
-        this.groupService
-            .getGroups()
-            .subscribe(
-            (data) => { this.groupList = data; },
-            (err) => console.log(err)
-            );
     }
 }

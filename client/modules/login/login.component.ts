@@ -1,26 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../service/api.service';
+
+import { ApiService } from '../../service/index';
 
 @Component({
-    selector: 'tt-home',
-    templateUrl: 'client/modules/home/home.component.html'
+    selector: 'tt-login',
+    templateUrl: 'client/modules/login/login.component.html'
 })
-export class HomeComponent implements OnInit {
+export class LoginComponent implements OnInit {
     private usersArray: any[];
     private isLogged: boolean;
 
     constructor(private apiService: ApiService) { }
 
     ngOnInit() {
-        this.refresh();
-    }
-
-    refresh() {
         this.apiService
             .getUsers()
             .subscribe((data) => { this.usersArray = data; });
     }
-
 
     login(username: String, password: String) {
         if (username === 'admin' && password === 'admin') {

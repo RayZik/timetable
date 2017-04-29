@@ -3,19 +3,16 @@ import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
 import * as passport from 'passport';
 import * as cors from 'cors';
+import { join } from 'path';
+import { json, urlencoded } from 'body-parser';
+import { restApi } from './routes/api';
+import { auth } from './routes/auth';
+import './typesext';
 
 const flash: any = require('connect-flash');
 const config: any = require('../config');
 let mongoose: any = require('../lib/mongoose');
 let MongoStore = require('connect-mongo')(session);
-
-import { join } from 'path';
-import { json, urlencoded } from 'body-parser';
-
-import { restApi } from './routes/api';
-import { login } from './routes/auth/local';
-
-import './typesext';
 
 const app: express.Application = express();
 app.disable('x-powered-by');
@@ -41,7 +38,8 @@ app.use(flash());
 app.use(express.static(join(__dirname, '../public')));
 
 app.use('/api', restApi);
-app.use('/user', login);
+app.use('/user', restApi);
+app.use('/user', auth);
 app.use('/client', express.static(join(__dirname, '../client')));
 
 if (app.get('env') === 'development') {

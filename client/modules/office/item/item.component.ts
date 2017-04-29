@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../service/api.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
+
+import { ApiService } from '../../../service/index';
 
 @Component({
     selector: 'tt-list-office',
@@ -9,28 +10,27 @@ import { Location } from '@angular/common';
 })
 
 export class OfficeItemComponent implements OnInit {
-
-    private office: any = {};
+    private office: Object = {};
 
     constructor(
-        private officeService: ApiService,
-        private router: ActivatedRoute,
-        private rout: Router,
+        private apiService: ApiService,
+        private activedRouter: ActivatedRoute,
+        private router: Router,
         private location: Location) { }
 
     ngOnInit() {
-        this.router.params.forEach((params: Params) => {
-            this.officeService
+        this.activedRouter.params.forEach((params: Params) => {
+            this.apiService
                 .getOffice(params.id)
                 .subscribe((data) => { this.office = data; });
         });
     }
 
-    updateOffice(office: any) {
-        this.officeService
+    updateOffice(office: any): void {
+        this.apiService
             .updateOffice(office)
             .subscribe();
-        this.rout.navigate(['/office']);
+        this.router.navigate(['/office']);
     }
 
     goBack(): void {

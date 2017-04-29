@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../service/api.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
+
+import { ApiService } from '../../../service/index';
 
 @Component({
     selector: 'tt-list-group',
@@ -9,28 +10,27 @@ import { Location } from '@angular/common';
 })
 
 export class GroupItemComponent implements OnInit {
-
     private group: Object = {};
 
     constructor(
-        private groupService: ApiService,
-        private router: ActivatedRoute,
-        private rout: Router,
+        private apiService: ApiService,
+        private activatedRouter: ActivatedRoute,
+        private router: Router,
         private location: Location) { }
 
     ngOnInit() {
-        this.router.params.forEach((params: Params) => {
-            this.groupService
+        this.activatedRouter.params.forEach((params: Params) => {
+            this.apiService
                 .getGroup(params.id)
                 .subscribe((data) => { this.group = data; });
         });
     }
 
     updateGroup(group: any): void {
-        this.groupService
+        this.apiService
             .updateGroup(group)
             .subscribe();
-        this.rout.navigate(['/group']);
+        this.router.navigate(['/group']);
     }
 
     goBack(): void {

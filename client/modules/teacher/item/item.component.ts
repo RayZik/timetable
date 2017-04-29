@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../service/api.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
+
+import { ApiService } from '../../../service/index';
 
 @Component({
     selector: 'tt-list-teacher',
@@ -9,28 +10,27 @@ import { Location } from '@angular/common';
 })
 
 export class TeacherItemComponent implements OnInit {
-
-    private teacher: any = {};
+    private teacher: Object = {};
 
     constructor(
-        private teacherService: ApiService,
-        private router: ActivatedRoute,
-        private rout: Router,
+        private apiService: ApiService,
+        private activedRouter: ActivatedRoute,
+        private router: Router,
         private location: Location) { }
 
     ngOnInit() {
-        this.router.params.forEach((params: Params) => {
-            this.teacherService
+        this.activedRouter.params.forEach((params: Params) => {
+            this.apiService
                 .getTeacher(params.id)
                 .subscribe((data) => { this.teacher = data; });
         });
     }
 
     updateTeacher(teacher: any) {
-        this.teacherService
+        this.apiService
             .updateTeacher(teacher)
             .subscribe();
-        this.rout.navigate(['/teacher']);
+        this.router.navigate(['/teacher']);
     }
 
     goBack(): void {

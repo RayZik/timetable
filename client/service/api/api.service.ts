@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
-import { Response, Request } from '@angular/http';
+import { Http, Headers, Response, Request } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/share';
-import { Observable } from 'rxjs/Observable';
-
-
 
 @Injectable()
 export class ApiService {
@@ -21,7 +18,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get('/api/home')
+                .get('/user/login')
                 .map((response: Response) => {
                     this.cache['users'] = response.json();
                     return this.cache['users'];
@@ -37,7 +34,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get('/api/admin/subject')
+                .get('/api/main/subject')
                 .map((response: Response) => {
                     this.cache['subjects'] = response.json();
                     return this.cache['subjects'];
@@ -53,7 +50,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get(`/api/admin/subject/${id}`)
+                .get(`/api/main/subject/${id}`)
                 .map((response: Response) => {
                     this.cache['subject'] = response.json();
                     return this.cache['subject'];
@@ -67,7 +64,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put(`/api/admin/subject/update/${subject.id}`, subject, { headers: headers })
+            .put(`/api/main/subject/update/${subject.id}`, subject, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -76,7 +73,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/subject/create`, subject, { headers: headers })
+            .post(`/api/main/subject/create`, subject, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -85,7 +82,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .delete(`/api/admin/subject/remove/${id}`, { headers: headers })
+            .delete(`/api/main/subject/remove/${id}`, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -97,7 +94,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get('/api/admin/teacher')
+                .get('/api/main/teacher')
                 .map((response: Response) => {
                     this.cache['teachers'] = response.json();
                     return this.cache['teachers'];
@@ -112,7 +109,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get(`/api/admin/teacher/${id}`)
+                .get(`/api/main/teacher/${id}`)
                 .map((response: Response) => {
                     this.cache['teacher'] = response.json();
                     return this.cache['teacher'];
@@ -126,7 +123,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put(`/api/admin/teacher/update/${teacher.id}`, teacher, { headers: headers })
+            .put(`/api/main/teacher/update/${teacher.id}`, teacher, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -135,7 +132,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/teacher/create`, teacher, { headers: headers })
+            .post(`/api/main/teacher/create`, teacher, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -144,7 +141,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .delete(`/api/admin/teacher/remove/${id}`, { headers: headers })
+            .delete(`/api/main/teacher/remove/${id}`, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -155,7 +152,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get('/api/admin/office')
+                .get('/api/main/office')
                 .map((response: Response) => {
                     this.cache['offices'] = response.json();
                     return this.cache['offices'];
@@ -170,7 +167,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get(`/api/admin/office/${id}`)
+                .get(`/api/main/office/${id}`)
                 .map((response: Response) => {
                     this.cache['office'] = response.json();
                     return this.cache['office'];
@@ -184,7 +181,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put(`/api/admin/office/update/${office.id}`, office, { headers: headers })
+            .put(`/api/main/office/update/${office.id}`, office, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -193,7 +190,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/office/create`, office, { headers: headers })
+            .post(`/api/main/office/create`, office, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -202,7 +199,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .delete(`/api/admin/office/remove/${id}`, { headers: headers })
+            .delete(`/api/main/office/remove/${id}`, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -213,7 +210,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get('/api/admin/group')
+                .get('/api/main/group')
                 .map((response: Response) => {
                     this.cache['groups'] = response.json();
                     return this.cache['groups'];
@@ -228,7 +225,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get(`/api/admin/group/${id}`)
+                .get(`/api/main/group/${id}`)
                 .map((response: Response) => {
                     this.cache['group'] = response.json();
                     return this.cache['group'];
@@ -242,7 +239,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put(`/api/admin/group/update/${group.id}`, group, { headers: headers })
+            .put(`/api/main/group/update/${group.id}`, group, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -251,7 +248,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/admin/group/create`, group, { headers: headers })
+            .post(`/api/main/group/create`, group, { headers: headers })
             .map((response: Response) => response);
     }
 
@@ -260,7 +257,7 @@ export class ApiService {
         headers.append('Content-Type', 'application/json');
         return this
             .http
-            .delete(`/api/admin/group/remove/${id}`, { headers: headers })
+            .delete(`/api/main/group/remove/${id}`, { headers: headers })
             .map((response: Response) => response);
     }
 }

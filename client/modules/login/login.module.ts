@@ -3,9 +3,9 @@ import { HttpModule } from '@angular/http';
 import { NgSemanticModule } from 'ng-semantic';
 import { CommonModule } from '@angular/common';
 
-import { LoginComponent } from '../../../client/components/passport/login.component';
-import { HomeComponent } from './home.component';
-import { routing } from './home.routing';
+import { LoginComponent } from '../index';
+import { AuthComponent } from '../../components/index';
+import { routing } from './login.routing';
 
 @NgModule({
     imports: [
@@ -15,14 +15,14 @@ import { routing } from './home.routing';
         NgSemanticModule
     ],
     declarations: [
-        HomeComponent,
-        LoginComponent
+        LoginComponent,
+        AuthComponent
     ],
     bootstrap: [
-        HomeComponent
+        LoginComponent
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA
     ]
 })
-export class HomeModule { }
+export class LoginModule { }

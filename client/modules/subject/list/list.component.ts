@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../service/api.service';
 import { Router } from '@angular/router';
+
+import { ApiService } from '../../../service/index';
 
 @Component({
     selector: 'tt-list-subject',
@@ -8,39 +9,32 @@ import { Router } from '@angular/router';
 })
 
 export class SubjectListComponent implements OnInit {
-
     private subjectList: any[] = [];
-    private subject: any = {};
+    private subject: Object = {};
 
     constructor(private subjectService: ApiService, private router: Router) { }
     ngOnInit() {
-        this.refresh();
-    }
-
-    goSubjectId(id: any) {
-        this.router.navigate(['/subject', id]);
-    }
-
-    newSubject(subject) {
-        this.subjectService
-            .createSubject(subject)
-            .subscribe();
-        this.refresh();
-    }
-
-    deleteSubject(id) {
-        this.subjectService
-            .deleteSubject(id)
-            .subscribe();
-        this.refresh();
-    }
-
-    refresh() {
         this.subjectService
             .getSubjects()
             .subscribe(
             (data) => { this.subjectList = data; },
             (err) => console.log(err)
             );
+    }
+
+    goSubjectId(id: String) {
+        this.router.navigate(['/subject', id]);
+    }
+
+    newSubject(subject: any) {
+        this.subjectService
+            .createSubject(subject)
+            .subscribe();
+    }
+
+    deleteSubject(id: String) {
+        this.subjectService
+            .deleteSubject(id)
+            .subscribe();
     }
 }

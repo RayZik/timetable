@@ -1,9 +1,9 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { AdminComponent } from './admin.component';
+import { MainComponent } from './main.component';
 
 export const routes: Routes = [
-    { path: 'admin', component: AdminComponent, pathMatch: 'full' },
+    { path: 'main', component: MainComponent, pathMatch: 'full' },
 ];
 
 export const routing = RouterModule.forRoot(routes, { useHash: true });
