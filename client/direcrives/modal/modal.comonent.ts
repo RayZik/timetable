@@ -34,12 +34,12 @@ export class ModalComponent implements OnInit, OnDestroy {
             }
         });
 
-        // this.modalService.add(this);
+        this.modalService.add(this);
     }
 
     ngOnDestroy(): void {
-        // this.modalService.remove(this.id);
-        // this.element.remove();
+        this.modalService.remove(this.id);
+        this.element.remove();
     }
 
     open(): void {

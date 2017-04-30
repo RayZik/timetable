@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAuth } from 'angular2-jwt';
 import { HttpModule } from '@angular/http';
@@ -8,19 +8,24 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { routing } from './app-routes';
 
-import { LoginModule } from "./modules/login/login.module";
 import { MainModule } from "./modules/main/main.module";
-import { ModalService, ApiService, MainService } from "./service/index";
+import { LoginComponent } from "./components/index";
+import { AuthService, AuthGuardService } from "./service/index";
+
+export function loadUser(auth: AuthService) {
+    return function () {
+        return auth.loadUser();
+    }
+}
 
 @NgModule({
     imports: [
         BrowserModule,
+        FormsModule,
         HttpModule,
         NgSemanticModule,
         routing,
-        FormsModule,
-        MainModule,
-        LoginModule
+        MainModule
     ],
     providers: [
         provideAuth({
@@ -28,11 +33,19 @@ import { ModalService, ApiService, MainService } from "./service/index";
             newJwtError: true,
             noTokenScheme: true
         }),
-        MainService,
-        ApiService,
-        ModalService
+        AuthService,
+        AuthGuardService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: loadUser,
+            deps: [AuthService],
+            multi: true
+        }
     ],
-    declarations: [AppComponent],
+    declarations: [
+        AppComponent,
+        LoginComponent
+    ],
     bootstrap: [AppComponent],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA
@@ -40,3 +53,4 @@ import { ModalService, ApiService, MainService } from "./service/index";
 })
 
 export class AppModule { }
+

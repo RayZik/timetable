@@ -1,7 +1,6 @@
 import * as express from 'express';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
-import * as passport from 'passport';
 import * as cors from 'cors';
 import { join } from 'path';
 import { json, urlencoded } from 'body-parser';
@@ -9,7 +8,6 @@ import { restApi } from './routes/api';
 import { auth } from './routes/auth';
 import './typesext';
 
-const flash: any = require('connect-flash');
 const config: any = require('../config');
 let mongoose: any = require('../lib/mongoose');
 let MongoStore = require('connect-mongo')(session);
@@ -21,7 +19,6 @@ app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(cors({ origin: '*' }));
 
-// настройки пасспорта
 app.use(cookieParser());
 app.use(session(
     {
@@ -31,9 +28,6 @@ app.use(session(
         cookie: config.get('session:cookie'),
         store: new MongoStore({ mongooseConnection: mongoose.connection })
     }));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
 
 app.use(express.static(join(__dirname, '../public')));
 

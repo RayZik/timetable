@@ -12,21 +12,6 @@ export class ApiService {
 
     constructor(private authHttp: AuthHttp, private http: Http) { }
 
-    getUsers() {
-        if (this.cache['users']) {
-            return Observable.of(this.cache['users']);
-        } else {
-            return this
-                .http
-                .get('/user/login')
-                .map((response: Response) => {
-                    this.cache['users'] = response.json();
-                    return this.cache['users'];
-                })
-                .share()
-        }
-    }
-
     //subject
     getSubjects() {
         if (this.cache['subjects']) {
@@ -45,7 +30,6 @@ export class ApiService {
 
     getSubject(id: any) {
         if (this.cache['subject']) {
-
             return Observable.of(this.cache['subject']);
         } else {
             return this

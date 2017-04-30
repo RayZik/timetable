@@ -1,6 +1,6 @@
 var isPublic = typeof window != "undefined";
 
-(function (global) {
+(function(global) {
     System.config({
         paths: {
             'npm:': (isPublic) ? '/' : '/node_modules/'
@@ -19,6 +19,7 @@ var isPublic = typeof window != "undefined";
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
 
             'dragula': 'npm:dragula',
+            'underscore': 'npm:underscore',
             'ng2-dragula': 'npm:ng2-dragula',
             'contra': 'npm:contra',
             'atoa': 'npm:atoa',
@@ -85,6 +86,10 @@ var isPublic = typeof window != "undefined";
             },
             'angular2-moment': {
                 main: './index.js',
+                defaultExtension: 'js'
+            },
+            'underscore': {
+                main: './underscore.js',
                 defaultExtension: 'js'
             }
         }
