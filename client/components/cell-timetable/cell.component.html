@@ -129,6 +129,10 @@
         <button *ngIf="showSaveButton" class="mini ui icon button" (click)="clickSaveCell(repeatModal,cell)"><i class="icon save"></i></button>
         <button *ngIf="!showSaveButton" class="mini ui icon button" (click)="deleteCellToEnd(cell._id)"><i class="icon minus"></i></button>
     </div>
+    <div class="col-md-6 col-md-offset-3">
+        <button (click)="openModal('custom-modal-1')">Open Modal 1</button>
+        <button (click)="openModal('custom-modal-2')">Open Modal 2</button>
+    </div>
 </div>
 
 

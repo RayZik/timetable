@@ -12,6 +12,7 @@ import { SubjectModule } from '../subject/subject.module';
 import { OfficeModule } from '../office/office.module';
 import { GroupModule } from '../group/group.module';
 import { CellComponent, FilterComponent } from "../../components/index";
+import { ModalComponent } from "../../direcrives/index";
 import { MainComponent } from './main.component';
 
 import { ModalService, ApiService, MainService } from "../../service/index";
@@ -32,7 +33,8 @@ import { ModalService, ApiService, MainService } from "../../service/index";
     declarations: [
         MainComponent,
         CellComponent,
-        FilterComponent
+        FilterComponent,
+        ModalComponent
     ],
     providers: [
         MainService,

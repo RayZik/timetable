@@ -28,7 +28,7 @@ export class AuthService {
             });
     }
 
-    getUsersById(id: string): Promise<IUser> {
+    getUsersById(id: string): Observable<IUser> {
         return this.http
             .get(`/user/login/${id}`)
             .map((response: Response) => {
@@ -37,7 +37,6 @@ export class AuthService {
             .do(usr => {
                 this.user = usr;
             })
-            .toPromise()
     }
 
     loginUser(user: IUser): Observable<IUser> {
@@ -63,7 +62,7 @@ export class AuthService {
         if (!userKey) {
             return Promise.resolve(null);
         }
-        return this.getUsersById(userKey);
+        return this.getUsersById(userKey).toPromise();
     }
 
     saveUserKey(key: string) {

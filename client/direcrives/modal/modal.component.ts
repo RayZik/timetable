@@ -1,10 +1,9 @@
 import { Component, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
-import * as $ from 'jquery';
+declare var $: any;
 
 import { ModalService } from '../../service/index';
 
 @Component({
-    moduleId: module.id.toString(),
     selector: 'modal',
     template: '<ng-content></ng-content>'
 })
@@ -24,7 +23,7 @@ export class ModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.element.appendTo('body');
+        this.element.append('body');
 
         this.element.on('click', (el: any) => {
             let target = $(el.target);

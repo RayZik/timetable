@@ -20,6 +20,7 @@ var isPublic = typeof window != "undefined";
 
             'dragula': 'npm:dragula',
             'underscore': 'npm:underscore',
+            'jquery': 'npm:jquery/dist',
             'ng2-dragula': 'npm:ng2-dragula',
             'contra': 'npm:contra',
             'atoa': 'npm:atoa',
@@ -90,6 +91,10 @@ var isPublic = typeof window != "undefined";
             },
             'underscore': {
                 main: './underscore.js',
+                defaultExtension: 'js'
+            },
+            'jquery': {
+                main: './jquery.min.js',
                 defaultExtension: 'js'
             }
         }

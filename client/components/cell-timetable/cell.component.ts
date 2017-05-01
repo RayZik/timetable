@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import moment from 'moment';
 
-import { ApiService, MainService } from '../../service/index';
+import { ApiService, MainService, ModalService } from '../../service/index';
 
 @Component({
 	selector: 'tt-cell',
@@ -32,7 +32,12 @@ export class CellComponent implements OnInit {
 	private arrRepWithInter: any[] = [];
 	private daysName: any[] = ['Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб.', 'Вс.'];
 
-	constructor(private adminService: MainService, private apiService: ApiService, private router: Router) { }
+	constructor(
+		private mainService: MainService,
+		private apiService: ApiService,
+		private router: Router,
+		private modalService: ModalService
+	) { }
 
 	ngOnInit(): void {
 
@@ -70,60 +75,60 @@ export class CellComponent implements OnInit {
 	}
 
 	addTeacher(): void {
-		this.adminService
+		this.mainService
 			.addTeacher(this.idTeacher.id, this.idCell)
 			.subscribe();
 		this.idTeacher.show = false;
 	}
 
 	deleteTeacher(id: String, idCell: String) {
-		this.adminService
+		this.mainService
 			.deleteTeacher(id, idCell)
 			.subscribe();
 	}
 
 	addGroup(): void {
-		this.adminService
+		this.mainService
 			.addGroup(this.idGroup.id, this.idCell)
 			.subscribe();
 		this.idGroup.show = false;
 	}
 
 	deleteGroup(id: String, idCell: String) {
-		this.adminService
+		this.mainService
 			.deleteGroup(id, idCell)
 			.subscribe();
 	}
 
 	addOffice(): void {
-		this.adminService
+		this.mainService
 			.addOffice(this.idOffice.id, this.idCell)
 			.subscribe();
 		this.idOffice.show = false;
 	}
 
 	deleteOffice(id: String, idCell: String) {
-		this.adminService
+		this.mainService
 			.deleteOffice(id, idCell)
 			.subscribe();
 	}
 
 	addSubject(): void {
-		this.adminService
+		this.mainService
 			.addSubject(this.idSubject.id, this.idCell)
 			.subscribe();
 		this.idSubject.show = false;
 	}
 
 	deleteSubject(id: String, idCell: String) {
-		this.adminService
+		this.mainService
 			.deleteSubject(id, idCell)
 			.subscribe();
 	}
 
 	deleteCellToEnd(id): void {
 		let obj = { time: [] };
-		this.adminService
+		this.mainService
 			.deleteCell(id, obj)
 			.subscribe();
 	}
@@ -138,7 +143,7 @@ export class CellComponent implements OnInit {
 			}
 		});
 		let obj = { time: res };
-		this.adminService
+		this.mainService
 			.deleteCell(id, obj)
 			.subscribe();
 	}
@@ -154,7 +159,7 @@ export class CellComponent implements OnInit {
 		});
 		let obj = { time: res };
 
-		this.adminService
+		this.mainService
 			.deleteCell(id, obj)
 			.subscribe();
 	}
@@ -169,6 +174,12 @@ export class CellComponent implements OnInit {
 	setSubjectId(id: String): void { this.idSubject.id = id; }
 	setOfficeId(id: String): void { this.idOffice.id = id; }
 
+	clickSaveCell(repeatModal, cell) {
+		this.setDefaultConfig();
+		this.configSave['id'] = cell._id;
+		repeatModal.show({ blurring: false, closable: false });
+	}
+
 	setDefaultConfig() {
 		this.configSave = {};
 		this.configSave['repeat'] = 'day';
@@ -177,12 +188,6 @@ export class CellComponent implements OnInit {
 		this.configSave['endDate'] = moment(this.data.endDate).format('YYYY-MM-DD').toString();
 		this.configSave['begin'] = moment(this.dateList[this.dayIndex].day).format();
 		this.configSave['selectedDay'] = [];
-	}
-
-	clickSaveCell(repeatModal, cell) {
-		this.setDefaultConfig();
-		this.configSave['id'] = cell._id;
-		repeatModal.show({ blurring: false, closable: false });
 	}
 
 	settings(repeatWith) {
@@ -248,7 +253,7 @@ export class CellComponent implements OnInit {
 		}
 
 		if (arrTime.time.length > 0) {
-			this.adminService
+			this.mainService
 				.saveCell(arrTime)
 				.subscribe();
 		}
@@ -259,5 +264,14 @@ export class CellComponent implements OnInit {
 			return arr.find((i) => i.begin === elem);
 		}
 		return undefined;
+	}
+
+	
+	openModal(id: string) {
+		this.modalService.open(id);
+	}
+
+	closeModal(id: string) {
+		this.modalService.close(id);
 	}
 }

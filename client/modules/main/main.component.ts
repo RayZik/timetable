@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import moment from 'moment';
 
-import { ApiService, MainService } from '../../service/index';
+import { ApiService, MainService, ModalService } from '../../service/index';
 
 @Component({
 	selector: 'tt-main',
@@ -28,7 +28,12 @@ export class MainComponent implements OnInit {
 	private cellForSave;
 	private collapse: Boolean = true;
 
-	constructor(private adminService: MainService, private apiService: ApiService, private dragulaService: DragulaService) {
+	constructor(
+		private adminService: MainService,
+		private apiService: ApiService,
+		private dragulaService: DragulaService,
+		private modalService: ModalService
+	) {
 		dragulaService.dropModel.subscribe((value) => {
 			this.onDropModel(value.slice(1));
 		});
@@ -186,35 +191,39 @@ export class MainComponent implements OnInit {
 
 	/////////////////////////////////////////////
 	dragCellBox() {
-		let box = document.getElementById('myBoxCell');
-		let takeBox = document.getElementById('takeBox');
+		// let box = document.getElementById('myBoxCell');
+		// let takeBox = document.getElementById('takeBox');
 
-		takeBox.onmousedown = function (e) {
-			box.style.position = 'absolute';
+		// takeBox.onmousedown = function (e) {
+		// 	box.style.position = 'absolute';
 
-			function moveAt(e) {
-				box.style.left = e.pageX - takeBox.offsetWidth / 2 + 'px';
-				box.style.top = e.pageY - takeBox.offsetHeight / 2 + 'px';
-			}
+		// 	function moveAt(e) {
+		// 		box.style.left = e.pageX - takeBox.offsetWidth / 2 + 'px';
+		// 		box.style.top = e.pageY - takeBox.offsetHeight / 2 + 'px';
+		// 	}
 
-			document.onmousemove = function (e) {
-				moveAt(e);
-			}
+		// 	document.onmousemove = function (e) {
+		// 		moveAt(e);
+		// 	}
 
-			takeBox.onmouseup = function () {
-				document.onmousemove = null;
-				takeBox.onmouseup = null;
-			}
+		// 	takeBox.onmouseup = function () {
+		// 		document.onmousemove = null;
+		// 		takeBox.onmouseup = null;
+		// 	}
 
-			takeBox.ondragstart = function () {
-				return false;
-			};
-		}
+		// 	takeBox.ondragstart = function () {
+		// 		return false;
+		// 	};
+		// }
 
 	}
 
-	collapseCellBox() {
-		this.collapse = !this.collapse;
+	openModal(id: string) {
+		this.modalService.open(id);
+	}
+
+	closeModal(id: string) {
+		this.modalService.close(id);
 	}
 
 }
