@@ -1,4 +1,5 @@
 import { Router, Response, Request, NextFunction } from 'express';
+import * as passport from 'passport';
 
 const subject: Router = Router();
 

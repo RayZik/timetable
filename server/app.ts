@@ -1,39 +1,32 @@
 import * as express from 'express';
 import * as session from 'express-session';
-import * as cookieParser from 'cookie-parser';
+import * as JWT from 'express-jwt';
+import * as passport from 'passport';
 import * as cors from 'cors';
+
 import { join } from 'path';
 import { json, urlencoded } from 'body-parser';
 import { restApi } from './routes/api';
-import { auth } from './routes/auth';
+import { userApi } from './routes/user';
 import './typesext';
 
-const config: any = require('../config');
+const config: any = require('../config/index.js');
 let mongoose: any = require('../lib/mongoose');
-let MongoStore = require('connect-mongo')(session);
+// require('./config/passport')(passport)
 
 const app: express.Application = express();
-app.disable('x-powered-by');
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(cors({ origin: '*' }));
 
-app.use(cookieParser());
-app.use(session(
-    {
-        secret: 'Timetable',
-        resave: false,
-        saveUninitialized: true,
-        cookie: config.get('session:cookie'),
-        store: new MongoStore({ mongooseConnection: mongoose.connection })
-    }));
-
 app.use(express.static(join(__dirname, '../public')));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/api', restApi);
-app.use('/user', restApi);
-app.use('/user', auth);
+app.use('/user', userApi);
 app.use('/client', express.static(join(__dirname, '../client')));
 
 if (app.get('env') === 'development') {

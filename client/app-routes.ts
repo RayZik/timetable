@@ -6,8 +6,8 @@ import { AuthGuardService } from "./service/index";
 
 export const routes: Routes = [{
     path: '',
-    pathMatch: 'full',
-    redirectTo: 'login'
+    component: MainComponent,
+    canActivate: [AuthGuardService]
 }, {
     path: 'login',
     component: LoginComponent,
@@ -17,7 +17,8 @@ export const routes: Routes = [{
     canActivate: [AuthGuardService]
 }, {
     path: '**',
-    redirectTo: 'login'
+    component: MainComponent,
+    canActivate: [AuthGuardService]
 }];
 
 export const routing = RouterModule.forRoot(routes, { useHash: true });

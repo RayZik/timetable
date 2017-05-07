@@ -1,6 +1,6 @@
 import { Router, Response, Request, NextFunction } from 'express';
 
-const userApi: Router = Router();
+const user: Router = Router();
 const cellTimetable = require('../../../../models/cellTimetable').CellTimetableModel;
 const Timetable = require('../../../../models/timetable').TimetableModel;
 const Group = require('../../../../models/group').GroupModel;
@@ -8,7 +8,7 @@ const Teacher = require('../../../../models/teacher').TeacherModel;
 const Subject = require('../../../../models/subject').SubjectModel;
 const Office = require('../../../../models/office').OfficeModel;
 
-userApi.get('/', (req: Request, res: Response, next: NextFunction) => {
+user.get('/', (req: Request, res: Response, next: NextFunction) => {
     let result: Object = {};
 
     cellTimetable.find()
@@ -29,7 +29,7 @@ userApi.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 
 
-userApi.get('/filter', (req: Request, res: Response, next: NextFunction) => {
+user.get('/filter', (req: Request, res: Response, next: NextFunction) => {
     let result: Object = {};
     Group.find({})
         .exec().then((group) => {
@@ -56,4 +56,4 @@ userApi.get('/filter', (req: Request, res: Response, next: NextFunction) => {
         }).catch(next);
 });
 
-export { userApi };
+export { user };

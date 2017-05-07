@@ -12,12 +12,6 @@ import { MainModule } from "./modules/main/main.module";
 import { LoginComponent } from "./components/index";
 import { AuthService, AuthGuardService } from "./service/index";
 
-export function loadUser(auth: AuthService) {
-    return function () {
-        return auth.loadUser();
-    }
-}
-
 @NgModule({
     imports: [
         BrowserModule,
@@ -35,12 +29,6 @@ export function loadUser(auth: AuthService) {
         }),
         AuthService,
         AuthGuardService,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: loadUser,
-            deps: [AuthService],
-            multi: true
-        }
     ],
     declarations: [
         AppComponent,

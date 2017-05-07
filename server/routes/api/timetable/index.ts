@@ -1,5 +1,6 @@
 import { Router, Response, Request, NextFunction } from 'express';
 import * as moment from 'moment';
+import * as passport from 'passport';
 
 const timetableApi: Router = Router();
 

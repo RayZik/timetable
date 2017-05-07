@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
 import { adminApi } from './main';
-import { userApi } from './user';
 import { cellTimetableApi } from './cellTimetable';
 import { timetableApi } from './timetable';
 import { teacher } from './teacher';
@@ -12,7 +11,6 @@ import { group } from './group';
 const restApi: Router = Router();
 
 restApi.use('/main', adminApi);
-restApi.use('/user', userApi);
 restApi.use('/main/timetable', timetableApi);
 restApi.use('/main/cellTimetable', cellTimetableApi);
 restApi.use('/main/teacher', teacher);

@@ -13,7 +13,7 @@ import { OfficeModule } from '../office/office.module';
 import { GroupModule } from '../group/group.module';
 import { CellComponent, FilterComponent } from "../../components/index";
 import { ModalComponent } from "../../direcrives/index";
-import { MainComponent } from './main.component';
+import { MainComponentList } from './main.component';
 
 import { ModalService, ApiService, MainService } from "../../service/index";
 
@@ -31,7 +31,7 @@ import { ModalService, ApiService, MainService } from "../../service/index";
         GroupModule
     ],
     declarations: [
-        MainComponent,
+        MainComponentList,
         CellComponent,
         FilterComponent,
         ModalComponent
@@ -42,7 +42,7 @@ import { ModalService, ApiService, MainService } from "../../service/index";
         ModalService,
     ],
     bootstrap: [
-        MainComponent
+        MainComponentList
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthHttp } from 'angular2-jwt';
-import { Http, Headers, Response, Request } from '@angular/http';
+import { Http, Headers, Response, Request, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
@@ -10,7 +9,12 @@ import 'rxjs/add/operator/share';
 export class ApiService {
     private cache: Object = {};
 
-    constructor(private authHttp: AuthHttp, private http: Http) { }
+    constructor(private http: Http) { }
+
+    private head() {
+        let headers = new Headers({ 'Content-Type': 'application/json' })
+        return new RequestOptions({ headers: headers });
+    }
 
     //subject
     getSubjects() {
@@ -19,7 +23,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get('/api/main/subject')
+                .get('/api/main/subject', this.head())
                 .map((response: Response) => {
                     this.cache['subjects'] = response.json();
                     return this.cache['subjects'];
@@ -34,7 +38,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get(`/api/main/subject/${id}`)
+                .get(`/api/main/subject/${id}`, this.head())
                 .map((response: Response) => {
                     this.cache['subject'] = response.json();
                     return this.cache['subject'];
@@ -44,29 +48,23 @@ export class ApiService {
     }
 
     updateSubject(subject: any) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put(`/api/main/subject/update/${subject.id}`, subject, { headers: headers })
+            .put(`/api/main/subject/update/${subject.id}`, subject, this.head())
             .map((response: Response) => response);
     }
 
     createSubject(subject) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/main/subject/create`, subject, { headers: headers })
+            .post(`/api/main/subject/create`, subject, this.head())
             .map((response: Response) => response);
     }
 
     deleteSubject(id: any) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .delete(`/api/main/subject/remove/${id}`, { headers: headers })
+            .delete(`/api/main/subject/remove/${id}`, this.head())
             .map((response: Response) => response);
     }
 
@@ -78,7 +76,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get('/api/main/teacher')
+                .get('/api/main/teacher', this.head())
                 .map((response: Response) => {
                     this.cache['teachers'] = response.json();
                     return this.cache['teachers'];
@@ -93,7 +91,7 @@ export class ApiService {
         } else {
             return this
                 .http
-                .get(`/api/main/teacher/${id}`)
+                .get(`/api/main/teacher/${id}`, this.head())
                 .map((response: Response) => {
                     this.cache['teacher'] = response.json();
                     return this.cache['teacher'];
@@ -103,29 +101,23 @@ export class ApiService {
     }
 
     updateTeacher(teacher: any) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put(`/api/main/teacher/update/${teacher.id}`, teacher, { headers: headers })
+            .put(`/api/main/teacher/update/${teacher.id}`, teacher, this.head())
             .map((response: Response) => response);
     }
 
     createTeacher(teacher) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/main/teacher/create`, teacher, { headers: headers })
+            .post(`/api/main/teacher/create`, teacher, this.head())
             .map((response: Response) => response);
     }
 
     deleteTeacher(id: any) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .delete(`/api/main/teacher/remove/${id}`, { headers: headers })
+            .delete(`/api/main/teacher/remove/${id}`, this.head())
             .map((response: Response) => response);
     }
 
@@ -161,29 +153,23 @@ export class ApiService {
     }
 
     updateOffice(office: any) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put(`/api/main/office/update/${office.id}`, office, { headers: headers })
+            .put(`/api/main/office/update/${office.id}`, office, this.head())
             .map((response: Response) => response);
     }
 
     createOffice(office: any) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/main/office/create`, office, { headers: headers })
+            .post(`/api/main/office/create`, office, this.head())
             .map((response: Response) => response);
     }
 
     deleteOffice(id: any) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .delete(`/api/main/office/remove/${id}`, { headers: headers })
+            .delete(`/api/main/office/remove/${id}`, this.head())
             .map((response: Response) => response);
     }
 
@@ -219,29 +205,23 @@ export class ApiService {
     }
 
     updateGroup(group: any) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .put(`/api/main/group/update/${group.id}`, group, { headers: headers })
+            .put(`/api/main/group/update/${group.id}`, group, this.head())
             .map((response: Response) => response);
     }
 
     createGroup(group) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .post(`/api/main/group/create`, group, { headers: headers })
+            .post(`/api/main/group/create`, group, this.head())
             .map((response: Response) => response);
     }
 
     deleteGroup(id: any) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
         return this
             .http
-            .delete(`/api/main/group/remove/${id}`, { headers: headers })
+            .delete(`/api/main/group/remove/${id}`, this.head())
             .map((response: Response) => response);
     }
 }

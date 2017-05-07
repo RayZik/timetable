@@ -11,8 +11,8 @@ import { AuthService, IUser } from '../../service/index';
 export class LoginComponent implements OnInit {
 
     private user: IUser = {
-        username: 'username',
-        password: 'password'
+        username: '1',
+        password: '12'
     }
 
     constructor(private authService: AuthService, private router: Router) { }
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
         if (form.invalid) {
             return;
         }
-        
+
         this.authService
             .loginUser(this.user)
             .subscribe(isLogin => {
@@ -34,6 +34,10 @@ export class LoginComponent implements OnInit {
                     this.router.navigate(['/main']);
                 }
             })
+    }
+
+    logout() {
+        this.authService.logoutUser();
     }
 }
 

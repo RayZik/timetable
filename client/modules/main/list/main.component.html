@@ -1,54 +1,54 @@
-<!--<div class="ui container">
+<div class="ui container">
 
     <input type="date" name="beginDate" (blur)='newDate.beginDate = $event.target.value'>
     <input type="date" name="endDate" (blur)='newDate.endDate = $event.target.value'>
-    <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>-->
+    <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>
 
-<!--Фильтр-->
-<!--<tt-filter (onChanged)="onChanged($event)" [dateList]='dateList' [holidayList]='holidayList'></tt-filter>-->
+    <!--Фильтр-->
+    <tt-filter (onChanged)="onChanged($event)" [dateList]='dateList' [holidayList]='holidayList'></tt-filter>
 
 
-<!--Таблица-->
-<table class="ui celled table myTimetable">
-    <thead>
-        <tr>
-            <th></th>
-            <th *ngFor="let date of dateList;">
-                {{date.day|amDateFormat:'ll' }}
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let items of timeList">
+    <!--Таблица-->
+    <table class="ui celled table myTimetable">
+        <thead>
+            <tr>
+                <th></th>
+                <th *ngFor="let date of dateList;">
+                    {{date.day|amDateFormat:'ll' }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let items of timeList">
 
-            <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i> {{(items.begin | amFromUnix)|amDateFormat:'LT'}}-{{(items.end| amFromUnix)|amDateFormat:'LT'}}
-            </td>
-
-            <ng-container *ngFor="let slot of items.slots; let dayIndex = index">
-                <td *ngIf='dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot' class="isHoliday">
-                    <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [dateList]='dateList' [time]='items' [data]='data' [dayIndex]='dayIndex' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'></tt-cell>
+                <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i> {{(items.begin | amFromUnix)|amDateFormat:'LT'}}-{{(items.end| amFromUnix)|amDateFormat:'LT'}}
                 </td>
 
-                <td *ngIf='!dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot'>
-                    <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [dateList]='dateList' [time]='items' [data]='data' [dayIndex]='dayIndex' [showSaveButton]='showSaveButton' (onChangedSaveCell)='onChangedSaveCell($event)'></tt-cell>
+                <ng-container *ngFor="let slot of items.slots; let dayIndex = index">
+                    <td *ngIf='dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot' class="isHoliday">
+                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [dateList]='dateList' [time]='items' [data]='data' [dayIndex]='dayIndex' [showSaveButton]='showSaveButton' (clickSaveCell)='clickSaveCell($event)'></tt-cell>
+                    </td>
+
+                    <td *ngIf='!dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot'>
+                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [dateList]='dateList' [time]='items' [data]='data' [dayIndex]='dayIndex' [showSaveButton]='showSaveButton' (clickSaveCell)='clickSaveCell($event)'></tt-cell>
+                    </td>
+                </ng-container>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="time" name="begin" (blur)='lesson.begin = $event.target.value'>
+                    <input type="time" name="end" (blur)='lesson.end = $event.target.value'>
+                    <div class="ui button" (click)="addLesson(lesson)">Добавить</div>
                 </td>
-            </ng-container>
-        </tr>
+            </tr>
 
-        <tr>
-            <td>
-                <input type="time" name="begin" (blur)='lesson.begin = $event.target.value'>
-                <input type="time" name="end" (blur)='lesson.end = $event.target.value'>
-                <div class="ui button" (click)="addLesson(lesson)">Добавить</div>
-            </td>
-        </tr>
+        </tbody>
+        <tfoot>
 
-    </tbody>
-    <tfoot>
-
-    </tfoot>
-</table>
-<!--<br>
+        </tfoot>
+    </table>
+    <br>
 </div>
 
 <div id="myBoxCell">
@@ -62,29 +62,17 @@
             </div>
         </div>
     </div>
-</div>-->
+</div>
 
-<modal id="custom-modal-1">
+
+<modal id="cell-modal">
     <div class="modal">
         <div class="modal-body">
-            <h1>A Custom Modal!</h1>
-
-            <button (click)="closeModal('custom-modal-1');">Close</button>
-        </div>
-    </div>
-    <div class="modal-background"></div>
-</modal>
-
-
-
-<!--<modal  #repeatModal>
-    <modal-content>
-        <sm-list>
             <table width="100%" cellspacing="0" cellpadding="5" class="myTableModal">
                 <tr>
                     <td valign="top">Повторяется:</td>
                     <td valign="top">
-                        <select class="ui dropdown" #repeatWith (click)='settings(repeatWith.value, cell)'>
+                        <select class="ui dropdown" #repeatWith (click)='settings(repeatWith.value)'>
                             <option value="day">каждый день</option>
                             <option value="week">каждую неделю</option>
                             <option value ="month">каждый месяц</option>
@@ -167,13 +155,15 @@
                 </ng-container>
 
             </table>
-        </sm-list>
-    </modal-content>
-    <modal-actions>
-        <div class="ui button" (click)="deleteCellToEnd(cell._id);repeatModal.hide();">Удалить Все </div>
-        <div class="ui button" (click)="deleteCellMoment(cell);repeatModal.hide();">Удалить с этой до кон</div>
-        <div class="ui button" (click)="deleteThisCell(cell);repeatModal.hide();">Удалить только эту</div>
 
-        <div class="ui right floated  positive button primary" (click)="saveCell(configSave,cell);">Сохранить</div>
-    </modal-actions>
-</modal>-->
+            <div class="modal-footer">
+                <div class="ui button" (click)='deleteCell();'>Удалить Все </div>
+                <div class="ui button" (click)='deleteCellWithMoment();'>Удалить с этой до кон</div>
+                <div class="ui button" (click)='deleteThisCell();'>Удалить только эту</div>
+                <div class="ui right floated  positive button primary" (click)="saveCell(configSave);">Сохранить</div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>

@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var main_1 = require("./main");
-var user_1 = require("./user");
 var cellTimetable_1 = require("./cellTimetable");
 var timetable_1 = require("./timetable");
 var teacher_1 = require("./teacher");
@@ -12,7 +11,6 @@ var group_1 = require("./group");
 var restApi = express_1.Router();
 exports.restApi = restApi;
 restApi.use('/main', main_1.adminApi);
-restApi.use('/user', user_1.userApi);
 restApi.use('/main/timetable', timetable_1.timetableApi);
 restApi.use('/main/cellTimetable', cellTimetable_1.cellTimetableApi);
 restApi.use('/main/teacher', teacher_1.teacher);

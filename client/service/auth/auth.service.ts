@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { Http, Response } from '@angular/http';
+import { Http, Headers, Response, Request } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import * as _ from 'underscore';
@@ -10,69 +10,38 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class AuthService {
-    user: IUser = null;
-    private users: any[] = [];
+    public token: string;
 
     constructor(private http: Http) {
-        this.getUsers();
+        var currentUser = JSON.parse(localStorage.getItem('CurUser'));
+        this.token = currentUser && currentUser.token;
     }
 
-    getUsers() {
-        return this.http
-            .get('/user/login')
+    loginUser(user: IUser): Observable<boolean> {
+        return this
+            .http
+            .post('/user/auth', user)
             .map((response: Response) => {
-                return response.json();
-            })
-            .forEach(data => {
-                this.users = data;
+                let res = response.json(); 
+                if (res.success && res.token) {
+                    this.token = res.token;
+                    this.saveUserKey({ username: user.username, token: res.token });
+                    return true;
+                }
+
+                return false;
             });
     }
 
-    getUsersById(id: string): Observable<IUser> {
-        return this.http
-            .get(`/user/login/${id}`)
-            .map((response: Response) => {
-                return response.json();
-            })
-            .do(usr => {
-                this.user = usr;
-            })
+    saveUserKey(key: Object) {
+        window.localStorage.setItem('CurUser', JSON.stringify(key));
     }
 
-    loginUser(user: IUser): Observable<IUser> {
-        let usr = _.findWhere(this.users, { password: user.password, username: user.username })
-        if (usr) {
-
-            this.user = {
-                username: user.username,
-                password: user.password,
-                $key: usr._id
-            }
-            this.saveUserKey(this.user.$key);
-            return Observable.of(this.user);
-        }
-        return Observable.of(null);
-
-
-    }
-
-    loadUser(): Promise<IUser> {
-        let userKey = window.localStorage.getItem('user');
-
-        if (!userKey) {
-            return Promise.resolve(null);
-        }
-        return this.getUsersById(userKey).toPromise();
-    }
-
-    saveUserKey(key: string) {
-        window.localStorage.setItem('user', key);
+    logoutUser() {
+        this.token = null;
+        window.localStorage.removeItem('CurUser');
     }
 }
-
-// асус в150мк 4650
-// коре ай 5 6400 4яд 12000
-// кингстоун 8гб 4150
 
 export interface IUser {
     username: string,

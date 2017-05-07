@@ -13,10 +13,17 @@ var User = new Schema({
         type: String,
         required: true
     },
-    created: { 
+    created: {
         type: Date,
         default: Date.now
     }
 });
+
+User.methods.compPasw = (req, done) => {
+    if (this.password !== req) {
+        return done(null, false)
+    }
+    done(null, true);
+}
 
 module.exports.UserModel = mongoose.model('User', User);
