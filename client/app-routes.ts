@@ -1,23 +1,23 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { MainComponent } from './modules/index';
+import { MainListComponent } from './modules/index';
 import { LoginComponent } from "./components/index";
 import { AuthGuardService } from "./service/index";
 
 export const routes: Routes = [{
     path: '',
-    component: MainComponent,
+    component: MainListComponent,
     canActivate: [AuthGuardService]
 }, {
     path: 'login',
     component: LoginComponent,
 }, {
     path: 'main',
-    component: MainComponent,
+    component: MainListComponent,
     canActivate: [AuthGuardService]
 }, {
     path: '**',
-    component: MainComponent,
+    component: MainListComponent,
     canActivate: [AuthGuardService]
 }];
 

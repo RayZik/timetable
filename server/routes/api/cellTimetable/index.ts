@@ -94,7 +94,9 @@ cellTimetableApi.post('/delete_office/:id', (req: Request, res: Response, next: 
 });
 
 cellTimetableApi.post('/add_cell', (req: Request, res: Response, next: NextFunction) => {
+    let id = req.body.id;
     let t = new cellTimetable();
+    t.timetableId.push(id);
     t.save()
     res.end();
 });
@@ -113,6 +115,7 @@ cellTimetableApi.post('/delete_cell/:id', (req: Request, res: Response, next: Ne
 cellTimetableApi.put('/save_cell', (req: Request, res: Response, next: NextFunction) => {
     let id = req.body.id;
     let time = req.body.time;
+    let timetableId = req.body.timetableId;
     cellTimetable.findOne({ _id: id })
         .exec().then((result) => {
             let cell = new cellTimetable(result);

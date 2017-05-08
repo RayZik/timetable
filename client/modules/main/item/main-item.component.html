@@ -1,11 +1,7 @@
 <div class="ui container">
-
-    <input type="date" name="beginDate" (blur)='newDate.beginDate = $event.target.value'>
-    <input type="date" name="endDate" (blur)='newDate.endDate = $event.target.value'>
-    <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>
-
+    <div class="ui button" (click)="goBack()">Назад</div><br>
     <!--Фильтр-->
-    <tt-filter (onChanged)="onChanged($event)" [dateList]='dateList' [holidayList]='holidayList'></tt-filter>
+    <tt-filter (onChanged)="onChanged($event)" [dateList]='dateList' [holidayList]='holidayList' [cellWithTime]='cellWithTime'></tt-filter>
 
 
     <!--Таблица-->
@@ -34,18 +30,11 @@
                     </td>
                 </ng-container>
             </tr>
-
-            <tr>
-                <td>
-                    <input type="time" name="begin" (blur)='lesson.begin = $event.target.value'>
-                    <input type="time" name="end" (blur)='lesson.end = $event.target.value'>
-                    <div class="ui button" (click)="addLesson(lesson)">Добавить</div>
-                </td>
-            </tr>
-
         </tbody>
         <tfoot>
-
+            <input type="time" name="begin" (blur)='lesson.begin = $event.target.value'>
+            <input type="time" name="end" (blur)='lesson.end = $event.target.value'>
+            <div class="ui button" (click)="addLesson(lesson)">Добавить</div>
         </tfoot>
     </table>
     <br>

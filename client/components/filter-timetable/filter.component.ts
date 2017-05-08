@@ -14,7 +14,7 @@ export class FilterComponent implements OnInit {
     @Input() dateList;
 
     private holidayList: any[] = [];
-    private cellWithTime: any[] = [];
+    @Input() cellWithTime;
     private teachers = [];
     private subjects: any[] = [];
     private offices: any[] = [];
@@ -76,16 +76,16 @@ export class FilterComponent implements OnInit {
             (err) => console.log(err)
             );
 
-        this.adminService
-            .getCellTimetable()
-            .subscribe((cells) => {
-                this.cellWithTime = [];
-                cells.forEach(cell => {
-                    if (cell.time.length > 0) {
-                        this.cellWithTime.push(cell);
-                    }
-                });
-            });
+        // this.adminService
+        //     .getCellTimetable()
+        //     .subscribe((cells) => {
+        //         this.cellWithTime = [];
+        //         cells.forEach(cell => {
+        //             if (cell.time.length > 0 ) {
+        //                 this.cellWithTime.push(cell);
+        //             }
+        //         });
+        //     });
     }
 
     search(term: string, sign: string) {

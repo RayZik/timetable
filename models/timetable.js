@@ -4,6 +4,7 @@ var mongoose = require('../lib/mongoose');
 var Schema = mongoose.Schema;
 
 var Timetable = new Schema({
+    name: String,
     beginDate: Date,
     endDate: Date,
     lessons: [{
@@ -13,3 +14,4 @@ var Timetable = new Schema({
 });
 
 module.exports.TimetableModel = mongoose.model('Timetable', Timetable);
+module.exports.Timetable = Timetable;

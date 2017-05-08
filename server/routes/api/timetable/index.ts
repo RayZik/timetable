@@ -13,7 +13,8 @@ const holiday = require('../../../../models/holiday').HolidayModel;
 
 timetableApi.get('/', (req: Request, res: Response, next: NextFunction) => {
     Timetable.find({})
-        .exec().then((result) => {
+        .exec()
+        .then((result) => {
             res.send(result);
             res.end();
         }).catch(next);
@@ -27,11 +28,24 @@ timetableApi.get('/holidays', (req: Request, res: Response, next: NextFunction) 
         }).catch(next);
 });
 
+timetableApi.get('/:id', (req: Request, res: Response, next: NextFunction) => {
+    Timetable.findById({ _id: req.params.id })
+        .exec()
+        .then((result) => {
+            res.send(result);
+            res.end();
+        }).catch(next);
+});
+
+
+
 timetableApi.post('/add_date', (req: Request, res: Response, next: NextFunction) => {
     let begin: Date = moment.utc(req.body.beginDate).toDate();
     let end: Date = moment.utc(req.body.endDate).toDate();
+    let name = req.body.name;
 
     let les = new Timetable({
+        name: name,
         beginDate: begin,
         endDate: end
     });
@@ -43,10 +57,10 @@ timetableApi.post('/add_time_lesson', (req: Request, res: Response, next: NextFu
     let date: Date = moment(0).hour(0).toDate();
     let begin: Number = moment(date).minute(req.body.begin).unix();
     let end: Number = moment(date).minute(req.body.end).unix();
-    Timetable.findOneAndUpdate({}, { $push: { lessons: { begin: begin, end: end } } })
-        .exec().then(() => {
-            res.end();
-        }).catch(next);
+    let id: string = req.body.timetableId;
+
+    Timetable.findOneAndUpdate({ _id: id }, { $push: { lessons: { begin: begin, end: end } } })
+        .exec().then().catch(next);
 });
 
 timetableApi.post('/delete_time_lesson', (req: Request, res: Response, next: NextFunction) => {

@@ -4,6 +4,9 @@ var mongoose = require('../lib/mongoose');
 var Schema = mongoose.Schema;
 
 var CellTimetable = new Schema({
+    timetableId: [{
+        type: String
+    }],
     office: [{
         type: Schema.Types.ObjectId,
         ref: 'Office'
@@ -28,3 +31,4 @@ var CellTimetable = new Schema({
 });
 
 module.exports.CellTimetableModel = mongoose.model('CellTimetable', CellTimetable);
+module.exports.CellTimetable = CellTimetable;

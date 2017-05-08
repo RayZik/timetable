@@ -1,29 +1,30 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import moment from 'moment';
 
-import { ApiService, MainService, ModalService } from '../../service/index';
+import { ApiService, MainService, ModalService } from '../../../service/index';
 
 @Component({
-	selector: 'tt-main',
-	templateUrl: 'client/modules/main/main.component.html',
-	styleUrls: ['client/modules/main/main.component.css'],
+	selector: 'tt-main-item',
+	templateUrl: 'client/modules/main/item/main-item.component.html',
+	styleUrls: ['client/modules/main/item/main-item.component.css'],
 	viewProviders: [DragulaService]
 })
 
-export class MainComponentList implements OnInit {
+export class MainItemComponent implements OnInit {
 
 	private cellTimetable: any[] = [];
 	private cellWithTime: any[] = [];
 	private timeList: any[] = [];
 	private holidayList: any[] = [];
 	private lesson: Object = {};
-	private newDate: Object = {};
 	private dateList: any[] = [];
 	private data: any = [];
 	private dataForModalWindow: Object = {};
 	private showModal: Boolean = false;
-
+	private param: any = {};
 	private daysName: any[] = ['Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб.', 'Вс.'];
 	private arrRepWithInter: any[] = [];
 	private showSaveButton = true;
@@ -33,10 +34,12 @@ export class MainComponentList implements OnInit {
 	private inputConfig: Object = {}
 
 	constructor(
-		private adminService: MainService,
+		private mainService: MainService,
 		private apiService: ApiService,
 		private dragulaService: DragulaService,
-		private modalService: ModalService
+		private modalService: ModalService,
+		private activatedRoute: ActivatedRoute,
+		private location: Location
 	) {
 		dragulaService.dropModel.subscribe((value) => {
 			this.onDropModel(value.slice(1));
@@ -45,6 +48,7 @@ export class MainComponentList implements OnInit {
 		dragulaService.removeModel.subscribe((value) => {
 			this.onRemoveModel(value.slice(1));
 		});
+
 
 
 	}
@@ -58,58 +62,65 @@ export class MainComponentList implements OnInit {
 	}
 
 	ngOnInit() {
+
 		for (let i = 2; i <= 30; i++) {
 			this.arrRepWithInter.push(i);
 		}
 
-		this.adminService
+		this.mainService
 			.getHolidays()
 			.subscribe((data) => {
 				this.holidayList = data;
 			});
 
-		this.adminService
-			.getCellTimetable()
-			.flatMap(cells => {
-				this.cellWithTime = [];
-				this.cellTimetable = [];
-				cells.forEach(cell => {
-					if (cell.time.length > 0) {
-						this.cellWithTime.push(cell);
-					} else {
-						this.cellTimetable.push(cell);
+		this.activatedRoute.params.forEach((params: Params) => {
+			this.param = params;
+
+			this.mainService
+				.getCellTimetable()
+				.flatMap(cells => {
+					this.cellWithTime = [];
+					this.cellTimetable = [];
+					cells.forEach(cell => {
+						if (cell.time.length > 0 && cell.timetableId[0] === this.param.id) {
+							this.cellWithTime.push(cell);
+						}
+
+						if (cell.time.length === 0 && cell.timetableId[0] === this.param.id) {
+							this.cellTimetable.push(cell);
+						}
+					});
+					return this.mainService.getTimeLessonById(params.id);
+				})
+				.subscribe((data) => {
+					this.data = data;
+					let bDay = moment(data.beginDate);
+					this.dateList = [];
+
+					if (bDay.day() === 0) {
+						this.data.beginDate = bDay.add(-6, 'day');
 					}
+
+					if (bDay.day() !== 1 && bDay.day() !== 0) {
+						let diff = 1 - bDay.day();
+						this.data.beginDate = bDay.add(diff, 'day');
+					}
+
+					for (let i = 0; i < 7; i++) {
+						let beginDay = moment(this.data.beginDate).day();
+						let date = moment(this.data.beginDate).day(beginDay + i);
+						let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
+						if (cont) {
+							this.dateList.push({ day: date.toISOString(), isHoliday: true });
+						} else {
+							this.dateList.push({ day: date.toISOString(), isHoliday: false });
+						}
+
+					}
+					this.outTable(this.data, this.cellWithTime);
+
 				});
-				return this.adminService.getTimeLesson();
-			})
-			.subscribe((data) => {
-				this.data = data[0];
-				let bDay = moment(data[0].beginDate);
-				this.dateList = [];
-
-				if (bDay.day() === 0) {
-					this.data.beginDate = bDay.add(-6, 'day');
-				}
-
-				if (bDay.day() !== 1 && bDay.day() !== 0) {
-					let diff = 1 - bDay.day();
-					this.data.beginDate = bDay.add(diff, 'day');
-				}
-
-				for (let i = 0; i < 7; i++) {
-					let beginDay = moment(this.data.beginDate).day();
-					let date = moment(this.data.beginDate).day(beginDay + i);
-					let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
-					if (cont) {
-						this.dateList.push({ day: date.toISOString(), isHoliday: true });
-					} else {
-						this.dateList.push({ day: date.toISOString(), isHoliday: false });
-					}
-
-				}
-				this.outTable(this.data, this.cellWithTime);
-			});
-
+		});
 		this.dragCellBox();
 	}
 
@@ -126,9 +137,10 @@ export class MainComponentList implements OnInit {
 			data.lessons[i].slots = countSlots;
 			for (let j = 0; j < data.lessons[i].slots.length; j++) {
 				let begin = moment(this.dateList[j].day).second(data.lessons[i].begin).unix();
+				let end = moment(this.dateList[j].day).second(data.lessons[i].end).unix();
 				validate.forEach(cell => {
 					cell.time.forEach(time => {
-						if (moment(time.begin).unix() === begin) {
+						if (moment(time.begin).unix() === begin && moment(time.end).unix() === end) {
 							data.lessons[i].slots[j].push(cell);
 						}
 					});
@@ -146,15 +158,18 @@ export class MainComponentList implements OnInit {
 	}
 
 	addCell(): void {
-		this.adminService
-			.addCell()
+		let par = { id: this.param.id }
+		this.mainService
+			.addCell(par)
 			.subscribe();
 	}
 
 	addLesson(lesson): void {
 		lesson.begin = this.toInt(lesson.begin);
 		lesson.end = this.toInt(lesson.end);
-		this.adminService
+		lesson.timetableId = this.param.id;
+
+		this.mainService
 			.addTimeLesson(lesson)
 			.subscribe();
 	}
@@ -175,14 +190,8 @@ export class MainComponentList implements OnInit {
 		}
 		lessonRow = [lessonRow._id, resSend];
 
-		this.adminService
+		this.mainService
 			.deleteLesson(lessonRow)
-			.subscribe();
-	}
-
-	addDate(newDate): void {
-		this.adminService
-			.addDate(newDate)
 			.subscribe();
 	}
 
@@ -274,15 +283,15 @@ export class MainComponentList implements OnInit {
 						let begin = moment(this.dateList[sDay[i]].day).add(e * interval, config.repeat).second(this.inputConfig['time'].begin);
 						let end = moment(this.dateList[sDay[i]].day).add(e * interval, config.repeat).second(this.inputConfig['time'].end);
 
-						if (this.contains(this.inputConfig['cell'].time, begin.toISOString()) === undefined) {
-							arrTime.time.push({ begin: begin.toDate(), end: end.toDate() });
+						if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === undefined) {
+							arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param.id });
 						}
 					}
 				} else {
 					let begin = moment(config.begin).add(e * interval, config.repeat).second(this.inputConfig['time'].begin);
 					let end = moment(config.begin).add(e * interval, config.repeat).second(this.inputConfig['time'].end);
-					if (this.contains(this.inputConfig['cell'].time, begin.toISOString()) === undefined && end.isBetween(config.beginDate, config.endDate)) {
-						arrTime.time.push({ begin: begin.toDate(), end: end.toDate() });
+					if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === undefined) {
+						arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param.id });
 					}
 				}
 
@@ -296,27 +305,24 @@ export class MainComponentList implements OnInit {
 				let begin = moment(this.dateList[sDay[i]].day).second(this.inputConfig['time'].begin);
 				let end = moment(this.dateList[sDay[i]].day).second(this.inputConfig['time'].end);
 
-				if (this.contains(this.inputConfig['cell'].time, begin.toISOString()) === undefined) {
-					arrTime.time.push({ begin: begin.toDate(), end: end.toDate() });
+				if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === undefined) {
+					arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param.id });
 				}
 			}
 		}
-		console.log('save1')
 		if (arrTime.time.length > 0) {
-			console.log('sav2e')
-			// this.mainService
-			// 	.saveCell(arrTime)
-			// 	.subscribe();
+			this.mainService
+				.saveCell(arrTime)
+				.subscribe();
 		}
 	}
 
 	deleteCell(): void {
 		let id = this.inputConfig['cell']._id;
 		let obj = { time: [] };
-		console.log('deleteCell')
-		// this.mainService
-		// 	.deleteCell(id, obj)
-		// 	.subscribe();
+		this.mainService
+			.deleteCell(id, obj)
+			.subscribe();
 	}
 
 	deleteCellWithMoment(): void {
@@ -329,10 +335,9 @@ export class MainComponentList implements OnInit {
 			}
 		});
 		let obj = { time: res };
-		console.log('WithMomen')
-		// this.mainService
-		// 	.deleteCell(id, obj)
-		// 	.subscribe();
+		this.mainService
+			.deleteCell(id, obj)
+			.subscribe();
 	}
 
 	deleteThisCell(): void {
@@ -345,15 +350,18 @@ export class MainComponentList implements OnInit {
 			}
 		});
 		let obj = { time: res };
-		console.log('deleteThisCell')
-		// this.mainService
-		// 	.deleteCell(id, obj)
-		// 	.subscribe();
+		this.mainService
+			.deleteCell(id, obj)
+			.subscribe();
 	}
 
-	contains(arr, elem) {
+	goBack(): void {
+		this.location.back();
+	}
+
+	contains(arr, begin, end) {
 		if (arr.length > 0) {
-			return arr.find((i) => i.begin === elem);
+			return arr.find((i) => i.begin === begin && i.end === end);
 		}
 		return undefined;
 	}

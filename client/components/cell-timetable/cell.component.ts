@@ -31,9 +31,6 @@ export class CellComponent implements OnInit, OnChanges {
 	private idOffice: any = { id: '', show: false };
 	private idGroup: any = { id: '', show: false };
 	private idCell: String = '';
-	// private configSave: Object = {};
-	// private arrRepWithInter: any[] = [];
-	// private daysName: any[] = ['Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб.', 'Вс.'];
 
 	constructor(
 		private mainService: MainService,
@@ -48,15 +45,10 @@ export class CellComponent implements OnInit, OnChanges {
 	}
 
 	ngOnInit(): void {
-
-		// for (let i = 2; i <= 30; i++) {
-		// 	this.arrRepWithInter.push(i);
-		// }
-
 		this.apiService
 			.getTeachers()
 			.subscribe(
-			(data) => { this.teachers = data; },
+			(data) => { this.teachers = data;},
 			(err) => console.log(err)
 			);
 
@@ -83,29 +75,6 @@ export class CellComponent implements OnInit, OnChanges {
 
 
 	}
-
-	// change() {
-	// 	console.log(this.configSave)
-	// 	if (this.configSave['delete']) {
-	// 		let inf = this.configSave['delete'];
-
-	// 		if (inf === 'dAll') {
-	// 			this.deleteCell();
-	// 		}
-
-	// 		if (inf === 'dToEnd') {
-	// 			this.deleteCellWithMoment();
-	// 		}
-
-	// 		if (inf === 'dThis') {
-	// 			this.deleteThisCell();
-	// 		}
-	// 	}
-
-	// 	if (this.configSave['save']) {
-	// 		this.saveCell(this.configSave);
-	// 	}
-	// }
 
 	editCell() {
 		let obj = {
@@ -178,97 +147,4 @@ export class CellComponent implements OnInit, OnChanges {
 	setGroupId(id: String): void { this.idGroup.id = id; }
 	setSubjectId(id: String): void { this.idSubject.id = id; }
 	setOfficeId(id: String): void { this.idOffice.id = id; }
-
-	// clickSaveCell(repeatModal, cell) {
-	// 	this.setDefaultConfig();
-	// 	this.configSave['id'] = cell._id;
-	// 	repeatModal.show({ blurring: false, closable: false });
-	// }
-
-	// setDefaultConfig() {
-	// 	this.configSave = {};
-	// 	this.configSave['repeat'] = 'day';
-	// 	this.configSave['repeatWithInterval'] = '1';
-	// 	this.configSave['beginDate'] = moment(this.dateList[this.dayIndex].day).format('YYYY-MM-DD').toString();
-	// 	this.configSave['endDate'] = moment(this.data.endDate).format('YYYY-MM-DD').toString();
-	// 	this.configSave['begin'] = moment(this.dateList[this.dayIndex].day).format();
-	// 	this.configSave['selectedDay'] = [];
-	// }
-
-	// settings(repeatWith) {
-	// 	this.setDefaultConfig();
-	// 	this.configSave['repeat'] = repeatWith;
-	// }
-
-	// selectDays(day, idx) {
-	// 	if (day.checked) {
-	// 		this.configSave['selectedDay'].push(idx);
-	// 	} else {
-	// 		let indElem = this.configSave['selectedDay'].indexOf(idx);
-	// 		if (indElem !== -1) {
-	// 			this.configSave['selectedDay'].splice(indElem, 1);
-	// 		}
-	// 	}
-	// }
-
-	// saveCell(config) {
-	// 	let arrTime = { id: this.cell._id, time: [] };
-	// 	let interval = config.repeatWithInterval;
-
-	// 	if (config.repeat !== 'day') {
-	// 		let firstDayWeek = moment(this.dateList[this.dayIndex].day).utc();
-	// 		let lastDate = moment(config.endDate).utc();
-
-	// 		let diff = Math.ceil(lastDate.diff(firstDayWeek, config.repeat) / interval);
-
-	// 		for (let e = 0; e <= diff; e++) {
-
-	// 			if (config.selectedDay.length > 0) {
-	// 				let sDay = config.selectedDay;
-	// 				for (let i = 0; i < sDay.length; i++) {
-	// 					let begin = moment(this.dateList[sDay[i]].day).add(e * interval, config.repeat).second(this.time.begin);
-	// 					let end = moment(this.dateList[sDay[i]].day).add(e * interval, config.repeat).second(this.time.end);
-
-	// 					if (this.contains(this.cell.time, begin.toISOString()) === undefined) {
-	// 						arrTime.time.push({ begin: begin.toDate(), end: end.toDate() });
-	// 					}
-	// 				}
-	// 			} else {
-	// 				let begin = moment(config.begin).add(e * interval, config.repeat).second(this.time.begin);
-	// 				let end = moment(config.begin).add(e * interval, config.repeat).second(this.time.end);
-	// 				if (this.contains(this.cell.time, begin.toISOString()) === undefined && end.isBetween(config.beginDate, config.endDate)) {
-	// 					arrTime.time.push({ begin: begin.toDate(), end: end.toDate() });
-	// 				}
-	// 			}
-
-	// 		}
-	// 	}
-
-	// 	if (config.repeat === 'day' && config.selectedDay.length > 0) {
-	// 		let sDay = config.selectedDay;
-
-	// 		for (let i = 0; i < sDay.length; i++) {
-	// 			let begin = moment(this.dateList[sDay[i]].day).second(this.time.begin);
-	// 			let end = moment(this.dateList[sDay[i]].day).second(this.time.end);
-
-	// 			if (this.contains(this.cell.time, begin.toISOString()) === undefined) {
-	// 				arrTime.time.push({ begin: begin.toDate(), end: end.toDate() });
-	// 			}
-	// 		}
-	// 	}
-
-	// 	if (arrTime.time.length > 0) {
-	// 		console.log('save')
-	// 		// this.mainService
-	// 		// 	.saveCell(arrTime)
-	// 		// 	.subscribe();
-	// 	}
-	// }
-
-	// contains(arr, elem) {
-	// 	if (arr.length > 0) {
-	// 		return arr.find((i) => i.begin === elem);
-	// 	}
-	// 	return undefined;
-	// }
 }
