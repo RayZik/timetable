@@ -1,11 +1,11 @@
 <div class="ui container">
     <h1>Auth</h1><br />
 
-    <form autocomplete="off" novalidate #logForm="ngForm">
+    <form *ngIf='!isAuth' autocomplete="off" novalidate #logForm="ngForm">
         <input type="text" placeholder="username" name="username" [(ngModel)]="user.username" required/>
         <input type="text" placeholder="password" name="password" [(ngModel)]="user.password" required/>
         <button (click)="login(logForm)">Войти</button>
     </form>
 
-    <button (click)="logout()">logout</button>
+    <button *ngIf='isAuth' (click)="logout()">logout</button>
 </div>

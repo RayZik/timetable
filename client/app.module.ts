@@ -6,10 +6,10 @@ import { NgSemanticModule } from 'ng-semantic';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from './components/login/login.component';
 import { routing } from './app-routes';
 
 import { MainModule } from "./modules/main/main.module";
-import { LoginComponent } from "./components/index";
 import { AuthService, AuthGuardService, AuthTokenService } from "./service/index";
 
 @NgModule({

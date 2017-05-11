@@ -9,7 +9,7 @@ import { AuthService, IUser } from '../../service/index';
     templateUrl: 'client/components/login/login.component.html'
 })
 export class LoginComponent implements OnInit {
-
+    private isAuth: boolean;
     private user: IUser = {
         username: '1',
         password: '12'
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     constructor(private authService: AuthService, private router: Router) { }
 
     ngOnInit() {
-
+        this.isAuth = !!localStorage.getItem('CurUser');
     }
 
     login(form: NgForm) {
@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
             .loginUser(this.user)
             .subscribe(isLogin => {
                 if (isLogin) {
+                    this.isAuth = true;
                     this.router.navigate(['/main']);
                 }
             })
@@ -40,7 +41,8 @@ export class LoginComponent implements OnInit {
         this.authService.logoutUser().
             subscribe(isLogout => {
                 if (isLogout) {
-                    console.log(200)
+                    this.isAuth = false;
+                    this.router.navigate(['/login']);
                 }
             });
     }
