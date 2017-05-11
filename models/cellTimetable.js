@@ -4,9 +4,10 @@ var mongoose = require('../lib/mongoose');
 var Schema = mongoose.Schema;
 
 var CellTimetable = new Schema({
-    timetableId: [{
-        type: String
-    }],
+    timetableId: {
+        type: String,
+        required: true
+    },
     office: [{
         type: Schema.Types.ObjectId,
         ref: 'Office'

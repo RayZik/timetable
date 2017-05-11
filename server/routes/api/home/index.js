@@ -11,7 +11,11 @@ var db = require('../../../../models/user').UserModel;
 // user.save((err,user,affected)=>{
 //     console.log(user);
 // })
-homeApi.get('/', function (reest, res, next) {
+homeApi.get('/', function (req, res, next) {
+    if (req.query.token === 'null') {
+        res.sendStatus(403);
+        res.end();
+    }
     db.find({})
         .exec().then(function (result) {
         res.json(result);

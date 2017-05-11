@@ -10,7 +10,7 @@ import { routing } from './app-routes';
 
 import { MainModule } from "./modules/main/main.module";
 import { LoginComponent } from "./components/index";
-import { AuthService, AuthGuardService } from "./service/index";
+import { AuthService, AuthGuardService, AuthTokenService } from "./service/index";
 
 @NgModule({
     imports: [
@@ -29,6 +29,7 @@ import { AuthService, AuthGuardService } from "./service/index";
         }),
         AuthService,
         AuthGuardService,
+        AuthTokenService
     ],
     declarations: [
         AppComponent,

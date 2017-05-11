@@ -7,11 +7,28 @@ const timetableApi: Router = Router();
 const Timetable = require('../../../../models/timetable').TimetableModel;
 const cellTimetable = require('../../../../models/cellTimetable').CellTimetableModel;
 const holiday = require('../../../../models/holiday').HolidayModel;
-
+const User = require('../../../../models/user').UserModel;
 // let h = new holiday({date: moment().toDate()});
 // h.save();
 
+function isAuth(req: Request, res: Response, next: NextFunction) {
+    if (req.session.userId) {
+        User.find({ _id: req.session.userId })
+            .exec()
+            .then((user) => {
+                if (!user) {
+                    res.redirect('/#/login');
+                } else {
+                    next();
+                }
+            });
+    } else {
+        res.redirect('/#/login');
+    }
+}
+
 timetableApi.get('/', (req: Request, res: Response, next: NextFunction) => {
+
     Timetable.find({})
         .exec()
         .then((result) => {
@@ -20,7 +37,7 @@ timetableApi.get('/', (req: Request, res: Response, next: NextFunction) => {
         }).catch(next);
 });
 
-timetableApi.get('/holidays', (req: Request, res: Response, next: NextFunction) => {
+timetableApi.get('/holidays', isAuth, (req: Request, res: Response, next: NextFunction) => {
     holiday.find({})
         .exec().then((result) => {
             res.send(result);
@@ -39,7 +56,9 @@ timetableApi.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 
 
 
-timetableApi.post('/add_date', (req: Request, res: Response, next: NextFunction) => {
+timetableApi.post('/add_date', isAuth, (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+
     let begin: Date = moment.utc(req.body.beginDate).toDate();
     let end: Date = moment.utc(req.body.endDate).toDate();
     let name = req.body.name;
@@ -54,6 +73,8 @@ timetableApi.post('/add_date', (req: Request, res: Response, next: NextFunction)
 });
 
 timetableApi.post('/add_time_lesson', (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+
     let date: Date = moment(0).hour(0).toDate();
     let begin: Number = moment(date).minute(req.body.begin).unix();
     let end: Number = moment(date).minute(req.body.end).unix();
@@ -64,6 +85,8 @@ timetableApi.post('/add_time_lesson', (req: Request, res: Response, next: NextFu
 });
 
 timetableApi.post('/delete_time_lesson', (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+
     let lesson = req.body.lesson;
 
     Timetable.findOne({})

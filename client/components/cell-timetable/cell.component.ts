@@ -48,7 +48,7 @@ export class CellComponent implements OnInit, OnChanges {
 		this.apiService
 			.getTeachers()
 			.subscribe(
-			(data) => { this.teachers = data;},
+			(data) => { this.teachers = data; },
 			(err) => console.log(err)
 			);
 
@@ -147,4 +147,8 @@ export class CellComponent implements OnInit, OnChanges {
 	setGroupId(id: String): void { this.idGroup.id = id; }
 	setSubjectId(id: String): void { this.idSubject.id = id; }
 	setOfficeId(id: String): void { this.idOffice.id = id; }
+
+	deleteCell(cell: any) {
+		
+	}
 }

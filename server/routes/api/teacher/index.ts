@@ -21,6 +21,8 @@ teacher.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 });
 
 teacher.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+
     Teacher.update({ _id: req.body._id }, { $set: { name: req.body.name, lastName: req.body.lastName, surname: req.body.surname } })
         .exec().then(() => {
             res.end();
@@ -28,6 +30,8 @@ teacher.put('/update/:id', (req: Request, res: Response, next: NextFunction) => 
 });
 
 teacher.post('/create', (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+
     let t = new Teacher({ name: req.body.name, lastName: req.body.lastName, surname: req.body.surname });
     t.save()
         .then((result) => {
@@ -36,6 +40,8 @@ teacher.post('/create', (req: Request, res: Response, next: NextFunction) => {
 });
 
 teacher.delete('/remove/:id', (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+    
     Teacher.findById(req.params.id)
         .exec().then((result) => {
             if (result != null) {

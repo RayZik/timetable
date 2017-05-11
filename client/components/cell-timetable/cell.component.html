@@ -127,6 +127,6 @@
 
     <div>
         <button *ngIf="showSaveButton" class="mini ui icon button" (click)="editCell()"><i class="icon save"></i></button>
-        <button *ngIf="!showSaveButton" class="mini ui icon button" (click)="deleteCellToEnd(cell._id)"><i class="icon minus"></i></button>
+        <button *ngIf="!showSaveButton" class="mini ui icon button" (click)="deleteCell(cell._id)"><i class="icon minus"></i></button>
     </div>
 </div>

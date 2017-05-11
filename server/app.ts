@@ -1,7 +1,5 @@
 import * as express from 'express';
 import * as session from 'express-session';
-import * as JWT from 'express-jwt';
-import * as passport from 'passport';
 import * as cors from 'cors';
 
 import { join } from 'path';
@@ -10,20 +8,21 @@ import { restApi } from './routes/api';
 import { userApi } from './routes/user';
 import './typesext';
 
-const config: any = require('../config/index.js');
-let mongoose: any = require('../lib/mongoose');
-// require('./config/passport')(passport)
-
 const app: express.Application = express();
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(cors({ origin: '*' }));
+app.disable('x-powered-by');
 
 app.use(express.static(join(__dirname, '../public')));
-
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(session({
+    secret: '75396',
+    name: 'sessionId',
+    resave: true,
+    saveUninitialized: true
+})
+);
 
 app.use('/api', restApi);
 app.use('/user', userApi);

@@ -22,6 +22,8 @@ subject.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 });
 
 subject.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+
     Subject.update({ _id: req.body._id }, { $set: { name: req.body.name } })
         .exec().then(() => {
             res.end();
@@ -29,6 +31,8 @@ subject.put('/update/:id', (req: Request, res: Response, next: NextFunction) => 
 });
 
 subject.post('/create', (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+
     let s = new Subject({ name: req.body.name });
     s.save()
         .then((result) => {
@@ -37,6 +41,8 @@ subject.post('/create', (req: Request, res: Response, next: NextFunction) => {
 });
 
 subject.delete('/remove/:id', (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+    
     Subject.findById(req.params.id)
         .exec().then((result) => {
             if (result != null) {

@@ -14,7 +14,7 @@ export class AuthService {
 
     constructor(private http: Http) {
         var currentUser = JSON.parse(localStorage.getItem('CurUser'));
-        this.token = currentUser && currentUser.token;
+        this.token = currentUser && currentUser.token || null;
     }
 
     loginUser(user: IUser): Observable<boolean> {
@@ -22,10 +22,10 @@ export class AuthService {
             .http
             .post('/user/auth', user)
             .map((response: Response) => {
-                let res = response.json(); 
+                let res = response.json();
                 if (res.success && res.token) {
                     this.token = res.token;
-                    this.saveUserKey({ username: user.username, token: res.token });
+                    this.saveUserKey({ token: res.token });
                     return true;
                 }
 
@@ -40,6 +40,16 @@ export class AuthService {
     logoutUser() {
         this.token = null;
         window.localStorage.removeItem('CurUser');
+
+        return this
+            .http
+            .get('/user/auth/logout')
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            });
     }
 }
 

@@ -37,7 +37,12 @@ export class LoginComponent implements OnInit {
     }
 
     logout() {
-        this.authService.logoutUser();
+        this.authService.logoutUser().
+            subscribe(isLogout => {
+                if (isLogout) {
+                    console.log(200)
+                }
+            });
     }
 }
 

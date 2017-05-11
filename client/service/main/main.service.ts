@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthHttp } from 'angular2-jwt';
-import { Headers, Http, Response, RequestOptions } from '@angular/http';
+import { Headers, Http, Response, RequestOptions, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/map';
@@ -17,12 +17,13 @@ export class MainService {
     }
 
     getCellTimetable() {
+        let headers = new Headers({ 'Content-Type': 'application/json' })
         if (this.cache['cells']) {
             return Observable.of(this.cache['cells']);
         } else {
             return this
                 .http
-                .get('/api/main/cellTimetable', this.head())
+                .get('/api/main/cellTimetable', headers)
                 .map((response: Response) => {
                     this.cache['cells'] = response.json();
                     return this.cache['cells'];

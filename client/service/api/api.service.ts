@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, Request, RequestOptions } from '@angular/http';
+import { Http, Headers, Response, Request, RequestOptions, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
@@ -12,8 +12,12 @@ export class ApiService {
     constructor(private http: Http) { }
 
     private head() {
+        let currentUser = JSON.parse(localStorage.getItem('CurUser')) || null;
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('token', currentUser && currentUser.token);
         let headers = new Headers({ 'Content-Type': 'application/json' })
-        return new RequestOptions({ headers: headers });
+
+        return new RequestOptions({ headers: headers, search: params });
     }
 
     //subject

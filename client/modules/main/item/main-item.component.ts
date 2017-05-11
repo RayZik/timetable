@@ -48,9 +48,6 @@ export class MainItemComponent implements OnInit {
 		dragulaService.removeModel.subscribe((value) => {
 			this.onRemoveModel(value.slice(1));
 		});
-
-
-
 	}
 
 	private onDropModel(args) {
@@ -82,11 +79,11 @@ export class MainItemComponent implements OnInit {
 					this.cellWithTime = [];
 					this.cellTimetable = [];
 					cells.forEach(cell => {
-						if (cell.time.length > 0 && cell.timetableId[0] === this.param.id) {
+						if (cell.time.length > 0 && cell.timetableId === this.param.id) {
 							this.cellWithTime.push(cell);
 						}
 
-						if (cell.time.length === 0 && cell.timetableId[0] === this.param.id) {
+						if (cell.time.length === 0 && cell.timetableId === this.param.id) {
 							this.cellTimetable.push(cell);
 						}
 					});
@@ -150,7 +147,8 @@ export class MainItemComponent implements OnInit {
 		}
 	}
 
-	onChanged(filter) {
+	onChanged(filter): void {
+
 		if (filter.dateList.length > 0) {
 			this.dateList = filter.dateList;
 		}
@@ -181,6 +179,7 @@ export class MainItemComponent implements OnInit {
 
 	deleteTimeLesson(lessonRow): void {
 		let resSend = [];
+
 		for (let i = 0; i < lessonRow.slots.length; i++) {
 			if (lessonRow.slots[i].length > 0) {
 				lessonRow.slots[i].forEach(cell => {
@@ -195,8 +194,7 @@ export class MainItemComponent implements OnInit {
 			.subscribe();
 	}
 
-	/////////////////////////////////////////////
-	dragCellBox() {
+	dragCellBox(): void {
 		let box = document.getElementById('myBoxCell');
 		let takeBox = document.getElementById('takeBox');
 
@@ -224,22 +222,22 @@ export class MainItemComponent implements OnInit {
 
 	}
 
-	openModal(id: string) {
+	openModal(id: string): void {
 		this.modalService.open(id);
 	}
 
-	closeModal(id: string) {
+	closeModal(id: string): void {
 		this.modalService.close(id);
 	}
 
-	clickSaveCell(obj) {
+	clickSaveCell(obj): void {
 		this.inputConfig = obj;
 		this.setDefaultConfig();
 		this.configSave['id'] = obj.cell._id;
 		this.openModal(obj.nameModal);
 	}
 
-	setDefaultConfig() {
+	setDefaultConfig(): void {
 		this.configSave = {};
 		this.configSave['repeat'] = 'day';
 		this.configSave['repeatWithInterval'] = '1';
@@ -249,12 +247,12 @@ export class MainItemComponent implements OnInit {
 		this.configSave['selectedDay'] = [];
 	}
 
-	settings(repeatWith) {
+	settings(repeatWith): void {
 		this.setDefaultConfig();
 		this.configSave['repeat'] = repeatWith;
 	}
 
-	selectDays(day, idx) {
+	selectDays(day, idx): void {
 		if (day.checked) {
 			this.configSave['selectedDay'].push(idx);
 		} else {
@@ -265,14 +263,13 @@ export class MainItemComponent implements OnInit {
 		}
 	}
 
-	saveCell(config) {
+	saveCell(config): void {
 		let arrTime = { id: this.inputConfig['cell']._id, time: [] };
 		let interval = config.repeatWithInterval;
 
 		if (config.repeat !== 'day') {
 			let firstDayWeek = moment(this.dateList[this.inputConfig['dayIndex']].day).utc();
 			let lastDate = moment(config.endDate).utc();
-
 			let diff = Math.ceil(lastDate.diff(firstDayWeek, config.repeat) / interval);
 
 			for (let e = 0; e <= diff; e++) {
@@ -283,14 +280,15 @@ export class MainItemComponent implements OnInit {
 						let begin = moment(this.dateList[sDay[i]].day).add(e * interval, config.repeat).second(this.inputConfig['time'].begin);
 						let end = moment(this.dateList[sDay[i]].day).add(e * interval, config.repeat).second(this.inputConfig['time'].end);
 
-						if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === undefined) {
+						if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === -1) {
 							arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param.id });
 						}
 					}
 				} else {
 					let begin = moment(config.begin).add(e * interval, config.repeat).second(this.inputConfig['time'].begin);
 					let end = moment(config.begin).add(e * interval, config.repeat).second(this.inputConfig['time'].end);
-					if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === undefined) {
+
+					if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === -1) {
 						arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param.id });
 					}
 				}
@@ -305,7 +303,7 @@ export class MainItemComponent implements OnInit {
 				let begin = moment(this.dateList[sDay[i]].day).second(this.inputConfig['time'].begin);
 				let end = moment(this.dateList[sDay[i]].day).second(this.inputConfig['time'].end);
 
-				if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === undefined) {
+				if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === -1) {
 					arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param.id });
 				}
 			}
@@ -329,6 +327,7 @@ export class MainItemComponent implements OnInit {
 		let beginDate = moment(this.dateList[this.inputConfig['dayIndex']].day).second(this.inputConfig['time'].begin).toISOString();
 		let id = this.inputConfig['cell']._id;
 		let res = [];
+
 		this.inputConfig['cell'].time.find((el, idx) => {
 			if (!moment(el.begin).isSameOrAfter(beginDate)) {
 				res.push(el);
@@ -344,6 +343,7 @@ export class MainItemComponent implements OnInit {
 		let beginDate = moment(this.dateList[this.inputConfig['dayIndex']].day).second(this.inputConfig['time'].begin).toISOString();
 		let id = this.inputConfig['cell']._id;
 		let res = [];
+
 		this.inputConfig['cell'].time.find((el, idx) => {
 			if (el.begin !== beginDate) {
 				res.push(el);
@@ -360,10 +360,16 @@ export class MainItemComponent implements OnInit {
 	}
 
 	contains(arr, begin, end) {
+		let result = arr.find((i) => i.begin === begin && i.end === end);
+
 		if (arr.length > 0) {
-			return arr.find((i) => i.begin === begin && i.end === end);
+			if (result != undefined) {
+				return result;
+			} else {
+				return -1
+			}
 		}
-		return undefined;
+		return -1;
 	}
 }
 

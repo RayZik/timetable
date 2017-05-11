@@ -12,7 +12,9 @@ const db = require('../../../../models/user').UserModel;
 //     console.log(user);
 // })
 
-homeApi.get('/', (reest: Request, res: Response, next: NextFunction) => {
+homeApi.get('/', (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+
     db.find({})
         .exec().then((result) => {
             res.json(result);
