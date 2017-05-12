@@ -13,8 +13,6 @@ group.get('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 group.get('/:id', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     Group.findById(req.params.id)
         .exec().then((result) => {
             res.json(result);
@@ -23,8 +21,6 @@ group.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 });
 
 group.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     Group.update({ _id: req.body._id }, { $set: { name: req.body.name } })
         .exec().then(() => {
             res.end();
@@ -33,8 +29,6 @@ group.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
 });
 
 group.post('/create', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     let g = new Group({ name: req.body.name });
     g.save()
         .then((result) => {
@@ -43,8 +37,6 @@ group.post('/create', (req: Request, res: Response, next: NextFunction) => {
 });
 
 group.delete('/remove/:id', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     Group.findById(req.params.id)
         .exec().then((result) => {
             if (result != null) {

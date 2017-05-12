@@ -21,8 +21,6 @@ cellTimetableApi.get('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 cellTimetableApi.post('/add_teacher', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     cellTimetable.findById({ _id: req.body.cellTimetableId })
         .exec().then((result) => {
             result.teacher.push(req.body.id);
@@ -32,8 +30,6 @@ cellTimetableApi.post('/add_teacher', (req: Request, res: Response, next: NextFu
 });
 
 cellTimetableApi.post('/delete_teacher/:id', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     cellTimetable.update({ _id: req.body.cellTimetableId }, { $pull: { teacher: req.params.id } })
         .then((r) => {
             console.log(r)
@@ -43,8 +39,6 @@ cellTimetableApi.post('/delete_teacher/:id', (req: Request, res: Response, next:
 });
 
 cellTimetableApi.post('/add_group', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     cellTimetable.findById({ _id: req.body.cellTimetableId })
         .exec().then((result) => {
             result.group.push(req.body.id);
@@ -54,8 +48,6 @@ cellTimetableApi.post('/add_group', (req: Request, res: Response, next: NextFunc
 });
 
 cellTimetableApi.post('/delete_group/:id', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     cellTimetable.update({ _id: req.body.cellTimetableId }, { $pull: { group: req.params.id } })
         .then((r) => {
             console.log(r)
@@ -66,8 +58,6 @@ cellTimetableApi.post('/delete_group/:id', (req: Request, res: Response, next: N
 
 
 cellTimetableApi.post('/add_subject', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     cellTimetable.findById({ _id: req.body.cellTimetableId })
         .exec().then((result) => {
             result.subject.push(req.body.id);
@@ -77,8 +67,6 @@ cellTimetableApi.post('/add_subject', (req: Request, res: Response, next: NextFu
 });
 
 cellTimetableApi.post('/delete_subject/:id', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     cellTimetable.update({ _id: req.body.cellTimetableId }, { $pull: { subject: req.params.id } })
         .then((r) => {
             res.end();
@@ -87,8 +75,6 @@ cellTimetableApi.post('/delete_subject/:id', (req: Request, res: Response, next:
 });
 
 cellTimetableApi.post('/add_office', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     cellTimetable.findById({ _id: req.body.cellTimetableId })
         .exec().then((result) => {
             result.office.push(req.body.id);
@@ -98,8 +84,6 @@ cellTimetableApi.post('/add_office', (req: Request, res: Response, next: NextFun
 });
 
 cellTimetableApi.post('/delete_office/:id', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     cellTimetable.update({ _id: req.body.cellTimetableId }, { $pull: { office: req.params.id } })
         .then((r) => {
             res.end();
@@ -108,8 +92,6 @@ cellTimetableApi.post('/delete_office/:id', (req: Request, res: Response, next: 
 });
 
 cellTimetableApi.post('/add_cell', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     let id = req.body.id;
     let t = new cellTimetable({ timetableId: id });
     t.save()
@@ -117,8 +99,6 @@ cellTimetableApi.post('/add_cell', (req: Request, res: Response, next: NextFunct
 });
 
 cellTimetableApi.post('/delete_cell/:id', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     let time = req.body.time;
     cellTimetable.update({ _id: req.params.id }, { $set: { 'time': time } })
         .then(() => {
@@ -127,11 +107,7 @@ cellTimetableApi.post('/delete_cell/:id', (req: Request, res: Response, next: Ne
         .catch(next)
 });
 
-
-
 cellTimetableApi.put('/save_cell', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     let id = req.body.id;
     let time = req.body.time;
     let timetableId = req.body.timetableId;

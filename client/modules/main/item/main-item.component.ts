@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -13,7 +13,7 @@ import { ApiService, MainService, ModalService } from '../../../service/index';
 	viewProviders: [DragulaService]
 })
 
-export class MainItemComponent implements OnInit {
+export class MainItemComponent implements OnInit, OnDestroy {
 
 	private cellTimetable: any[] = [];
 	private cellWithTime: any[] = [];
@@ -32,6 +32,7 @@ export class MainItemComponent implements OnInit {
 	private collapse: Boolean = true;
 	private configSave: Object = {};
 	private inputConfig: Object = {}
+	private sub: any;
 
 	constructor(
 		private mainService: MainService,
@@ -47,6 +48,10 @@ export class MainItemComponent implements OnInit {
 
 		dragulaService.removeModel.subscribe((value) => {
 			this.onRemoveModel(value.slice(1));
+		});
+
+		this.sub = this.activatedRoute.params.forEach((params: Params) => {
+			this.param = params;
 		});
 	}
 
@@ -70,58 +75,59 @@ export class MainItemComponent implements OnInit {
 				this.holidayList = data;
 			});
 
-		this.activatedRoute.params.forEach((params: Params) => {
-			this.param = params;
 
-			this.mainService
-				.getCellTimetable()
-				.flatMap(cells => {
-					this.cellWithTime = [];
-					this.cellTimetable = [];
-					cells.forEach(cell => {
-						if (cell.time.length > 0 && cell.timetableId === this.param.id) {
-							this.cellWithTime.push(cell);
-						}
 
-						if (cell.time.length === 0 && cell.timetableId === this.param.id) {
-							this.cellTimetable.push(cell);
-						}
-					});
-					return this.mainService.getTimeLessonById(params.id);
-				})
-				.subscribe((data) => {
-					this.data = data;
-					let bDay = moment(data.beginDate);
-					this.dateList = [];
-
-					if (bDay.day() === 0) {
-						this.data.beginDate = bDay.add(-6, 'day');
+		this.mainService
+			.getCellTimetable()
+			.flatMap(cells => {
+				this.cellWithTime = [];
+				this.cellTimetable = [];
+				cells.forEach(cell => {
+					if (cell.time.length > 0 && cell.timetableId === this.param.id) {
+						this.cellWithTime.push(cell);
 					}
 
-					if (bDay.day() !== 1 && bDay.day() !== 0) {
-						let diff = 1 - bDay.day();
-						this.data.beginDate = bDay.add(diff, 'day');
+					if (cell.time.length === 0 && cell.timetableId === this.param.id) {
+						this.cellTimetable.push(cell);
 					}
-
-					for (let i = 0; i < 7; i++) {
-						let beginDay = moment(this.data.beginDate).day();
-						let date = moment(this.data.beginDate).day(beginDay + i);
-						let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
-						if (cont) {
-							this.dateList.push({ day: date.toISOString(), isHoliday: true });
-						} else {
-							this.dateList.push({ day: date.toISOString(), isHoliday: false });
-						}
-
-					}
-					this.outTable(this.data, this.cellWithTime);
-
 				});
-		});
+				return this.mainService.getTimeLessonById(this.param.id);
+			})
+			.subscribe((data) => {
+				this.data = data;
+				let bDay = moment(data.beginDate);
+				this.dateList = [];
+
+				if (bDay.day() === 0) {
+					this.data.beginDate = bDay.add(-6, 'day');
+				}
+
+				if (bDay.day() !== 1 && bDay.day() !== 0) {
+					let diff = 1 - bDay.day();
+					this.data.beginDate = bDay.add(diff, 'day');
+				}
+
+				for (let i = 0; i < 7; i++) {
+					let beginDay = moment(this.data.beginDate).day();
+					let date = moment(this.data.beginDate).day(beginDay + i);
+					let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
+					if (cont) {
+						this.dateList.push({ day: date.toISOString(), isHoliday: true });
+					} else {
+						this.dateList.push({ day: date.toISOString(), isHoliday: false });
+					}
+
+				}
+				this.outTable(this.data, this.cellWithTime);
+
+			});
+
 		this.dragCellBox();
 	}
 
-
+	ngOnDestroy() {
+		this.sub.unsubscribe();
+	}
 	outTable(data, validate) {
 		this.timeList = [];
 

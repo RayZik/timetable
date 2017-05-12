@@ -57,7 +57,7 @@ timetableApi.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 
 
 timetableApi.post('/add_date', isAuth, (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+   
 
     let begin: Date = moment.utc(req.body.beginDate).toDate();
     let end: Date = moment.utc(req.body.endDate).toDate();
@@ -73,7 +73,7 @@ timetableApi.post('/add_date', isAuth, (req: Request, res: Response, next: NextF
 });
 
 timetableApi.post('/add_time_lesson', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+   
 
     let date: Date = moment(0).hour(0).toDate();
     let begin: Number = moment(date).minute(req.body.begin).unix();
@@ -85,7 +85,7 @@ timetableApi.post('/add_time_lesson', (req: Request, res: Response, next: NextFu
 });
 
 timetableApi.post('/delete_time_lesson', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
+   
 
     let lesson = req.body.lesson;
 

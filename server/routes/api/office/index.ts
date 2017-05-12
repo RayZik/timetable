@@ -21,8 +21,6 @@ office.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 });
 
 office.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     Office.update({ _id: req.body._id }, { $set: { name: req.body.name } })
         .exec().then(() => {
             res.end();
@@ -30,8 +28,6 @@ office.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
 });
 
 office.post('/create', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     let o = new Office({ name: req.body.name });
     o.save()
         .then((result) => {
@@ -40,8 +36,6 @@ office.post('/create', (req: Request, res: Response, next: NextFunction) => {
 });
 
 office.delete('/remove/:id', (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.token === 'null') { res.sendStatus(403); res.end(); }
-
     Office.findById(req.params.id)
         .exec().then((result) => {
             if (result != null) {
