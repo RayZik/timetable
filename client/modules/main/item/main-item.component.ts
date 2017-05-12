@@ -13,7 +13,7 @@ import { ApiService, MainService, ModalService } from '../../../service/index';
 	viewProviders: [DragulaService]
 })
 
-export class MainItemComponent implements OnInit, OnDestroy {
+export class MainItemComponent implements OnInit {
 
 	private cellTimetable: any[] = [];
 	private cellWithTime: any[] = [];
@@ -24,7 +24,7 @@ export class MainItemComponent implements OnInit, OnDestroy {
 	private data: any = [];
 	private dataForModalWindow: Object = {};
 	private showModal: Boolean = false;
-	private param: any = {};
+	private param: Object = {};
 	private daysName: any[] = ['Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб.', 'Вс.'];
 	private arrRepWithInter: any[] = [];
 	private showSaveButton = true;
@@ -32,7 +32,7 @@ export class MainItemComponent implements OnInit, OnDestroy {
 	private collapse: Boolean = true;
 	private configSave: Object = {};
 	private inputConfig: Object = {}
-	private sub: any;
+	private queryParam: Object = {};
 
 	constructor(
 		private mainService: MainService,
@@ -50,9 +50,9 @@ export class MainItemComponent implements OnInit, OnDestroy {
 			this.onRemoveModel(value.slice(1));
 		});
 
-		this.sub = this.activatedRoute.params.forEach((params: Params) => {
-			this.param = params;
-		});
+		this.param = this.activatedRoute.snapshot.params;
+		this.queryParam = this.activatedRoute.snapshot.queryParams ={ fd: 'dsd' };
+		console.log(this.param, this.queryParam)
 	}
 
 	private onDropModel(args) {
@@ -83,15 +83,15 @@ export class MainItemComponent implements OnInit, OnDestroy {
 				this.cellWithTime = [];
 				this.cellTimetable = [];
 				cells.forEach(cell => {
-					if (cell.time.length > 0 && cell.timetableId === this.param.id) {
+					if (cell.time.length > 0 && cell.timetableId === this.param['id']) {
 						this.cellWithTime.push(cell);
 					}
 
-					if (cell.time.length === 0 && cell.timetableId === this.param.id) {
+					if (cell.time.length === 0 && cell.timetableId === this.param['id']) {
 						this.cellTimetable.push(cell);
 					}
 				});
-				return this.mainService.getTimeLessonById(this.param.id);
+				return this.mainService.getTimeLessonById(this.param['id']);
 			})
 			.subscribe((data) => {
 				this.data = data;
@@ -125,9 +125,6 @@ export class MainItemComponent implements OnInit, OnDestroy {
 		this.dragCellBox();
 	}
 
-	ngOnDestroy() {
-		this.sub.unsubscribe();
-	}
 	outTable(data, validate) {
 		this.timeList = [];
 
@@ -162,7 +159,7 @@ export class MainItemComponent implements OnInit, OnDestroy {
 	}
 
 	addCell(): void {
-		let par = { id: this.param.id }
+		let par = { id: this.param['id'] }
 		this.mainService
 			.addCell(par)
 			.subscribe();
@@ -171,7 +168,7 @@ export class MainItemComponent implements OnInit, OnDestroy {
 	addLesson(lesson): void {
 		lesson.begin = this.toInt(lesson.begin);
 		lesson.end = this.toInt(lesson.end);
-		lesson.timetableId = this.param.id;
+		lesson.timetableId = this.param['id'];
 
 		this.mainService
 			.addTimeLesson(lesson)

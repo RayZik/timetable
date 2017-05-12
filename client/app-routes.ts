@@ -1,24 +1,13 @@
 import { Routes, RouterModule } from '@angular/router';
-
-import { MainListComponent } from './modules/index';
-import { LoginComponent } from "./components/index";
-import { AuthGuardService } from "./service/index";
+import { NotFoundComponent } from "./components/index";
 
 export const routes: Routes = [{
     path: '',
-    component: MainListComponent,
-    canActivate: [AuthGuardService] 
-}, {
-    path: 'login',
-    component: LoginComponent,
-}, {
-    path: 'main',
-    component: MainListComponent,
-    canActivate: [AuthGuardService]
+    redirectTo: 'main',
+    pathMatch:'full'
 }, {
     path: '**',
-    component: MainListComponent,
-    canActivate: [AuthGuardService]
+    component: NotFoundComponent
 }];
 
 export const routing = RouterModule.forRoot(routes, { useHash: true });

@@ -6,11 +6,18 @@ import { NgSemanticModule } from 'ng-semantic';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
 import { routing } from './app-routes';
 
 import { MainModule } from "./modules/main/main.module";
+import { SubjectModule } from "./modules/subject/subject.module";
+import { TeacherModule } from "./modules/teacher/teacher.module";
+import { GroupModule } from "./modules/group/group.module";
+import { OfficeModule } from "./modules/office/office.module";
+import { LoginModule } from "./modules/login/login.module";
+
 import { AuthService, AuthGuardService, AuthTokenService } from "./service/index";
+import { NotFoundComponent } from "./components/index";
+import { LoginComponent } from "./modules/login/login.component";
 
 @NgModule({
     imports: [
@@ -19,7 +26,12 @@ import { AuthService, AuthGuardService, AuthTokenService } from "./service/index
         HttpModule,
         NgSemanticModule,
         routing,
-        MainModule
+        MainModule,
+        TeacherModule,
+        SubjectModule,
+        OfficeModule,
+        GroupModule,
+        LoginModule
     ],
     providers: [
         provideAuth({
@@ -33,7 +45,8 @@ import { AuthService, AuthGuardService, AuthTokenService } from "./service/index
     ],
     declarations: [
         AppComponent,
-        LoginComponent
+        LoginComponent,
+        NotFoundComponent
     ],
     bootstrap: [AppComponent],
     schemas: [

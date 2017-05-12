@@ -11,10 +11,12 @@ import { TeacherModule } from '../teacher/teacher.module';
 import { SubjectModule } from '../subject/subject.module';
 import { OfficeModule } from '../office/office.module';
 import { GroupModule } from '../group/group.module';
+
 import { CellComponent, FilterComponent } from "../../components/index";
 import { ModalComponent } from "../../direcrives/index";
 import { MainListComponent } from './list/main-list.component';
 import { MainItemComponent } from './item/main-item.component';
+
 import { routing } from './main.routing';
 
 import { ModalService, ApiService, MainService } from "../../service/index";
@@ -27,13 +29,9 @@ import { ModalService, ApiService, MainService } from "../../service/index";
         BrowserModule,
         HttpModule,
         NgSemanticModule,
-        TeacherModule,
-        SubjectModule,
-        OfficeModule,
-        GroupModule,
         routing
     ],
-    declarations: [
+    declarations: [ 
         MainListComponent,
         MainItemComponent,
         CellComponent,

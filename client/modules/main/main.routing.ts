@@ -6,6 +6,9 @@ import { AuthGuardService } from "../../service/index";
 
 export const routes: Routes = [
     {
+        path: 'main', component: MainListComponent,
+        canActivate: [AuthGuardService]
+    }, {
         path: 'main/:id', component: MainItemComponent,
         canActivate: [AuthGuardService]
     }

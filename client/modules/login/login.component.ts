@@ -6,7 +6,7 @@ import { AuthService, IUser } from '../../service/index';
 
 @Component({
     selector: 'tt-login',
-    templateUrl: 'client/components/login/login.component.html'
+    templateUrl: 'client/modules/login/login.component.html'
 })
 export class LoginComponent implements OnInit {
     private isAuth: boolean;
