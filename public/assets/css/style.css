@@ -1,10 +1,25 @@
 body {
-	background: #f4f4f4;
+    background: #f4f4f4;
 }
+
 .center {
-	text-align: center;
-	padding-top: 100px;
+    text-align: center;
+    padding-top: 100px;
 }
+
 .sebm-google-map-container {
-	height: 300px;
+    height: 300px;
+}
+
+.flash-message {
+    z-index: 10000;
+    position: relative;
+}
+
+.alert-error {
+    position: absolute;
+    width: 100px;
+    height: 20px;
+    background-color: white;
+    border: 1px solid gray;
 }

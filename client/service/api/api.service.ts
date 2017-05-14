@@ -186,8 +186,12 @@ export class ApiService {
                 .http
                 .get('/api/main/group')
                 .map((response: Response) => {
-                    this.cache['groups'] = response.json();
-                    return this.cache['groups'];
+                    if (response.status === 200) {
+                        this.cache['groups'] = response.json();
+                        return this.cache['groups'];
+                    }
+
+                    return Observable.of({ status: response.status });
                 })
                 .share()
         }
@@ -201,8 +205,12 @@ export class ApiService {
                 .http
                 .get(`/api/main/group/${id}`)
                 .map((response: Response) => {
-                    this.cache['group'] = response.json();
-                    return this.cache['group'];
+                    if (response.status === 200) {
+                        this.cache['group'] = response.json();
+                        return this.cache['group'];
+                    }
+
+                    return Observable.of({ status: response.status });
                 })
                 .share()
         }
@@ -212,20 +220,36 @@ export class ApiService {
         return this
             .http
             .put(`/api/main/group/update/${group.id}`, group, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    delete this.cache['groups'];
+                    return true;
+                }
+                return false;
+            });
     }
 
-    createGroup(group) {
+    createGroup(group: Object): Observable<any> {
         return this
             .http
             .post(`/api/main/group/create`, group, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return response.json();
+                }
+                return false;
+            });
     }
 
-    deleteGroup(id: any) {
+    deleteGroup(id: string): Observable<boolean> {
         return this
             .http
             .delete(`/api/main/group/remove/${id}`, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            });
     }
 }

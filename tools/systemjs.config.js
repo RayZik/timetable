@@ -18,6 +18,8 @@ var isPublic = typeof window != "undefined";
             '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
 
+            'angular2-flash-messages': 'npm:angular2-flash-messages',
+
             'dragula': 'npm:dragula',
             'underscore': 'npm:underscore',
             'jquery': 'npm:jquery/dist',
@@ -96,7 +98,11 @@ var isPublic = typeof window != "undefined";
             'jquery': {
                 main: './jquery.min.js',
                 defaultExtension: 'js'
-            }
+            },
+            "angular2-flash-messages": {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
         }
     });
 })(this);

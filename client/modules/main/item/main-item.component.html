@@ -1,7 +1,7 @@
 <div class="ui container">
     <div class="ui button" (click)="goBack()">Назад</div><br>
     <!--Фильтр-->
-    <tt-filter (onChanged)="onChanged($event)" [dateList]='dateList' [holidayList]='holidayList' [cellWithTime]='cellWithTime'></tt-filter>
+    <tt-filter (onChanged)="onChanged($event)" [dateList]='dateList' [holidayList]='holidayList' [cellWithTime]='cellWithTime' [paramQuery]='paramQuery'></tt-filter>
 
 
     <!--Таблица-->

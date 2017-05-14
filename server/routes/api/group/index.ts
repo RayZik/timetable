@@ -22,25 +22,42 @@ group.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 
 group.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
     Group.update({ _id: req.body._id }, { $set: { name: req.body.name } })
-        .exec().then(() => {
-            res.end();
+        .exec().then((result) => {
+            if (result.ok === 1) {
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
+
         }).catch(next);
 
 });
 
 group.post('/create', (req: Request, res: Response, next: NextFunction) => {
-    let g = new Group({ name: req.body.name });
-    g.save()
+    let grp = new Group({ name: req.body.name });
+    grp.save()
         .then((result) => {
-            res.end();
+            if (result) {
+                res.send(grp);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         }).catch(next);
 });
 
 group.delete('/remove/:id', (req: Request, res: Response, next: NextFunction) => {
     Group.findById(req.params.id)
         .exec().then((result) => {
-            if (result != null) {
+            if (result) {
                 result.remove();
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
                 res.end();
             }
         }).catch(next);

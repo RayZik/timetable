@@ -33,6 +33,7 @@ export class MainItemComponent implements OnInit {
 	private configSave: Object = {};
 	private inputConfig: Object = {}
 	private queryParam: Object = {};
+	private paramQuery: Object = {};
 
 	constructor(
 		private mainService: MainService,
@@ -49,10 +50,6 @@ export class MainItemComponent implements OnInit {
 		dragulaService.removeModel.subscribe((value) => {
 			this.onRemoveModel(value.slice(1));
 		});
-
-		this.param = this.activatedRoute.snapshot.params;
-		this.queryParam = this.activatedRoute.snapshot.queryParams ={ fd: 'dsd' };
-		console.log(this.param, this.queryParam)
 	}
 
 	private onDropModel(args) {
@@ -64,6 +61,9 @@ export class MainItemComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.param = this.activatedRoute.snapshot.params;
+		this.queryParam = this.activatedRoute.snapshot.queryParams
+		// this.checkQueryParam(this.param, this.queryParam);
 
 		for (let i = 2; i <= 30; i++) {
 			this.arrRepWithInter.push(i);
@@ -118,8 +118,8 @@ export class MainItemComponent implements OnInit {
 					}
 
 				}
-				this.outTable(this.data, this.cellWithTime);
 
+				this.outTable(this.data, this.cellWithTime);
 			});
 
 		this.dragCellBox();
@@ -127,7 +127,6 @@ export class MainItemComponent implements OnInit {
 
 	outTable(data, validate) {
 		this.timeList = [];
-
 		for (let i = 0; i < data.lessons.length; i++) {
 			let countSlots = [];
 			for (let a = 0; a < 7; a++) {
@@ -151,11 +150,30 @@ export class MainItemComponent implements OnInit {
 	}
 
 	onChanged(filter): void {
-
 		if (filter.dateList.length > 0) {
 			this.dateList = filter.dateList;
 		}
-		this.outTable(this.data, filter.cells);
+		console.log(filter.data, this.data)
+		if (filter.data != {}) {
+			this.outTable(filter.data, filter.cells);
+		} else {
+			this.outTable(this.data, filter.cells);
+		}
+
+		this.paramQuery = {};
+	}
+
+	checkQueryParam(param: Object, query: Object) {
+		if (param) {
+			let id = param['id'];
+
+			if (query) {
+				this.paramQuery = { id: id, date: { begin: '04-02-2017' }, configFilter: { teacher: { checked: true, arr: [] }, group: { checked: true, arr: [] }, office: { checked: true, arr: [] }, sublect: { checked: true, arr: [] } } }
+
+			} else {
+				this.paramQuery = { er: 'er' }
+			}
+		}
 	}
 
 	addCell(): void {
@@ -284,7 +302,7 @@ export class MainItemComponent implements OnInit {
 						let end = moment(this.dateList[sDay[i]].day).add(e * interval, config.repeat).second(this.inputConfig['time'].end);
 
 						if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === -1) {
-							arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param.id });
+							arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param['id'] });
 						}
 					}
 				} else {
@@ -292,7 +310,7 @@ export class MainItemComponent implements OnInit {
 					let end = moment(config.begin).add(e * interval, config.repeat).second(this.inputConfig['time'].end);
 
 					if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === -1) {
-						arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param.id });
+						arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param['id'] });
 					}
 				}
 
@@ -307,7 +325,7 @@ export class MainItemComponent implements OnInit {
 				let end = moment(this.dateList[sDay[i]].day).second(this.inputConfig['time'].end);
 
 				if (this.contains(this.inputConfig['cell'].time, begin.toISOString(), end.toISOString()) === -1) {
-					arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param.id });
+					arrTime.time.push({ begin: begin.toDate(), end: end.toDate(), timetableId: this.param['id'] });
 				}
 			}
 		}

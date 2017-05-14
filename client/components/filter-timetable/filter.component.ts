@@ -12,9 +12,11 @@ import { ApiService, MainService } from '../../service/index';
 export class FilterComponent implements OnInit {
     @Output() onChanged = new EventEmitter<any>();
     @Input() dateList;
-
-    private holidayList: any[] = [];
     @Input() cellWithTime;
+    @Input() paramQuery;
+
+    private data: any[] = [];
+    private holidayList: any[] = [];
     private teachers = [];
     private subjects: any[] = [];
     private offices: any[] = [];
@@ -37,10 +39,10 @@ export class FilterComponent implements OnInit {
     };
 
 
-    constructor(private adminService: MainService, private apiService: ApiService) { }
+    constructor(private mainService: MainService, private apiService: ApiService) { }
 
     ngOnInit(): void {
-        this.adminService
+        this.mainService
             .getHolidays()
             .subscribe((data) => {
                 this.holidayList = data;
@@ -76,17 +78,29 @@ export class FilterComponent implements OnInit {
             (err) => console.log(err)
             );
 
-        // this.adminService
-        //     .getCellTimetable()
-        //     .subscribe((cells) => {
-        //         this.cellWithTime = [];
-        //         cells.forEach(cell => {
-        //             if (cell.time.length > 0 ) {
-        //                 this.cellWithTime.push(cell);
-        //             }
-        //         });
-        //     });
+        if (this.paramQuery !== {}) {
+            this.mainService
+                .getTimeLessonById(this.paramQuery.id)
+                .subscribe(data => {
+                    this.data = data;
+                    this.useParamQuery(this.paramQuery)
+                })
+        }
     }
+
+    useParamQuery(param) {
+        let date = this.paramQuery.date.begin;
+        let config = this.paramQuery.configFilter;
+
+        if (!!date) {
+
+            this.change();
+        } else {
+
+        }
+
+    }
+
 
     search(term: string, sign: string) {
         term = term.toLowerCase();
@@ -158,9 +172,9 @@ export class FilterComponent implements OnInit {
     }
 
 
-    selectTeacher(t, teacher) {
+    selectTeacher(t, id) {
         if (t.checked) {
-            this.idForSearch.push(teacher._id);
+            this.idForSearch.push(id);
             this.configFilter.teacher = this.teachers.filter(el => {
                 return this.idForSearch.indexOf(el._id) !== -1;
             });
@@ -170,7 +184,7 @@ export class FilterComponent implements OnInit {
             });
 
         } else {
-            this.idForSearch = this.idForSearch.filter(el => { return el !== teacher._id });
+            this.idForSearch = this.idForSearch.filter(el => { return el !== id });
             this.configFilter.teacher = this.teachers.filter(el => {
                 return this.idForSearch.indexOf(el._id) !== -1;
             });
@@ -186,9 +200,9 @@ export class FilterComponent implements OnInit {
     }
 
 
-    selectSubject(s, subject) {
+    selectSubject(s, id) {
         if (s.checked) {
-            this.idForSearch.push(subject._id);
+            this.idForSearch.push(id);
             this.configFilter.subject = this.subjects.filter(el => {
                 return this.idForSearch.indexOf(el._id) !== -1;
             });
@@ -198,7 +212,7 @@ export class FilterComponent implements OnInit {
             });
 
         } else {
-            this.idForSearch = this.idForSearch.filter(el => { return el !== subject._id });
+            this.idForSearch = this.idForSearch.filter(el => { return el !== id });
             this.configFilter.subject = this.subjects.filter(el => {
                 return this.idForSearch.indexOf(el._id) !== -1;
             });
@@ -213,9 +227,9 @@ export class FilterComponent implements OnInit {
         this.change();
     }
 
-    selectGroup(g, group) {
+    selectGroup(g, id) {
         if (g.checked) {
-            this.idForSearch.push(group._id);
+            this.idForSearch.push(id);
             this.configFilter.group = this.groups.filter(el => {
                 return this.idForSearch.indexOf(el._id) !== -1;
             });
@@ -225,7 +239,7 @@ export class FilterComponent implements OnInit {
             });
 
         } else {
-            this.idForSearch = this.idForSearch.filter(el => { return el !== group._id });
+            this.idForSearch = this.idForSearch.filter(el => { return el !== id });
             this.configFilter.group = this.groups.filter(el => {
                 return this.idForSearch.indexOf(el._id) !== -1;
             });
@@ -240,10 +254,10 @@ export class FilterComponent implements OnInit {
         this.change();
     }
 
-    selectOffice(o, office) {
+    selectOffice(o, id) {
 
         if (o.checked) {
-            this.idForSearch.push(office._id);
+            this.idForSearch.push(id);
             this.configFilter.office = this.offices.filter(el => {
                 return this.idForSearch.indexOf(el._id) !== -1;
             });
@@ -253,7 +267,7 @@ export class FilterComponent implements OnInit {
             });
 
         } else {
-            this.idForSearch = this.idForSearch.filter(el => { return el !== office._id });
+            this.idForSearch = this.idForSearch.filter(el => { return el !== id });
             this.configFilter.office = this.offices.filter(el => {
                 return this.idForSearch.indexOf(el._id) !== -1;
             });
@@ -272,14 +286,41 @@ export class FilterComponent implements OnInit {
     change() {
         let res = {
             dateList: [],
-            cells: []
+            cells: [],
+            data: {}
         };
 
-        if (this.configFilter.date.next || this.configFilter.date.prev) {
-            let firstDayWeek = moment(this.dateList[0].day);
-            let lastDayWeek = moment(this.dateList[6].day);
+        if ((this.configFilter.date.next || this.configFilter.date.prev) || !!this.paramQuery.date.begin) {
+            console.log(this.paramQuery)
+            if (this.paramQuery['date']) {
+                console.log(1)
+                this.configFilter.date.next = false;
+                this.configFilter.date.prev = false;
+
+                let dateString = moment(this.paramQuery.date.begin);
+
+                for (let i = 0; i < 7; i++) {
+                    let firstDay = moment(dateString).day();
+                    let date = moment(dateString).day(firstDay + i);
+                    // let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
+                    // if (cont) {
+                    //     res.dateList.push({ day: date.toISOString(), isHoliday: true });
+                    // } else {
+                    res.dateList.push({ day: date.toISOString(), isHoliday: false });
+                    // }
+                }
+
+                if (this.data !== {}) {
+
+                    res.data = this.data;
+                }
+            }
 
             if (this.configFilter.date.next) {
+                console.log('next')
+                let firstDayWeek = moment(this.dateList[0].day);
+                let lastDayWeek = moment(this.dateList[6].day);
+
                 for (let i = 0; i < 7; i++) {
                     let endDay = moment(lastDayWeek).day() + 1;
                     let date = moment(lastDayWeek).day(endDay + i);
@@ -296,6 +337,10 @@ export class FilterComponent implements OnInit {
             }
 
             if (this.configFilter.date.prev) {
+                console.log('prev')
+                let firstDayWeek = moment(this.dateList[0].day);
+                let lastDayWeek = moment(this.dateList[6].day);
+
                 for (let i = 6; i >= 0; i--) {
                     let beginDay = moment(firstDayWeek).day() - 1;
                     let date = moment(firstDayWeek).day(beginDay - i);
@@ -325,7 +370,6 @@ export class FilterComponent implements OnInit {
                     res.cells.push(cell)
                 }
             });
-
 
             res.cells = this.checkParams(res.cells);
             this.onChanged.emit(res);

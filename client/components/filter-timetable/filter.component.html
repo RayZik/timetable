@@ -12,14 +12,14 @@
         <div class="myDropDown" *ngIf='searchSubj.value != ""'>
             <div *ngIf='configFilter.subject.length > 0'>
                 <div *ngFor="let subject of configFilter.subject">
-                    <p><input type="checkbox" #selSubject (change)='selectSubject(selSubject,subject)' [checked]='true'>{{subject.name}}</p>
+                    <p><input type="checkbox" #selSubject (change)='selectSubject(selSubject,subject._id)' [checked]='true'>{{subject.name}}</p>
                 </div>
                 <div class='ui divider'></div>
             </div>
 
             <div *ngIf='searchListSubject.length > 0'>
                 <div *ngFor="let subject of searchListSubject">
-                    <p><input type="checkbox" #selSubject (change)='selectSubject(selSubject,subject)'>{{subject.name}}</p>
+                    <p><input type="checkbox" #selSubject (change)='selectSubject(selSubject,subject._id)'>{{subject.name}}</p>
                 </div>
             </div>
         </div>
@@ -33,8 +33,7 @@
         <div class="myDropDown" *ngIf='searchT.value != ""'>
             <div *ngIf='configFilter.teacher.length > 0'>
                 <div *ngFor="let teacher of configFilter.teacher">
-                    <p><input type="checkbox" #selTeacher (change)='selectTeacher(selTeacher,teacher)' [checked]='true'>{{teacher.surname}}
-                        {{teacher.name}} {{teacher.lastName}}
+                    <p><input type="checkbox" #selTeacher (change)='selectTeacher(selTeacher,teacher._id)' [checked]='true'>{{teacher.surname}} {{teacher.name}} {{teacher.lastName}}
                     </p>
                 </div>
                 <div class='ui divider'></div>
@@ -42,8 +41,7 @@
 
             <div *ngIf='searchListTeacher.length > 0'>
                 <div *ngFor="let teacher of searchListTeacher">
-                    <p><input type="checkbox" #selTeacher (change)='selectTeacher(selTeacher,teacher)'>{{teacher.surname}} {{teacher.name}}
-                        {{teacher.lastName}}
+                    <p><input type="checkbox" #selTeacher (change)='selectTeacher(selTeacher,teacher._id)'>{{teacher.surname}} {{teacher.name}} {{teacher.lastName}}
                     </p>
                 </div>
             </div>
@@ -58,14 +56,14 @@
         <div class="myDropDown" *ngIf='searchG.value != ""'>
             <div *ngIf='configFilter.group.length > 0'>
                 <div *ngFor="let group of configFilter.group">
-                    <p><input type="checkbox" #selGroup (change)='selectGroup(selGroup,group)' [checked]='true'>{{group.name}}</p>
+                    <p><input type="checkbox" #selGroup (change)='selectGroup(selGroup,group._id)' [checked]='true'>{{group.name}}</p>
                 </div>
                 <div class='ui divider'></div>
             </div>
 
             <div *ngIf='searchListGroup.length > 0'>
                 <div *ngFor="let group of searchListGroup">
-                    <p><input type="checkbox" #selGroup (change)='selectGroup(selGroup,group)'>{{group.name}}</p>
+                    <p><input type="checkbox" #selGroup (change)='selectGroup(selGroup,group._id)'>{{group.name}}</p>
                 </div>
             </div>
         </div>
@@ -79,14 +77,14 @@
         <div class="myDropDown" *ngIf='searchO.value != ""'>
             <div *ngIf='configFilter.office.length > 0'>
                 <div *ngFor="let office of configFilter.office">
-                    <p><input type="checkbox" #selOffice (change)='selectOffice(selOffice,office)' [checked]='true'>{{office.name}}</p>
+                    <p><input type="checkbox" #selOffice (change)='selectOffice(selOffice,office._id)' [checked]='true'>{{office.name}}</p>
                 </div>
                 <div class='ui divider'></div>
             </div>
 
             <div *ngIf='searchListOffice.length > 0'>
                 <div *ngFor="let office of searchListOffice">
-                    <p><input type="checkbox" #selOffice (change)='selectOffice(selOffice,office)'>{{office.name}}</p>
+                    <p><input type="checkbox" #selOffice (change)='selectOffice(selOffice,office._id)'>{{office.name}}</p>
                 </div>
             </div>
         </div>

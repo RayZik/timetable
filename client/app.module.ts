@@ -4,7 +4,7 @@ import { provideAuth } from 'angular2-jwt';
 import { HttpModule } from '@angular/http';
 import { NgSemanticModule } from 'ng-semantic';
 import { FormsModule } from '@angular/forms';
-
+import { FlashMessagesModule } from 'angular2-flash-messages';
 import { AppComponent } from './app.component';
 import { routing } from './app-routes';
 
@@ -31,7 +31,8 @@ import { LoginComponent } from "./modules/login/login.component";
         SubjectModule,
         OfficeModule,
         GroupModule,
-        LoginModule
+        LoginModule,
+        FlashMessagesModule
     ],
     providers: [
         provideAuth({
