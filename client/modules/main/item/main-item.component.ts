@@ -61,9 +61,6 @@ export class MainItemComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.param = this.activatedRoute.snapshot.params;
-		this.queryParam = this.activatedRoute.snapshot.queryParams
-		// this.checkQueryParam(this.param, this.queryParam);
 
 		for (let i = 2; i <= 30; i++) {
 			this.arrRepWithInter.push(i);
@@ -80,6 +77,8 @@ export class MainItemComponent implements OnInit {
 		this.mainService
 			.getCellTimetable()
 			.flatMap(cells => {
+				this.param = this.activatedRoute.snapshot.params;
+				this.queryParam = this.activatedRoute.snapshot.queryParams
 				this.cellWithTime = [];
 				this.cellTimetable = [];
 				cells.forEach(cell => {
@@ -154,8 +153,8 @@ export class MainItemComponent implements OnInit {
 			this.dateList = filter.dateList;
 		}
 		console.log(filter.data, this.data)
-		if (filter.data != {}) {
-			this.outTable(filter.data, filter.cells);
+		if (filter.data) {
+			this.outTable(this.data, filter.cells);
 		} else {
 			this.outTable(this.data, filter.cells);
 		}
@@ -168,10 +167,10 @@ export class MainItemComponent implements OnInit {
 			let id = param['id'];
 
 			if (query) {
-				this.paramQuery = { id: id, date: { begin: '04-02-2017' }, configFilter: { teacher: { checked: true, arr: [] }, group: { checked: true, arr: [] }, office: { checked: true, arr: [] }, sublect: { checked: true, arr: [] } } }
+				// this.paramQuery = { id: id, date: { begin: '04-02-2017' }, configFilter: { teacher: { checked: true, arr: [] }, group: { checked: true, arr: [] }, office: { checked: true, arr: [] }, sublect: { checked: true, arr: [] } } }
 
 			} else {
-				this.paramQuery = { er: 'er' }
+				// this.paramQuery = { er: 'er' }
 			}
 		}
 	}

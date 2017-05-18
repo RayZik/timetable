@@ -78,7 +78,7 @@ export class FilterComponent implements OnInit {
             (err) => console.log(err)
             );
 
-        if (this.paramQuery !== {}) {
+        if (Object.keys(this.paramQuery).length > 0) {
             this.mainService
                 .getTimeLessonById(this.paramQuery.id)
                 .subscribe(data => {

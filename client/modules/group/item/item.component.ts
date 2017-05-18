@@ -22,13 +22,15 @@ export class GroupItemComponent implements OnInit {
 
     ngOnInit() {
         this.activatedRouter.params.forEach((params: Params) => {
-            this.apiService
-                .getGroup(params.id)
-                .subscribe((data) => {
-                    if (!data.status) {
-                        this.group = data;
-                    }
-                });
+            if (params.id) {
+                this.apiService
+                    .getGroup(params.id)
+                    .subscribe((data) => {
+                        if (!data.status) {
+                            this.group = data;
+                        }
+                    });
+            }
         });
     }
 
@@ -46,11 +48,10 @@ export class GroupItemComponent implements OnInit {
         } else {
             this.fms.show('Введите имя', { cssClass: 'alert-error', timeout: 2000 });
         }
-
-
     }
 
     goBack(): void {
         this.location.back();
     }
 }
+

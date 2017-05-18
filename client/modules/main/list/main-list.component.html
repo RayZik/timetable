@@ -5,7 +5,7 @@
     <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>
 
     <div>
-        <ol>
+        <ol class='listTimetable'>
             <li *ngFor='let timetable of timetableList' (click)='goItem(timetable)'>{{timetable.name}}</li>
         </ol>
     </div>

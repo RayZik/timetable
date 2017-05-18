@@ -1,21 +1,26 @@
 <div class="ui container">
-    <input type="text" name="name" (blur)="office.name=$event.target.value" />
-    <div class="ui right floated button" (click)="newOffice(office)">Добавить</div>
-</div>
-<br>
-<div class="ui container">
-    <ol>
-        <li (click)="goOfficeId(item._id)" *ngFor="let item of officeList">
-            <div class="ui middle aligned divided list">
-                <div class="item">
-                    <div class="right floated content">
-                        <button class=" compact ui button " (click)="deleteOffice(item._id);$event.stopPropagation();">Удалить</button>
-                    </div>
-                    <div class="ui content">
-                        {{item.name}}
+    <label>Наименование</label>
+    <input class="ui input" type="text" name="name" (blur)="office.name=$event.target.value" #ofcInput />
+    <div class="ui right floated button" (click)="addOffice(office,ofcInput)">Добавить</div>
+
+    <div *ngIf="officeList.length == 0;else content">
+        Список пуст
+    </div>
+
+    <ng-template #content>
+        <ul>
+            <li (click)="goOfficeId(item._id)" *ngFor="let item of officeList">
+                <div class="ui middle aligned divided list">
+                    <div class="item">
+                        <div class="right floated content">
+                            <button class=" compact ui button " (click)="deleteOffice(item._id);$event.stopPropagation();">Удалить</button>
+                        </div>
+                        <div class="ui content">
+                            {{item.name}}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </li>
-    </ol>
+            </li>
+        </ul>
+    </ng-template>
 </div>

@@ -37,7 +37,7 @@ timetableApi.get('/', (req: Request, res: Response, next: NextFunction) => {
         }).catch(next);
 });
 
-timetableApi.get('/holidays', isAuth, (req: Request, res: Response, next: NextFunction) => {
+timetableApi.get('/holidays',  (req: Request, res: Response, next: NextFunction) => {
     holiday.find({})
         .exec().then((result) => {
             res.send(result);

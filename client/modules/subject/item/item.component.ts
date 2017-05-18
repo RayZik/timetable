@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { FlashMessagesService } from 'angular2-flash-messages';
 import { ApiService } from '../../../service/index';
 
 @Component({
@@ -16,13 +17,20 @@ export class SubjectItemComponent implements OnInit {
         private apiService: ApiService,
         private activedRouter: ActivatedRoute,
         private router: Router,
+        private fms: FlashMessagesService,
         private location: Location) { }
 
     ngOnInit() {
         this.activedRouter.params.forEach((params: Params) => {
-            this.apiService
-                .getSubject(params.id)
-                .subscribe((data) => { this.subject = data; });
+            if (params.id) {
+                this.apiService
+                    .getSubject(params.id)
+                    .subscribe((data) => {
+                        if (!data.status) {
+                            this.subject = data;
+                        }
+                    });
+            }
         });
     }
 

@@ -1,11 +1,22 @@
-<div class="ui container">
-    <h1>Auth</h1><br />
-
-    <form *ngIf='!isAuth' autocomplete="off" novalidate #logForm="ngForm">
-        <input type="text" placeholder="username" name="username" [(ngModel)]="user.username" required/>
-        <input type="text" placeholder="password" name="password" [(ngModel)]="user.password" required/>
-        <button (click)="login(logForm)">Войти</button>
-    </form>
-
-    <button *ngIf='isAuth' (click)="logout()">logout</button>
+<div class="ui one column center aligned grid">
+    <div class="column six wide form-holder">
+        <div *ngIf="!isAuth;else notAuth">
+            <h2 class="center aligned header form-head">Войти</h2>
+            <form class="ui form" autocomplete="off" novalidate #logForm="ngForm">
+                <div class="field">
+                    <input type="text" placeholder="username" name="username" [(ngModel)]="user.username" required/>
+                </div>
+                <div class="field">
+                    <input type="text" placeholder="password" name="password" [(ngModel)]="user.password" required/>
+                </div>
+                <div class="field">
+                    <button class="ui button large fluid green" (click)="login(logForm)">Войти</button>
+                </div>
+            </form>
+        </div>
+        <ng-template #notAuth>
+            <h2 class="center aligned header form-head">Выйти</h2>
+            <button class="ui button large fluid red" (click)="logout()">Выйти</button>
+        </ng-template>
+    </div>
 </div>

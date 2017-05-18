@@ -1,44 +1,43 @@
-<div class="ui container">
-    <div class="ui button" (click)="goBack()">Назад</div><br>
-    <!--Фильтр-->
-    <tt-filter (onChanged)="onChanged($event)" [dateList]='dateList' [holidayList]='holidayList' [cellWithTime]='cellWithTime' [paramQuery]='paramQuery'></tt-filter>
+<div class="ui button" (click)="goBack()">
+    Назад</div><br>
+<!--Фильтр-->
+<tt-filter (onChanged)="onChanged($event)" [dateList]='dateList' [holidayList]='holidayList' [cellWithTime]='cellWithTime' [paramQuery]='paramQuery'></tt-filter>
 
 
-    <!--Таблица-->
-    <table class="ui celled table myTimetable">
-        <thead>
-            <tr>
-                <th></th>
-                <th *ngFor="let date of dateList;">
-                    {{date.day|amDateFormat:'ll' }}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let items of timeList">
+<!--Таблица-->
+<table class="ui celled table myTimetable">
+    <thead>
+        <tr>
+            <th></th>
+            <th *ngFor="let date of dateList;">
+                {{date.day|amDateFormat:'ll' }}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let items of timeList">
 
-                <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i> {{(items.begin | amFromUnix)|amDateFormat:'LT'}}-{{(items.end| amFromUnix)|amDateFormat:'LT'}}
+            <td><i class="icon Minus Square Outline" (click)="deleteTimeLesson(items)"></i> {{(items.begin | amFromUnix)|amDateFormat:'LT'}}-{{(items.end| amFromUnix)|amDateFormat:'LT'}}
+            </td>
+
+            <ng-container *ngFor="let slot of items.slots; let dayIndex = index">
+                <td *ngIf='dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot' class="isHoliday">
+                    <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [dateList]='dateList' [time]='items' [data]='data' [dayIndex]='dayIndex' [showSaveButton]='showSaveButton' (clickSaveCell)='clickSaveCell($event)'></tt-cell>
                 </td>
 
-                <ng-container *ngFor="let slot of items.slots; let dayIndex = index">
-                    <td *ngIf='dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot' class="isHoliday">
-                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [dateList]='dateList' [time]='items' [data]='data' [dayIndex]='dayIndex' [showSaveButton]='showSaveButton' (clickSaveCell)='clickSaveCell($event)'></tt-cell>
-                    </td>
-
-                    <td *ngIf='!dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot'>
-                        <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [dateList]='dateList' [time]='items' [data]='data' [dayIndex]='dayIndex' [showSaveButton]='showSaveButton' (clickSaveCell)='clickSaveCell($event)'></tt-cell>
-                    </td>
-                </ng-container>
-            </tr>
-        </tbody>
-        <tfoot>
-            <input type="time" name="begin" (blur)='lesson.begin = $event.target.value'>
-            <input type="time" name="end" (blur)='lesson.end = $event.target.value'>
-            <div class="ui button" (click)="addLesson(lesson)">Добавить</div>
-        </tfoot>
-    </table>
-    <br>
-</div>
+                <td *ngIf='!dateList[dayIndex].isHoliday' [dragula]='"bag"' [dragulaModel]='slot'>
+                    <tt-cell class="myNoOpacity" *ngFor="let cell of slot" [cell]='cell' [dateList]='dateList' [time]='items' [data]='data' [dayIndex]='dayIndex' [showSaveButton]='showSaveButton' (clickSaveCell)='clickSaveCell($event)'></tt-cell>
+                </td>
+            </ng-container>
+        </tr>
+    </tbody>
+    <tfoot>
+        <input type="time" name="begin" (blur)='lesson.begin = $event.target.value'>
+        <input type="time" name="end" (blur)='lesson.end = $event.target.value'>
+        <div class="ui button" (click)="addLesson(lesson)">Добавить</div>
+    </tfoot>
+</table>
+<br>
 
 <div id="myBoxCell">
     <div id='takeBox'></div>

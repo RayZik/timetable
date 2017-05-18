@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { FlashMessagesService } from "angular2-flash-messages";
 import { ApiService } from '../../../service/index';
 
 @Component({
@@ -12,28 +13,73 @@ export class OfficeListComponent implements OnInit {
     private officeList: any[] = [];
     private office: Object = {};
 
-    constructor(private apiService: ApiService, private router: Router) { }
+    constructor(private apiService: ApiService, private fms: FlashMessagesService, private router: Router) { }
 
     ngOnInit() {
         this.apiService
             .getOffices()
             .subscribe(
-            (data) => { this.officeList = data; });
+            (data) => {
+                if (!data.status) {
+                    this.officeList = data;
+                }
+            });
     }
 
     goOfficeId(id: String) {
-        this.router.navigate(['/office', id]);
+        if (!!id) {
+            this.router.navigate(['/office', id]);
+        }
     }
 
-    newOffice(office) {
+    addOffice(office: Object, ofcInput: any) {
         this.apiService
             .createOffice(office)
             .subscribe();
+
+        if (office['name']) {
+            this.apiService
+                .createOffice(office)
+                .subscribe(data => {
+                    if (Object.keys(data).length > 0) {
+                        this.officeList.push(data);
+                        ofcInput.value = '';
+                        this.office = {};
+                    }
+                },
+                err => {
+                    this.fms.show('Имя уже существует', { cssClass: 'alert-error', timeout: 2000 });
+                });
+        } else {
+            this.fms.show('Введите имя аудитории', { cssClass: 'alert-error', timeout: 2000 });
+        }
     }
 
-    deleteOffice(id: String) {
-        this.apiService
-            .deleteOffice(id)
-            .subscribe();
+    deleteOffice(id: string): void {
+        if (!!id) {
+            this.apiService
+                .deleteOffice(id)
+                .subscribe(data => {
+                    if (data) {
+                        this.deleteFromList(id);
+                    } else {
+                        this.fms.show('Невозможно удалить', { cssClass: 'alert-error', timeout: 2000 });
+                    }
+                },
+                err => {
+                    this.fms.show('Невозможно удалить', { cssClass: 'alert-error', timeout: 2000 });
+                });
+        }
     }
-}
+
+    deleteFromList(id: string) {
+        let list: any[] = this.officeList;
+
+        if (list.length > 0) {
+            let filteredList = list.filter((val) => {
+                return val._id !== id;
+            })
+            this.officeList = filteredList;
+        }
+    }
+} 

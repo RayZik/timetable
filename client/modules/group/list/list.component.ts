@@ -41,7 +41,7 @@ export class GroupListComponent implements OnInit {
             this.apiService
                 .createGroup(group)
                 .subscribe(data => {
-                    if (data !== {}) {
+                    if (Object.keys(data).length > 0) {
                         this.groupList.push(data);
                         grpInput.value = '';
                         this.group = {};
