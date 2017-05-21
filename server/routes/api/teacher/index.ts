@@ -21,7 +21,7 @@ teacher.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 });
 
 teacher.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
-    Teacher.update({ _id: req.body._id }, {{ $set: { name: req.body.name, lastName: req.body.lastName, surname: req.body.surname } })
+    Teacher.update({ _id: req.body._id }, { $set: { name: req.body.name, lastName: req.body.lastName, surname: req.body.surname } })
         .exec().then((result) => {
             if (result.ok === 1) {
                 res.sendStatus(200);
