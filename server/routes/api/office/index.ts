@@ -22,24 +22,41 @@ office.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 
 office.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
     Office.update({ _id: req.body._id }, { $set: { name: req.body.name } })
-        .exec().then(() => {
-            res.end();
+        .exec().then((result) => {
+            if (result.ok === 1) {
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
+
         }).catch(next);
 });
 
 office.post('/create', (req: Request, res: Response, next: NextFunction) => {
-    let o = new Office({ name: req.body.name });
-    o.save()
+    let ofc = new Office({ name: req.body.name });
+    ofc.save()
         .then((result) => {
-            res.end();
+            if (result) {
+                res.send(ofc);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         }).catch(next);
 });
 
 office.delete('/remove/:id', (req: Request, res: Response, next: NextFunction) => {
     Office.findById(req.params.id)
         .exec().then((result) => {
-            if (result != null) {
+            if (result) {
                 result.remove();
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
                 res.end();
             }
         }).catch(next);

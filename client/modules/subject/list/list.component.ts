@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { FlashMessagesService } from "angular2-flash-messages";
 import { ApiService } from '../../../service/index';
 
 @Component({
@@ -12,29 +13,71 @@ export class SubjectListComponent implements OnInit {
     private subjectList: any[] = [];
     private subject: Object = {};
 
-    constructor(private subjectService: ApiService, private router: Router) { }
-    ngOnInit() {
-        this.subjectService
+    constructor(
+        private apiService: ApiService,
+        private router: Router,
+        private fms: FlashMessagesService, ) { }
+
+    ngOnInit(): void {
+        this.apiService
             .getSubjects()
             .subscribe(
-            (data) => { this.subjectList = data; },
-            (err) => console.log(err)
-            );
+            (data) => {
+                if (!data.status) {
+                    this.subjectList = data;
+                }
+            });
     }
 
-    goSubjectId(id: String) {
-        this.router.navigate(['/subject', id]);
+    goSubjectId(id: string) {
+        if (!!id) {
+            this.router.navigate(['/subject', id]);
+        }
     }
 
-    newSubject(subject: any) {
-        this.subjectService
-            .createSubject(subject)
-            .subscribe();
+    addSubject(subject: Object) {
+        if (subject['name']) {
+            this.apiService
+                .createSubject(subject)
+                .subscribe(data => {
+                    if (Object.keys(data).length > 0) {
+                        this.subjectList.push(data);
+                        this.subject = {};
+                    }
+                },
+                err => {
+                    this.fms.show('Имя уже существует', { cssClass: 'alert-error', timeout: 2000 });
+                });
+        } else {
+            this.fms.show('Введите имя предмета', { cssClass: 'alert-error', timeout: 2000 });
+        }
     }
 
-    deleteSubject(id: String) {
-        this.subjectService
-            .deleteSubject(id)
-            .subscribe();
+    deleteSubject(id: string) {
+        if (!!id) {
+            this.apiService
+                .deleteSubject(id)
+                .subscribe(data => {
+                    if (data) {
+                        this.deleteFromList(id);
+                    } else {
+                        this.fms.show('Невозможно удалить', { cssClass: 'alert-error', timeout: 2000 });
+                    }
+                },
+                err => {
+                    this.fms.show('Невозможно удалить', { cssClass: 'alert-error', timeout: 2000 });
+                });
+        }
+    }
+
+    deleteFromList(id: string) {
+        let list: any[] = this.subjectList;
+
+        if (list.length > 0) {
+            let filteredList = list.filter((val) => {
+                return val._id !== id;
+            })
+            this.subjectList = filteredList;
+        }
     }
 }

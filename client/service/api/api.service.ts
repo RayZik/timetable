@@ -21,7 +21,7 @@ export class ApiService {
     }
 
     //subject
-    getSubjects() {
+    getSubjects(): Observable<any> {
         if (this.cache['subjects']) {
             return Observable.of(this.cache['subjects']);
         } else {
@@ -29,14 +29,18 @@ export class ApiService {
                 .http
                 .get('/api/main/subject', this.head())
                 .map((response: Response) => {
-                    this.cache['subjects'] = response.json();
-                    return this.cache['subjects'];
+                    if (response.status === 200) {
+                        this.cache['subjects'] = response.json();
+                        return this.cache['subjects'];
+                    }
+
+                    return Observable.of({ status: response.status });
                 })
                 .share()
         }
     }
 
-    getSubject(id: any) {
+    getSubject(id: string): Observable<any> {
         if (this.cache['subject']) {
             return Observable.of(this.cache['subject']);
         } else {
@@ -44,37 +48,57 @@ export class ApiService {
                 .http
                 .get(`/api/main/subject/${id}`, this.head())
                 .map((response: Response) => {
-                    this.cache['subject'] = response.json();
-                    return this.cache['subject'];
+                    if (response.status === 200) {
+                        this.cache['subject'] = response.json();
+                        return this.cache['subject'];
+                    }
+
+                    return Observable.of({ status: response.status });
                 })
                 .share()
         }
     }
 
-    updateSubject(subject: any) {
+    updateSubject(subject: any): Observable<boolean> {
         return this
             .http
             .put(`/api/main/subject/update/${subject.id}`, subject, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    delete this.cache['groups'];
+                    return true;
+                }
+                return false;
+            });
     }
 
-    createSubject(subject) {
+    createSubject(subject: Object): Observable<JSON> {
         return this
             .http
             .post(`/api/main/subject/create`, subject, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return response.json();
+                }
+                return false;
+            });
     }
 
-    deleteSubject(id: any) {
+    deleteSubject(id: string): Observable<boolean> {
         return this
             .http
             .delete(`/api/main/subject/remove/${id}`, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            });
     }
 
     //teacher
 
-    getTeachers() {
+    getTeachers(): Observable<any> {
         if (this.cache['teachers']) {
             return Observable.of(this.cache['teachers']);
         } else {
@@ -82,14 +106,18 @@ export class ApiService {
                 .http
                 .get('/api/main/teacher', this.head())
                 .map((response: Response) => {
-                    this.cache['teachers'] = response.json();
-                    return this.cache['teachers'];
+                    if (response.status === 200) {
+                        this.cache['teachers'] = response.json();
+                        return this.cache['teachers'];
+                    }
+
+                    return Observable.of({ status: response.status });
                 })
                 .share()
         }
     }
 
-    getTeacher(id: any) {
+    getTeacher(id: string): Observable<any> {
         if (this.cache['teacher']) {
             return Observable.of(this.cache['teacher']);
         } else {
@@ -97,36 +125,56 @@ export class ApiService {
                 .http
                 .get(`/api/main/teacher/${id}`, this.head())
                 .map((response: Response) => {
-                    this.cache['teacher'] = response.json();
-                    return this.cache['teacher'];
+                    if (response.status === 200) {
+                        this.cache['teacher'] = response.json();
+                        return this.cache['teacher'];
+                    }
+
+                    return Observable.of({ status: response.status });
                 })
                 .share()
         }
     }
 
-    updateTeacher(teacher: any) {
+    updateTeacher(teacher: any): Observable<boolean> {
         return this
             .http
             .put(`/api/main/teacher/update/${teacher.id}`, teacher, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    delete this.cache['groups'];
+                    return true;
+                }
+                return false;
+            });
     }
 
-    createTeacher(teacher) {
+    createTeacher(teacher: Object): Observable<JSON> {
         return this
             .http
             .post(`/api/main/teacher/create`, teacher, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return response.json();
+                }
+                return false;
+            });
     }
 
-    deleteTeacher(id: any) {
+    deleteTeacher(id: string): Observable<boolean> {
         return this
             .http
             .delete(`/api/main/teacher/remove/${id}`, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            });
     }
 
     //office
-    getOffices() {
+    getOffices(): Observable<any> {
         if (this.cache['offices']) {
             return Observable.of(this.cache['offices']);
         } else {
@@ -134,14 +182,18 @@ export class ApiService {
                 .http
                 .get('/api/main/office')
                 .map((response: Response) => {
-                    this.cache['offices'] = response.json();
-                    return this.cache['offices'];
+                    if (response.status === 200) {
+                        this.cache['offices'] = response.json();
+                        return this.cache['offices'];
+                    }
+
+                    return Observable.of({ status: response.status });
                 })
                 .share()
         }
     }
 
-    getOffice(id: any) {
+    getOffice(id: string): Observable<any> {
         if (this.cache['office']) {
             return Observable.of(this.cache['office']);
         } else {
@@ -149,36 +201,56 @@ export class ApiService {
                 .http
                 .get(`/api/main/office/${id}`)
                 .map((response: Response) => {
-                    this.cache['office'] = response.json();
-                    return this.cache['office'];
+                    if (response.status === 200) {
+                        this.cache['office'] = response.json();
+                        return this.cache['office'];
+                    }
+
+                    return Observable.of({ status: response.status });
                 })
                 .share()
         }
     }
 
-    updateOffice(office: any) {
+    updateOffice(office: any): Observable<boolean> {
         return this
             .http
             .put(`/api/main/office/update/${office.id}`, office, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    delete this.cache['groups'];
+                    return true;
+                }
+                return false;
+            });
     }
 
-    createOffice(office: any) {
+    createOffice(office: Object): Observable<JSON> {
         return this
             .http
             .post(`/api/main/office/create`, office, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return response.json();
+                }
+                return false;
+            });
     }
 
-    deleteOffice(id: any) {
+    deleteOffice(id: string): Observable<boolean> {
         return this
             .http
             .delete(`/api/main/office/remove/${id}`, this.head())
-            .map((response: Response) => response);
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            });
     }
 
     //group
-    getGroups() {
+    getGroups(): Observable<any> {
         if (this.cache['groups']) {
             return Observable.of(this.cache['groups']);
         } else {
@@ -197,7 +269,7 @@ export class ApiService {
         }
     }
 
-    getGroup(id: any) {
+    getGroup(id: string): Observable<any> {
         if (this.cache['group']) {
             return Observable.of(this.cache['group']);
         } else {
@@ -216,7 +288,7 @@ export class ApiService {
         }
     }
 
-    updateGroup(group: any) {
+    updateGroup(group: any): Observable<boolean> {
         return this
             .http
             .put(`/api/main/group/update/${group.id}`, group, this.head())
@@ -229,7 +301,7 @@ export class ApiService {
             });
     }
 
-    createGroup(group: Object): Observable<any> {
+    createGroup(group: Object): Observable<JSON> {
         return this
             .http
             .post(`/api/main/group/create`, group, this.head())
@@ -238,7 +310,8 @@ export class ApiService {
                     return response.json();
                 }
                 return false;
-            });
+            })
+            .share();
     }
 
     deleteGroup(id: string): Observable<boolean> {

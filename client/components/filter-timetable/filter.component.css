@@ -1,20 +1,36 @@
-.myInline{
+.myInline {
     display: inline-block;
 }
 
-.myDropDown{
+.myDropDown {
     display: block;
     border-left: 1px solid gray;
     border-right: 1px solid gray;
     border-bottom: 1px solid gray;
     position: absolute !important;
-    background-color:white;
+    background-color: white;
     padding: 3px 3px 3px 3px;
-    z-index:99999999;  
+    z-index: 99999999;
 }
 
-.week{
- cursor: pointer;
- margin-left: 10px;
- margin-right: 10px;
+.week {
+    cursor: pointer;
+    width: 21px;
+    height: 10px;
+}
+
+.week .leftArrow {
+    margin-right: 22px;
+}
+
+.week .rightArrow {
+    margin-left: 20px;
+}
+
+.week:hover i {
+    font-size: 18px;
+}
+
+.filter {
+    margin-left: 31%;
 }

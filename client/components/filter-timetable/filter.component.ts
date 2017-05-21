@@ -78,14 +78,14 @@ export class FilterComponent implements OnInit {
             (err) => console.log(err)
             );
 
-        if (Object.keys(this.paramQuery).length > 0) {
-            this.mainService
-                .getTimeLessonById(this.paramQuery.id)
-                .subscribe(data => {
-                    this.data = data;
-                    this.useParamQuery(this.paramQuery)
-                })
-        }
+        // if (Object.keys(this.paramQuery).length > 0) {
+        //     this.mainService
+        //         .getTimeLessonById(this.paramQuery.id)
+        //         .subscribe(data => {
+        //             this.data = data;
+        //             this.useParamQuery(this.paramQuery)
+        //         })
+        // }
     }
 
     useParamQuery(param) {
@@ -290,31 +290,31 @@ export class FilterComponent implements OnInit {
             data: {}
         };
 
-        if ((this.configFilter.date.next || this.configFilter.date.prev) || !!this.paramQuery.date.begin) {
-            console.log(this.paramQuery)
-            if (this.paramQuery['date']) {
-                console.log(1)
-                this.configFilter.date.next = false;
-                this.configFilter.date.prev = false;
+        if ((this.configFilter.date.next || this.configFilter.date.prev)) {
 
-                let dateString = moment(this.paramQuery.date.begin);
+            // if (this.paramQuery['date']) {
+            //     console.log(1)
+            //     this.configFilter.date.next = false;
+            //     this.configFilter.date.prev = false;
 
-                for (let i = 0; i < 7; i++) {
-                    let firstDay = moment(dateString).day();
-                    let date = moment(dateString).day(firstDay + i);
-                    // let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
-                    // if (cont) {
-                    //     res.dateList.push({ day: date.toISOString(), isHoliday: true });
-                    // } else {
-                    res.dateList.push({ day: date.toISOString(), isHoliday: false });
-                    // }
-                }
+            //     let dateString = moment(this.paramQuery.date.begin);
 
-                if (this.data !== {}) {
+            //     for (let i = 0; i < 7; i++) {
+            //         let firstDay = moment(dateString).day();
+            //         let date = moment(dateString).day(firstDay + i);
+            //         // let cont = this.holidayList[0].date.find((elem) => date.isSame(moment(elem)));
+            //         // if (cont) {
+            //         //     res.dateList.push({ day: date.toISOString(), isHoliday: true });
+            //         // } else {
+            //         res.dateList.push({ day: date.toISOString(), isHoliday: false });
+            //         // }
+            //     }
 
-                    res.data = this.data;
-                }
-            }
+            //     if (this.data !== {}) {
+
+            //         res.data = this.data;
+            //     }
+            // }
 
             if (this.configFilter.date.next) {
                 console.log('next')

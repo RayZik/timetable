@@ -8,7 +8,7 @@ const Timetable = require('../../../../models/timetable').TimetableModel;
 const cellTimetable = require('../../../../models/cellTimetable').CellTimetableModel;
 const holiday = require('../../../../models/holiday').HolidayModel;
 const User = require('../../../../models/user').UserModel;
-// let h = new holiday({date: moment().toDate()});
+// let h = new holiday({ date: moment().toDate() });
 // h.save();
 
 function isAuth(req: Request, res: Response, next: NextFunction) {

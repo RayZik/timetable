@@ -23,24 +23,41 @@ subject.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 
 subject.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
     Subject.update({ _id: req.body._id }, { $set: { name: req.body.name } })
-        .exec().then(() => {
-            res.end();
+        .exec().then((result) => {
+            if (result.ok === 1) {
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
+
         }).catch(next);
 });
 
 subject.post('/create', (req: Request, res: Response, next: NextFunction) => {
-    let s = new Subject({ name: req.body.name });
-    s.save()
+    let sbj = new Subject({ name: req.body.name });
+    sbj.save()
         .then((result) => {
-            res.end();
+            if (result) {
+                res.send(sbj);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         }).catch(next);
 });
 
 subject.delete('/remove/:id', (req: Request, res: Response, next: NextFunction) => {
     Subject.findById(req.params.id)
         .exec().then((result) => {
-            if (result != null) {
+            if (result) {
                 result.remove();
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
                 res.end();
             }
         }).catch(next);

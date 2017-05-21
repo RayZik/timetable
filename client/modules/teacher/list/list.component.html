@@ -6,7 +6,7 @@
 
     <ng-template #Tlist>
         <ol class='list'>
-            <li *ngFor='let teacher of teacherList' (click)="goTeacherId(teacher._id)">{{teacher.name}}</li>
+            <li *ngFor='let teacher of teacherList' (click)="goTeacherId(teacher._id)">{{teacher.surname}} {{teacher.name}} {{teacher.lastName}}</li>
         </ol>
     </ng-template>
 </div>

@@ -72,8 +72,6 @@ export class MainItemComponent implements OnInit {
 				this.holidayList = data;
 			});
 
-
-
 		this.mainService
 			.getCellTimetable()
 			.flatMap(cells => {
@@ -117,7 +115,6 @@ export class MainItemComponent implements OnInit {
 					}
 
 				}
-
 				this.outTable(this.data, this.cellWithTime);
 			});
 
@@ -152,12 +149,13 @@ export class MainItemComponent implements OnInit {
 		if (filter.dateList.length > 0) {
 			this.dateList = filter.dateList;
 		}
-		console.log(filter.data, this.data)
-		if (filter.data) {
-			this.outTable(this.data, filter.cells);
-		} else {
-			this.outTable(this.data, filter.cells);
-		}
+
+		this.outTable(this.data, filter.cells);
+		// if (filter.data) {
+		// 	this.outTable(this.data, filter.cells);
+		// } else {
+		// 	this.outTable(this.data, filter.cells);
+		// }
 
 		this.paramQuery = {};
 	}

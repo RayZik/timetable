@@ -32,7 +32,6 @@ group.put('/update/:id', (req: Request, res: Response, next: NextFunction) => {
             }
 
         }).catch(next);
-
 });
 
 group.post('/create', (req: Request, res: Response, next: NextFunction) => {
@@ -42,7 +41,7 @@ group.post('/create', (req: Request, res: Response, next: NextFunction) => {
             if (result) {
                 res.send(grp);
                 res.end();
-            } else {
+            } else { 
                 res.sendStatus(500);
                 res.end();
             }

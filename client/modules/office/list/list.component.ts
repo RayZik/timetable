@@ -13,7 +13,10 @@ export class OfficeListComponent implements OnInit {
     private officeList: any[] = [];
     private office: Object = {};
 
-    constructor(private apiService: ApiService, private fms: FlashMessagesService, private router: Router) { }
+    constructor(
+        private apiService: ApiService,
+        private fms: FlashMessagesService,
+        private router: Router) { }
 
     ngOnInit() {
         this.apiService
@@ -32,18 +35,14 @@ export class OfficeListComponent implements OnInit {
         }
     }
 
-    addOffice(office: Object, ofcInput: any) {
-        this.apiService
-            .createOffice(office)
-            .subscribe();
-
+    addOffice(office: Object) {
         if (office['name']) {
             this.apiService
                 .createOffice(office)
                 .subscribe(data => {
                     if (Object.keys(data).length > 0) {
+                        console.log(data)
                         this.officeList.push(data);
-                        ofcInput.value = '';
                         this.office = {};
                     }
                 },

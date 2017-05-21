@@ -1,7 +1,7 @@
 <div class="ui button" (click)="goBack()">
     Назад</div><br>
 <!--Фильтр-->
-<tt-filter (onChanged)="onChanged($event)" [dateList]='dateList' [holidayList]='holidayList' [cellWithTime]='cellWithTime' [paramQuery]='paramQuery'></tt-filter>
+<tt-filter class="tt-filter" (onChanged)="onChanged($event)" [dateList]='dateList' [holidayList]='holidayList' [cellWithTime]='cellWithTime' [paramQuery]='paramQuery'></tt-filter>
 
 
 <!--Таблица-->
@@ -31,13 +31,13 @@
             </ng-container>
         </tr>
     </tbody>
-    <tfoot>
-        <input type="time" name="begin" (blur)='lesson.begin = $event.target.value'>
-        <input type="time" name="end" (blur)='lesson.end = $event.target.value'>
-        <div class="ui button" (click)="addLesson(lesson)">Добавить</div>
-    </tfoot>
 </table>
-<br>
+
+<div>
+    <input type="time" name="begin" (blur)='lesson.begin = $event.target.value'>
+    <input type="time" name="end" (blur)='lesson.end = $event.target.value'>
+    <div class="ui button" (click)="addLesson(lesson)">Добавить</div>
+</div>
 
 <div id="myBoxCell">
     <div id='takeBox'></div>
