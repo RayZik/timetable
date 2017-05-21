@@ -20,7 +20,7 @@ export class GroupItemComponent implements OnInit {
         private fms: FlashMessagesService,
         private location: Location) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.activatedRouter.params.forEach((params: Params) => {
             if (params.id) {
                 this.apiService

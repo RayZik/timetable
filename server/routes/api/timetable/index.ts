@@ -37,7 +37,7 @@ timetableApi.get('/', (req: Request, res: Response, next: NextFunction) => {
         }).catch(next);
 });
 
-timetableApi.get('/holidays',  (req: Request, res: Response, next: NextFunction) => {
+timetableApi.get('/holidays', (req: Request, res: Response, next: NextFunction) => {
     holiday.find({})
         .exec().then((result) => {
             res.send(result);
@@ -56,24 +56,29 @@ timetableApi.get('/:id', (req: Request, res: Response, next: NextFunction) => {
 
 
 
-timetableApi.post('/add_date', isAuth, (req: Request, res: Response, next: NextFunction) => {
-   
-
+timetableApi.post('/add_date', (req: Request, res: Response, next: NextFunction) => {
     let begin: Date = moment.utc(req.body.beginDate).toDate();
     let end: Date = moment.utc(req.body.endDate).toDate();
     let name = req.body.name;
 
-    let les = new Timetable({
-        name: name,
-        beginDate: begin,
-        endDate: end
-    });
-    les.save();
-    res.end();
+    if (!!begin && !!end && !!name) {
+        let les = new Timetable({
+            name: name,
+            beginDate: begin,
+            endDate: end
+        });
+        les.save();
+        res.send(les);
+        res.sendStatus(200);
+        res.end();
+    } else {
+        res.sendStatus(500);
+        res.end();
+    }
 });
 
 timetableApi.post('/add_time_lesson', (req: Request, res: Response, next: NextFunction) => {
-   
+
 
     let date: Date = moment(0).hour(0).toDate();
     let begin: Number = moment(date).minute(req.body.begin).unix();
@@ -85,7 +90,7 @@ timetableApi.post('/add_time_lesson', (req: Request, res: Response, next: NextFu
 });
 
 timetableApi.post('/delete_time_lesson', (req: Request, res: Response, next: NextFunction) => {
-   
+
 
     let lesson = req.body.lesson;
 

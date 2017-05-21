@@ -102,6 +102,12 @@ export class MainService {
         return this
             .http
             .post('/api/main/timetable/add_date', newDate, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return response.json();
+                }
+                return false;
+            })
     }
 
     getTimeLesson() {

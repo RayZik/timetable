@@ -25,21 +25,26 @@ export class MainListComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.fms.show('hello', { cssClass: 'alert-error', timeout: 1000 });
         this.mainService
             .getTimeLesson()
             .subscribe(date => {
                 this.timetableList = date;
             })
-
-        // console.log(moment('01-02-2017').toDate())
     }
 
     addDate(newDate): void {
         this.mainService
             .addDate(newDate)
-            .subscribe(date => {
-
+            .subscribe(data => {
+                if (Object.keys(data).length > 0) {
+                    this.timetableList.push(data);
+                    this.newDate = {};
+                } else {
+                    this.fms.show('Ошибка', { cssClass: 'alert-error', timeout: 2000 });
+                }
+            },
+            err => {
+                this.fms.show('Ошибка', { cssClass: 'alert-error', timeout: 2000 });
             });
     }
 

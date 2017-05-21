@@ -10,7 +10,7 @@ import { ApiService } from '../../../service/index';
 
 export class TeacherListComponent implements OnInit {
 
-    teacherList: any[];
+    teacherList: any[] = [];
     private teacher: any = {};
 
     constructor(private apiService: ApiService, private router: Router) { }

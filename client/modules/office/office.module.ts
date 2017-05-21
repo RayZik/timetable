@@ -2,6 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { NgSemanticModule } from 'ng-semantic';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { OfficeListComponent } from './list/list.component';
 import { OfficeItemComponent } from './item/item.component';
@@ -14,6 +15,7 @@ import { routing } from './office.routing';
         HttpModule,
         routing,
         NgSemanticModule,
+        FormsModule
     ],
     declarations: [
         OfficeListComponent,

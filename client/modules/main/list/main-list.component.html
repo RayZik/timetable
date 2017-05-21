@@ -1,12 +1,30 @@
-<div class="ui container">
-    <input type="text" name="name" (blur)='newDate.name = $event.target.value'>
-    <input type="date" name="beginDate" (blur)='newDate.beginDate = $event.target.value'>
-    <input type="date" name="endDate" (blur)='newDate.endDate = $event.target.value'>
-    <div class="ui button" (click)="addDate(newDate)">Добавить</div><br>
+<div class="container">
 
-    <div>
-        <ol class='listTimetable'>
-            <li *ngFor='let timetable of timetableList' (click)='goItem(timetable)'>{{timetable.name}}</li>
-        </ol>
+    <div class="emptyList" *ngIf="timetableList.length == 0;else Tlist">
+        <h1>Список пуст</h1>
+    </div>
+
+    <ng-template #Tlist>
+        <div>
+            <ol class='list'>
+                <li *ngFor='let timetable of timetableList' (click)='goItem(timetable)'>{{timetable.name}}</li>
+            </ol>
+        </div>
+    </ng-template>
+</div>
+
+<div class="add">
+    <h3>Добавить расписание</h3>
+    <div class="input">
+        <input type="text" name="name" [(ngModel)]='newDate.name' placeholder="Наименование" required>
+    </div>
+    <div class="date">
+        <input type="date" name="beginDate" [(ngModel)]='newDate.beginDate' required>
+    </div>
+    <div class="date">
+        <input type="date" name="endDate" [(ngModel)]='newDate.endDate' required>
+    </div>
+    <div class="button">
+        <input type="button" (click)="addDate(newDate)" value="Добваить" [disabled]='!newDate.name && !newDate.beginDate &&!newDate.endDate'>
     </div>
 </div>

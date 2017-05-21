@@ -1,21 +1,28 @@
-<div class="ui container">
-    <input type="text" name="surname" (blur)="teacher.surname=$event.target.value" />
-    <input type="text" name="name" (blur)="teacher.name=$event.target.value" />
-    <input type="text" name="lastName" (blur)="teacher.lastName=$event.target.value" />
-    <div class="ui right floated button" (click)="newTeacher(teacher)">Добавить</div>
+<div class="container">
+
+    <div class="emptyList" *ngIf="teacherList.length == 0;else Tlist">
+        <h1>Список пуст</h1>
+    </div>
+
+    <ng-template #Tlist>
+        <ol class='list'>
+            <li *ngFor='let teacher of teacherList' (click)="goTeacherId(teacher._id)">{{teacher.name}}</li>
+        </ol>
+    </ng-template>
 </div>
-<br>
-<div class="ui container">
-    <div (click)="goTeacherId(item._id)" *ngFor="let item of teacherList">
-        <div class="ui middle aligned divided list">
-            <div class="item">
-                <div class="right floated content">
-                    <button class=" compact ui button " (click)="deleteTeacher(item._id);$event.stopPropagation();">Удалить</button>
-                </div>
-                <div class="ui content">
-                    {{item.surname}} {{item.name}} {{item.lastName}}
-                </div>
-            </div>
-        </div>
+
+<div class="add">
+    <h3>Добавить преподавателя</h3>
+    <div class="input">
+        <input type="text" name="surname" [(ngModel)]="teacher.surname" placeholder="Фамилия" required/>
+    </div>
+    <div class="input">
+        <input type="text" name="name" [(ngModel)]="teacher.name" placeholder="Имя" required/>
+    </div>
+    <div class="input">
+        <input type="text" name="lastName" [(ngModel)]="teacher.lastName" placeholder="Отчество" required/>
+    </div>
+    <div class="button">
+        <input type="button" (click)="addTeacher(teacher)" value="Добваить" [disabled]='!teacher.surname && !teacher.name && !teacher.lastName'>
     </div>
 </div>

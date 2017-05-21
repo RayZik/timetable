@@ -1,21 +1,21 @@
-<div class="ui container">
-    <input type="text" name="name" (blur)="subject.name=$event.target.value" />
-    <div class="ui right floated button" (click)="newSubject(subject)">Добавить</div>
+<div class="container">
+    <div class="emptyList" *ngIf="subjectList.length == 0;else content">
+        <h1>Список пуст</h1>
+    </div>
+
+    <ng-template #content>
+        <ol class='list'>
+            <li *ngFor='let subject of subjectList' (click)="goSubjectId(subject._id)">{{subject.name}}</li>
+        </ol>
+    </ng-template>
 </div>
-<br>
-<div class="ui container">
-    <ol>
-        <li (click)="goSubjectId(item._id)" *ngFor="let item of subjectList">
-            <div class="ui middle aligned divided list">
-                <div class="item">
-                    <div class="right floated content">
-                        <button class=" compact ui button " (click)="deleteSubject(item._id);$event.stopPropagation();">Удалить</button>
-                    </div>
-                    <div class="ui content">
-                        {{item.name}}
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ol>
+
+<div class="add">
+    <h3>Добавить предмет</h3>
+    <div class="input">
+        <input type="text" name="name" [(ngModel)]="subject.name" placeholder="Наименование" required/>
+    </div>
+    <div class="button">
+        <input type="button" (click)="addSubject(subject)" value="Добваить" [disabled]='!subject.name'>
+    </div>
 </div>

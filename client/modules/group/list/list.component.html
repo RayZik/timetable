@@ -1,16 +1,27 @@
-<div class="ui container">
-    <label>Наименование</label>
-    <input class="ui input" type="text" name="name" (blur)="group.name=$event.target.value" #grpInput />
-    <div class="ui right floated button" (click)="addGroup(group,grpInput)">Добавить</div>
+<div class="container">
 
-    <div *ngIf="groupList.length == 0;else content">
-        Список пуст
+    <div class="emptyList" *ngIf="groupList.length == 0;else Glist">
+        <h1>Список пуст</h1>
     </div>
 
-    <ng-template #content>
-        <ul>
-            <li (click)="goGroupId(item._id)" *ngFor="let item of groupList;let i  = index;">
-                <div class="ui middle aligned divided list">
+    <ng-template #Glist>
+        <ol class='list'>
+            <li *ngFor='let group of groupList' (click)="goGroupId(group._id)">{{group.name}}</li>
+        </ol>
+    </ng-template>
+</div>
+
+<div class="add">
+    <h3>Добавить группу</h3>
+    <div class="input">
+        <input type="text" name="name" [(ngModel)]="group.name" placeholder="Наименование" required/>
+    </div>
+    <div class="button">
+        <input type="button" (click)="addGroup(group)" value="Добваить" [disabled]='!group.name'>
+    </div>
+</div>
+
+<!--<div class="ui middle aligned divided list">
                     <div class="item">
                         <div class="right floated content">
                             <button class=" compact ui button " (click)="deleteGroup(item._id);$event.stopPropagation();">Удалить</button>
@@ -19,8 +30,4 @@
                             {{item.name}}
                         </div>
                     </div>
-                </div>
-            </li>
-        </ul>
-    </ng-template>
-</div>
+                </div>-->
