@@ -5,7 +5,7 @@
     "main": "server/app.js",
     "private": true,
     "scripts": {
-        "start": "node server/app.js",
+        "start": "node server/bin/www",
         "dev": "concurrently \"tsc -w -p ./server\" \"tsc -w -p ./client\" \"nodemon ./server/bin/www\" ",
         "forever": "tsc -p ./server && forever start ./server/bin/www --watch",
         "twc:client:w": "tsc -w -p ./client",
