@@ -1,6 +1,7 @@
 <div class="ui compact message myCell">
     <!--subject-->
     <div class="myLine">
+
         <div *ngIf="cell.subject.length>0">
             <div *ngFor="let item of cell.subject" class="myHoverItem">
                 <div (click)="deleteSubject(item._id, cell._id)" class="myDelete">

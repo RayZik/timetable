@@ -283,7 +283,7 @@ export class MainItemComponent implements OnInit {
 
 	saveCell(config): void {
 		let arrTime = { id: this.inputConfig['cell']._id, time: [] };
-		let interval = config.repeatWithInterval;
+		let interval: number = config.repeatWithInterval;
 
 		if (config.repeat !== 'day') {
 			let firstDayWeek = moment(this.dateList[this.inputConfig['dayIndex']].day).utc();
@@ -334,42 +334,46 @@ export class MainItemComponent implements OnInit {
 	}
 
 	deleteCell(): void {
-		let id = this.inputConfig['cell']._id;
-		let obj = { time: [] };
+		let id: string = this.inputConfig['cell']._id;
+		let obj: Object = { id: id, time: [] };
+
 		this.mainService
-			.deleteCell(id, obj)
+			.deleteCell(obj)
 			.subscribe();
 	}
 
 	deleteCellWithMoment(): void {
-		let beginDate = moment(this.dateList[this.inputConfig['dayIndex']].day).second(this.inputConfig['time'].begin).toISOString();
-		let id = this.inputConfig['cell']._id;
-		let res = [];
+		let beginDate: string = moment(this.dateList[this.inputConfig['dayIndex']].day).second(this.inputConfig['time'].begin).toISOString();
+		let id: string = this.inputConfig['cell']._id;
+		let res: any[] = [];
 
 		this.inputConfig['cell'].time.find((el, idx) => {
 			if (!moment(el.begin).isSameOrAfter(beginDate)) {
 				res.push(el);
 			}
 		});
-		let obj = { time: res };
+		let obj: Object = { id: id, time: res };
+
 		this.mainService
-			.deleteCell(id, obj)
+			.deleteCell(obj)
 			.subscribe();
 	}
 
 	deleteThisCell(): void {
-		let beginDate = moment(this.dateList[this.inputConfig['dayIndex']].day).second(this.inputConfig['time'].begin).toISOString();
-		let id = this.inputConfig['cell']._id;
-		let res = [];
+		let beginDate: string = moment(this.dateList[this.inputConfig['dayIndex']].day).second(this.inputConfig['time'].begin).toISOString();
+		let id: string = this.inputConfig['cell']._id;
+		let res: any[] = [];
 
 		this.inputConfig['cell'].time.find((el, idx) => {
 			if (el.begin !== beginDate) {
 				res.push(el);
 			}
 		});
-		let obj = { time: res };
+
+		let obj: Object = { id: id, time: res };
+
 		this.mainService
-			.deleteCell(id, obj)
+			.deleteCell(obj)
 			.subscribe();
 	}
 
@@ -377,7 +381,7 @@ export class MainItemComponent implements OnInit {
 		this.location.back();
 	}
 
-	contains(arr, begin, end) {
+	contains(arr, begin, end): number {
 		let result = arr.find((i) => i.begin === begin && i.end === end);
 
 		if (arr.length > 0) {

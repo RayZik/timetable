@@ -16,7 +16,7 @@ export class MainService {
         return new RequestOptions({ headers: headers });
     }
 
-    getCellTimetable() {
+    getCellTimetable(): Observable<any> {
         let headers = new Headers({ 'Content-Type': 'application/json' })
         if (this.cache['cells']) {
             return Observable.of(this.cache['cells']);
@@ -32,70 +32,136 @@ export class MainService {
         }
     }
 
-    addTeacher(id: String, cellTimetableId: String) {
+    addTeacher(obj: Object): Observable<boolean> {
         return this
             .http
-            .post('/api/main/cellTimetable/add_teacher', { id: id, cellTimetableId: cellTimetableId }, this.head())
+            .post('/api/main/cellTimetable/add_teacher', obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
-    deleteTeacher(id: String, cellTimetableId: String) {
+    deleteTeacher(obj: any): Observable<boolean> {
         return this
             .http
-            .post(`/api/main/cellTimetable/delete_teacher/${id}`, { cellTimetableId: cellTimetableId }, this.head())
+            .post(`/api/main/cellTimetable/delete_teacher/${obj.id}`, obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
-    addOffice(id: String, cellTimetableId: String) {
+    addOffice(obj: Object): Observable<boolean> {
         return this
             .http
-            .post('/api/main/cellTimetable/add_office', { id: id, cellTimetableId: cellTimetableId }, this.head())
+            .post('/api/main/cellTimetable/add_office', obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
-    deleteOffice(id: String, cellTimetableId: String) {
+    deleteOffice(obj: any): Observable<boolean> {
         return this
             .http
-            .post(`/api/main/cellTimetable/delete_office/${id}`, { cellTimetableId: cellTimetableId }, this.head())
+            .post(`/api/main/cellTimetable/delete_office/${obj.id}`, obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
-    addGroup(id: String, cellTimetableId: String) {
+    addGroup(obj: Object): Observable<boolean> {
         return this
             .http
-            .post('/api/main/cellTimetable/add_group', { id: id, cellTimetableId: cellTimetableId }, this.head())
+            .post('/api/main/cellTimetable/add_group', obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
-    deleteGroup(id: String, cellTimetableId: String) {
+    deleteGroup(obj: any): Observable<boolean> {
         return this
             .http
-            .post(`/api/main/cellTimetable/delete_group/${id}`, { cellTimetableId: cellTimetableId }, this.head())
+            .post(`/api/main/cellTimetable/delete_group/${obj.id}`, obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
-    addSubject(id: String, cellTimetableId: String) {
+    addSubject(obj: Object): Observable<boolean> {
         return this
             .http
-            .post('/api/main/cellTimetable/add_subject', { id: id, cellTimetableId: cellTimetableId }, this.head())
+            .post('/api/main/cellTimetable/add_subject', obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
-    deleteSubject(id: String, cellTimetableId: String) {
+    deleteSubject(obj: any): Observable<boolean> {
         return this
             .http
-            .post(`/api/main/cellTimetable/delete_subject/${id}`, { cellTimetableId: cellTimetableId }, this.head())
+            .post(`/api/main/cellTimetable/delete_subject/${obj.id}`, obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
-    addCell(param) {
+    addCell(obj: Object): Observable<boolean> {
         return this
             .http
-            .post('/api/main/cellTimetable/add_cell', param, this.head())
+            .post('/api/main/cellTimetable/add_cell', obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
-    deleteCell(id, obj) {
+    deleteCell(obj: any): Observable<boolean> {
         return this
             .http
-            .post(`/api/main/cellTimetable/delete_cell/${id}`, this.head())
+            .post(`/api/main/cellTimetable/delete_cell/${obj.id}`, obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
-    addTimeLesson(lesson) {
+    addTimeLesson(obj: Object): Observable<boolean> {
         return this
             .http
-            .post('/api/main/timetable/add_time_lesson', lesson, this.head())
+            .post('/api/main/timetable/add_time_lesson', obj, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
     addDate(newDate) {
@@ -136,10 +202,16 @@ export class MainService {
             .share()
     }
 
-    saveCell(data) {
+    saveCell(data): Observable<boolean> {
         return this
             .http
             .put('/api/main/cellTimetable/save_cell', data, this.head())
+            .map((response: Response) => {
+                if (response.status === 200) {
+                    return true;
+                }
+                return false;
+            })
     }
 
     deleteLesson(lesson) {

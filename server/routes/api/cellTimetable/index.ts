@@ -21,88 +21,174 @@ cellTimetableApi.get('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 cellTimetableApi.post('/add_teacher', (req: Request, res: Response, next: NextFunction) => {
-    cellTimetable.findById({ _id: req.body.cellTimetableId })
-        .exec().then((result) => {
-            result.teacher.push(req.body.id);
-            result.save();
-            res.end();
+    let id: string = req.body.id;
+    let cellId: string = req.body.cellId;
+
+    cellTimetable.findById({ _id: cellId })
+        .exec()
+        .then((result) => {
+            if (result) {
+                result.teacher.push(req.body.id);
+                result.save();
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         }).catch(next);
 });
 
 cellTimetableApi.post('/delete_teacher/:id', (req: Request, res: Response, next: NextFunction) => {
-    cellTimetable.update({ _id: req.body.cellTimetableId }, { $pull: { teacher: req.params.id } })
-        .then((r) => {
-            console.log(r)
-            res.end();
+    let id: string = req.params.id;
+    let cellId: string = req.body.cellId;
+
+    cellTimetable.update({ _id: cellId }, { $pull: { teacher: id } })
+        .then((result) => {
+            if (result.ok) {
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         })
         .catch(next)
 });
 
 cellTimetableApi.post('/add_group', (req: Request, res: Response, next: NextFunction) => {
-    cellTimetable.findById({ _id: req.body.cellTimetableId })
+    let id: string = req.body.id;
+    let cellId: string = req.body.cellId;
+
+    cellTimetable.findById({ _id: cellId })
         .exec().then((result) => {
-            result.group.push(req.body.id);
-            result.save();
-            res.end();
+            if (result) {
+                result.group.push(id);
+                result.save();
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         }).catch(next);
 });
 
 cellTimetableApi.post('/delete_group/:id', (req: Request, res: Response, next: NextFunction) => {
-    cellTimetable.update({ _id: req.body.cellTimetableId }, { $pull: { group: req.params.id } })
-        .then((r) => {
-            console.log(r)
-            res.end();
+    let id: string = req.params.id;
+    let cellId: string = req.body.cellId;
+
+    cellTimetable.update({ _id: cellId }, { $pull: { group: id } })
+        .then((result) => {
+            if (result.ok) {
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end
+            }
         })
         .catch(next)
 });
 
 
 cellTimetableApi.post('/add_subject', (req: Request, res: Response, next: NextFunction) => {
-    cellTimetable.findById({ _id: req.body.cellTimetableId })
+    let id: string = req.body.id;
+    let cellId: string = req.body.cellId;
+
+    cellTimetable.findById({ _id: cellId })
         .exec().then((result) => {
-            result.subject.push(req.body.id);
-            result.save();
-            res.end();
+            if (result) {
+                result.subject.push(id);
+                result.save();
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         }).catch(next);
 });
 
 cellTimetableApi.post('/delete_subject/:id', (req: Request, res: Response, next: NextFunction) => {
-    cellTimetable.update({ _id: req.body.cellTimetableId }, { $pull: { subject: req.params.id } })
-        .then((r) => {
-            res.end();
+    let id: string = req.params.id;
+    let cellId: string = req.body.cellId;
+
+    cellTimetable.update({ _id: cellId }, { $pull: { subject: id } })
+        .then((result) => {
+            if (result.ok) {
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         })
         .catch(next)
 });
 
 cellTimetableApi.post('/add_office', (req: Request, res: Response, next: NextFunction) => {
-    cellTimetable.findById({ _id: req.body.cellTimetableId })
+    let id: string = req.body.id;
+    let cellId: string = req.body.cellId;
+
+    cellTimetable.findById({ _id: cellId })
         .exec().then((result) => {
-            result.office.push(req.body.id);
-            result.save();
-            res.end();
+            if (result) {
+                result.office.push(id);
+                result.save();
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         }).catch(next);
 });
 
 cellTimetableApi.post('/delete_office/:id', (req: Request, res: Response, next: NextFunction) => {
-    cellTimetable.update({ _id: req.body.cellTimetableId }, { $pull: { office: req.params.id } })
-        .then((r) => {
-            res.end();
+    let id: string = req.params.id;
+    let cellId: string = req.body.cellId;
+
+    cellTimetable.update({ _id: cellId }, { $pull: { office: id } })
+        .then((result) => {
+            if (result.ok) {
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         })
         .catch(next)
 });
 
 cellTimetableApi.post('/add_cell', (req: Request, res: Response, next: NextFunction) => {
-    let id = req.body.id;
-    let t = new cellTimetable({ timetableId: id });
-    t.save()
-    res.end();
+    let id: string = req.body.id || false;
+
+    if (id) {
+        let t = new cellTimetable({ timetableId: id });
+        t.save()
+
+        res.sendStatus(200);
+        res.end();
+    } else {
+        res.sendStatus(500);
+        res.end();
+    }
 });
 
 cellTimetableApi.post('/delete_cell/:id', (req: Request, res: Response, next: NextFunction) => {
     let time = req.body.time;
+
     cellTimetable.update({ _id: req.params.id }, { $set: { 'time': time } })
-        .then(() => {
-            res.end();
+        .then((result) => {
+            if (result.ok) {
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         })
         .catch(next)
 });
@@ -111,13 +197,21 @@ cellTimetableApi.put('/save_cell', (req: Request, res: Response, next: NextFunct
     let id = req.body.id;
     let time = req.body.time;
     let timetableId = req.body.timetableId;
+
     cellTimetable.findOne({ _id: id })
         .exec().then((result) => {
-            let cell = new cellTimetable(result);
-            time.forEach(e => {
-                cell.time.push({ begin: e.begin, end: e.end });
-            });
-            cell.save();
+            if (result) {
+                let cell = new cellTimetable(result);
+                time.forEach(e => {
+                    cell.time.push({ begin: e.begin, end: e.end });
+                });
+                cell.save();
+                res.sendStatus(200);
+                res.end();
+            } else {
+                res.sendStatus(500);
+                res.end();
+            }
         }).catch(next);
     res.end();
 });

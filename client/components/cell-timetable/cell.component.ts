@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import moment from 'moment';
 
@@ -10,9 +10,7 @@ import { ApiService, MainService, ModalService } from '../../service/index';
 	styleUrls: ['client/components/cell-timetable/cell.component.css']
 })
 
-export class CellComponent implements OnInit, OnChanges {
-
-
+export class CellComponent implements OnInit {
 	@Input() cell;
 	@Input() dateList;
 	@Input() dayIndex;
@@ -39,45 +37,30 @@ export class CellComponent implements OnInit, OnChanges {
 		private modalService: ModalService
 	) { }
 
-
-	ngOnChanges(changes: SimpleChanges): void {
-
-	}
-
 	ngOnInit(): void {
 		this.apiService
 			.getTeachers()
 			.subscribe(
-			(data) => { this.teachers = data; },
-			(err) => console.log(err)
-			);
+			(data) => { this.teachers = data; });
 
 		this.apiService
 			.getGroups()
 			.subscribe(
-			(data) => { this.groups = data; },
-			(err) => console.log(err)
-			);
+			(data) => { this.groups = data; });
 
 		this.apiService
 			.getOffices()
 			.subscribe(
-			(data) => { this.offices = data; },
-			(err) => console.log(err)
-			);
+			(data) => { this.offices = data; });
 
 		this.apiService
 			.getSubjects()
 			.subscribe(
-			(data) => { this.subjects = data; },
-			(err) => console.log(err)
-			);
-
-
+			(data) => { this.subjects = data; });
 	}
 
-	editCell() {
-		let obj = {
+	editCell(): void {
+		let obj: Object = {
 			dayIndex: this.dayIndex,
 			nameModal: 'cell-modal',
 			cell: this.cell,
@@ -86,55 +69,76 @@ export class CellComponent implements OnInit, OnChanges {
 
 		this.clickSaveCell.emit(obj);
 	}
+
 	addTeacher(): void {
+		let obj: Object = { id: this.idTeacher.id, cellId: this.idCell }
 		this.mainService
-			.addTeacher(this.idTeacher.id, this.idCell)
-			.subscribe();
+			.addTeacher(obj)
+			.subscribe(data => {
+				if (data) {
+
+				}
+			});
+
 		this.idTeacher.show = false;
 	}
 
-	deleteTeacher(id: String, idCell: String) {
+	deleteTeacher(id: string, idCell: string) {
+		let obj: Object = { id: id, cellId: idCell };
+
 		this.mainService
-			.deleteTeacher(id, idCell)
+			.deleteTeacher(obj)
 			.subscribe();
 	}
 
 	addGroup(): void {
+		let obj: Object = { id: this.idGroup.id, cellId: this.idCell };
+
 		this.mainService
-			.addGroup(this.idGroup.id, this.idCell)
+			.addGroup(obj)
 			.subscribe();
 		this.idGroup.show = false;
 	}
 
 	deleteGroup(id: String, idCell: String) {
+		let obj: Object = { id: id, cellId: idCell };
+
 		this.mainService
-			.deleteGroup(id, idCell)
+			.deleteGroup(obj)
 			.subscribe();
 	}
 
 	addOffice(): void {
+		let obj: Object = { id: this.idOffice.id, cellId: this.idCell };
+
 		this.mainService
-			.addOffice(this.idOffice.id, this.idCell)
+			.addOffice(obj)
 			.subscribe();
 		this.idOffice.show = false;
 	}
 
 	deleteOffice(id: String, idCell: String) {
+		let obj: Object = { id: id, cellId: idCell };
+
 		this.mainService
-			.deleteOffice(id, idCell)
+			.deleteOffice(obj)
 			.subscribe();
 	}
 
 	addSubject(): void {
+		let obj: Object = { id: this.idSubject.id, cellId: this.idCell };
+		console.log(obj)
 		this.mainService
-			.addSubject(this.idSubject.id, this.idCell)
+			.addSubject(obj)
 			.subscribe();
 		this.idSubject.show = false;
 	}
 
 	deleteSubject(id: String, idCell: String) {
+		let obj: Object = { id: id, cellId: idCell };
+
 		this.mainService
-			.deleteSubject(id, idCell)
+			.deleteSubject(obj)
 			.subscribe();
 	}
 
@@ -147,8 +151,4 @@ export class CellComponent implements OnInit, OnChanges {
 	setGroupId(id: String): void { this.idGroup.id = id; }
 	setSubjectId(id: String): void { this.idSubject.id = id; }
 	setOfficeId(id: String): void { this.idOffice.id = id; }
-
-	deleteCell(cell: any) {
-		
-	}
 }
