@@ -11,7 +11,7 @@ export class ApiService {
 
     constructor(private http: Http) { }
 
-    private head() {
+    private head(): RequestOptions {
         let currentUser = JSON.parse(localStorage.getItem('CurUser')) || null;
         let params: URLSearchParams = new URLSearchParams();
         params.set('token', currentUser && currentUser.token);

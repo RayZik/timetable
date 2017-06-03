@@ -29,13 +29,13 @@ export class SubjectListComponent implements OnInit {
             });
     }
 
-    goSubjectId(id: string) {
+    goSubjectId(id: string): void {
         if (!!id) {
             this.router.navigate(['/subject', id]);
         }
     }
 
-    addSubject(subject: Object) {
+    addSubject(subject: Object): void {
         if (subject['name']) {
             this.apiService
                 .createSubject(subject)
@@ -53,7 +53,7 @@ export class SubjectListComponent implements OnInit {
         }
     }
 
-    deleteSubject(id: string) {
+    deleteSubject(id: string): void {
         if (!!id) {
             this.apiService
                 .deleteSubject(id)
@@ -70,7 +70,7 @@ export class SubjectListComponent implements OnInit {
         }
     }
 
-    deleteFromList(id: string) {
+    deleteFromList(id: string): void {
         let list: any[] = this.subjectList;
 
         if (list.length > 0) {

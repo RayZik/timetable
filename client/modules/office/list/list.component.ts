@@ -29,13 +29,13 @@ export class OfficeListComponent implements OnInit {
             });
     }
 
-    goOfficeId(id: String) {
+    goOfficeId(id: String): void {
         if (!!id) {
             this.router.navigate(['/office', id]);
         }
     }
 
-    addOffice(office: Object) {
+    addOffice(office: Object): void {
         if (office['name']) {
             this.apiService
                 .createOffice(office)
@@ -71,7 +71,7 @@ export class OfficeListComponent implements OnInit {
         }
     }
 
-    deleteFromList(id: string) {
+    deleteFromList(id: string): void {
         let list: any[] = this.officeList;
 
         if (list.length > 0) {

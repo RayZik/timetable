@@ -11,7 +11,7 @@ import { ApiService } from '../../../service/index';
 
 export class TeacherListComponent implements OnInit {
 
-    teacherList: any[] = [];
+    private teacherList: any[] = [];
     private teacher: any = {};
 
     constructor(
@@ -27,16 +27,16 @@ export class TeacherListComponent implements OnInit {
                 if (!data.status) {
                     this.teacherList = data;
                 }
-            });
+            }); 
     }
 
-    goTeacherId(id: string) {
+    goTeacherId(id: string): void {
         if (!!id) {
             this.router.navigate(['/teacher', id]);
         }
     }
 
-    addTeacher(teacher: Object) {
+    addTeacher(teacher: Object): void {
         if (teacher['name']) {
             this.apiService
                 .createTeacher(teacher)
@@ -54,7 +54,7 @@ export class TeacherListComponent implements OnInit {
         }
     }
 
-    deleteTeacher(id: string) {
+    deleteTeacher(id: string): void {
         if (!!id) {
             this.apiService
                 .deleteTeacher(id)
@@ -71,7 +71,7 @@ export class TeacherListComponent implements OnInit {
         }
     }
 
-    deleteFromList(id: string) {
+    deleteFromList(id: string): void {
         let list: any[] = this.teacherList;
 
         if (list.length > 0) {

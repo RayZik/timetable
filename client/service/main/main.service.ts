@@ -11,7 +11,7 @@ export class MainService {
 
     constructor(private http: Http) { }
 
-    private head() {
+    private head(): RequestOptions {
         let headers = new Headers({ 'Content-Type': 'application/json' })
         return new RequestOptions({ headers: headers });
     }
@@ -164,7 +164,7 @@ export class MainService {
             })
     }
 
-    addDate(newDate) {
+    addDate(newDate: Object): Observable<boolean> {
         return this
             .http
             .post('/api/main/timetable/add_date', newDate, this.head())
@@ -176,7 +176,7 @@ export class MainService {
             })
     }
 
-    getTimeLesson() {
+    getTimeLesson(): Observable<any> {
         if (this.cache['tLesson']) {
             return Observable.of(this.cache['tLesson']);
         } else {
@@ -191,7 +191,7 @@ export class MainService {
         }
     }
 
-    getTimeLessonById(id: string) {
+    getTimeLessonById(id: string): Observable<any> {
         return this
             .http
             .get(`/api/main/timetable/${id}`, this.head())
@@ -214,13 +214,13 @@ export class MainService {
             })
     }
 
-    deleteLesson(lesson) {
+    deleteLesson(lesson: Object): Observable<any> {
         return this
             .http
             .post('/api/main/timetable/delete_time_lesson', { lesson: lesson }, this.head())
     }
 
-    getHolidays() {
+    getHolidays(): Observable<any> {
         if (this.cache['holidays']) {
             return Observable.of(this.cache['holidays']);
         } else {

@@ -83,7 +83,7 @@ export class CellComponent implements OnInit {
 		this.idTeacher.show = false;
 	}
 
-	deleteTeacher(id: string, idCell: string) {
+	deleteTeacher(id: string, idCell: string): void {
 		let obj: Object = { id: id, cellId: idCell };
 
 		this.mainService
@@ -100,7 +100,7 @@ export class CellComponent implements OnInit {
 		this.idGroup.show = false;
 	}
 
-	deleteGroup(id: String, idCell: String) {
+	deleteGroup(id: String, idCell: String): void {
 		let obj: Object = { id: id, cellId: idCell };
 
 		this.mainService
@@ -117,7 +117,7 @@ export class CellComponent implements OnInit {
 		this.idOffice.show = false;
 	}
 
-	deleteOffice(id: String, idCell: String) {
+	deleteOffice(id: String, idCell: String): void {
 		let obj: Object = { id: id, cellId: idCell };
 
 		this.mainService
@@ -134,7 +134,7 @@ export class CellComponent implements OnInit {
 		this.idSubject.show = false;
 	}
 
-	deleteSubject(id: String, idCell: String) {
+	deleteSubject(id: String, idCell: String): void {
 		let obj: Object = { id: id, cellId: idCell };
 
 		this.mainService

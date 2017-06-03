@@ -32,7 +32,7 @@ export class MainListComponent implements OnInit {
             })
     }
 
-    addDate(newDate): void {
+    addDate(newDate: Object): void {
         this.mainService
             .addDate(newDate)
             .subscribe(data => {
@@ -48,7 +48,7 @@ export class MainListComponent implements OnInit {
             });
     }
 
-    goItem(item) {
+    goItem(item: any): void{
         let id = item._id;
         this.router.navigate(['/main', id]);
     }

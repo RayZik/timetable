@@ -26,7 +26,7 @@ export class TeacherItemComponent implements OnInit {
         });
     }
 
-    updateTeacher(teacher: any) {
+    updateTeacher(teacher: any): void {
         this.apiService
             .updateTeacher(teacher)
             .subscribe();

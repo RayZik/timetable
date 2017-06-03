@@ -72,7 +72,7 @@ export class GroupListComponent implements OnInit {
         }
     }
 
-    deleteFromList(id: string) {
+    deleteFromList(id: string): void {
         let list: any[] = this.groupList;
 
         if (list.length > 0) {

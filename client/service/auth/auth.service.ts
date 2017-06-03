@@ -33,11 +33,11 @@ export class AuthService {
             });
     }
 
-    saveUserKey(key: Object) {
+    saveUserKey(key: Object): void {
         window.localStorage.setItem('CurUser', JSON.stringify(key));
     }
 
-    logoutUser() {
+    logoutUser(): Observable<boolean> {
         this.token = null;
         window.localStorage.removeItem('CurUser');
 

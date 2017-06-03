@@ -10,7 +10,7 @@ import { ApiService, MainService } from '../../service/index';
 })
 
 export class FilterComponent implements OnInit {
-    @Output() onChanged = new EventEmitter<any>();
+    @Output() onChanged: EventEmitter<any> = new EventEmitter<any>();
     @Input() dateList;
     @Input() cellWithTime;
     @Input() paramQuery;
@@ -88,7 +88,7 @@ export class FilterComponent implements OnInit {
         // }
     }
 
-    useParamQuery(param) {
+    useParamQuery(param): void {
         let date = this.paramQuery.date.begin;
         let config = this.paramQuery.configFilter;
 
@@ -102,7 +102,7 @@ export class FilterComponent implements OnInit {
     }
 
 
-    search(term: string, sign: string) {
+    search(term: string, sign: string): void {
         term = term.toLowerCase();
 
         if (sign === 't') {
@@ -172,7 +172,7 @@ export class FilterComponent implements OnInit {
     }
 
 
-    selectTeacher(t, id) {
+    selectTeacher(t: any, id: string): void {
         if (t.checked) {
             this.idForSearch.push(id);
             this.configFilter.teacher = this.teachers.filter(el => {
@@ -200,7 +200,7 @@ export class FilterComponent implements OnInit {
     }
 
 
-    selectSubject(s, id) {
+    selectSubject(s: any, id: string): void {
         if (s.checked) {
             this.idForSearch.push(id);
             this.configFilter.subject = this.subjects.filter(el => {
@@ -227,7 +227,7 @@ export class FilterComponent implements OnInit {
         this.change();
     }
 
-    selectGroup(g, id) {
+    selectGroup(g: any, id: string): void {
         if (g.checked) {
             this.idForSearch.push(id);
             this.configFilter.group = this.groups.filter(el => {
@@ -254,7 +254,7 @@ export class FilterComponent implements OnInit {
         this.change();
     }
 
-    selectOffice(o, id) {
+    selectOffice(o: any, id: string): void {
 
         if (o.checked) {
             this.idForSearch.push(id);
@@ -283,7 +283,7 @@ export class FilterComponent implements OnInit {
         this.change();
     }
 
-    change() {
+    change(): void {
         let res = {
             dateList: [],
             cells: [],
@@ -317,7 +317,6 @@ export class FilterComponent implements OnInit {
             // }
 
             if (this.configFilter.date.next) {
-                console.log('next')
                 let firstDayWeek = moment(this.dateList[0].day);
                 let lastDayWeek = moment(this.dateList[6].day);
 
@@ -337,7 +336,6 @@ export class FilterComponent implements OnInit {
             }
 
             if (this.configFilter.date.prev) {
-                console.log('prev')
                 let firstDayWeek = moment(this.dateList[0].day);
                 let lastDayWeek = moment(this.dateList[6].day);
 
@@ -381,7 +379,7 @@ export class FilterComponent implements OnInit {
     }
 
 
-    checkParams(cells) {
+    checkParams(cells: any[]): any[] {
         let result = [];
         cells.forEach(cell => {
             let a = [];

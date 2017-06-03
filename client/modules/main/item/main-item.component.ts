@@ -18,7 +18,7 @@ export class MainItemComponent implements OnInit {
 	private cellTimetable: any[] = [];
 	private cellWithTime: any[] = [];
 	private timeList: any[] = [];
-	private holidayList: any[] = [];
+	private holidayList: any[] = []; 
 	private lesson: Object = {};
 	private dateList: any[] = [];
 	private data: any = [];
@@ -27,8 +27,8 @@ export class MainItemComponent implements OnInit {
 	private param: Object = {};
 	private daysName: any[] = ['Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб.', 'Вс.'];
 	private arrRepWithInter: any[] = [];
-	private showSaveButton = true;
-	private cellForSave;
+	private showSaveButton: Boolean = true;
+	private cellForSave: any;
 	private collapse: Boolean = true;
 	private configSave: Object = {};
 	private inputConfig: Object = {}
@@ -67,7 +67,7 @@ export class MainItemComponent implements OnInit {
 		}
 
 		this.mainService
-			.getHolidays()
+			.getHolidays() 
 			.subscribe((data) => {
 				this.holidayList = data;
 			});
@@ -121,7 +121,7 @@ export class MainItemComponent implements OnInit {
 		this.dragCellBox();
 	}
 
-	outTable(data, validate) {
+	outTable(data: any, validate: any[]): void {
 		this.timeList = [];
 		for (let i = 0; i < data.lessons.length; i++) {
 			let countSlots = [];
@@ -145,7 +145,7 @@ export class MainItemComponent implements OnInit {
 		}
 	}
 
-	onChanged(filter): void {
+	onChanged(filter: any): void {
 		if (filter.dateList.length > 0) {
 			this.dateList = filter.dateList;
 		}
@@ -160,7 +160,7 @@ export class MainItemComponent implements OnInit {
 		this.paramQuery = {};
 	}
 
-	checkQueryParam(param: Object, query: Object) {
+	checkQueryParam(param: Object, query: Object): void {
 		if (param) {
 			let id = param['id'];
 
@@ -180,7 +180,7 @@ export class MainItemComponent implements OnInit {
 			.subscribe();
 	}
 
-	addLesson(lesson): void {
+	addLesson(lesson: any): void {
 		lesson.begin = this.toInt(lesson.begin);
 		lesson.end = this.toInt(lesson.end);
 		lesson.timetableId = this.param['id'];
@@ -195,7 +195,7 @@ export class MainItemComponent implements OnInit {
 		return +arr[1] + (+arr[0] * 60);
 	}
 
-	deleteTimeLesson(lessonRow): void {
+	deleteTimeLesson(lessonRow: any): void {
 		let resSend = [];
 
 		for (let i = 0; i < lessonRow.slots.length; i++) {
@@ -248,7 +248,7 @@ export class MainItemComponent implements OnInit {
 		this.modalService.close(id);
 	}
 
-	clickSaveCell(obj): void {
+	clickSaveCell(obj: any): void {
 		this.inputConfig = obj;
 		this.setDefaultConfig();
 		this.configSave['id'] = obj.cell._id;
@@ -265,12 +265,12 @@ export class MainItemComponent implements OnInit {
 		this.configSave['selectedDay'] = [];
 	}
 
-	settings(repeatWith): void {
+	settings(repeatWith: any): void {
 		this.setDefaultConfig();
 		this.configSave['repeat'] = repeatWith;
 	}
 
-	selectDays(day, idx): void {
+	selectDays(day: any, idx: string): void {
 		if (day.checked) {
 			this.configSave['selectedDay'].push(idx);
 		} else {
@@ -281,7 +281,7 @@ export class MainItemComponent implements OnInit {
 		}
 	}
 
-	saveCell(config): void {
+	saveCell(config: any): void {
 		let arrTime = { id: this.inputConfig['cell']._id, time: [] };
 		let interval: number = config.repeatWithInterval;
 
@@ -381,7 +381,7 @@ export class MainItemComponent implements OnInit {
 		this.location.back();
 	}
 
-	contains(arr, begin, end): number {
+	contains(arr: any, begin: string, end: string): number {
 		let result = arr.find((i) => i.begin === begin && i.end === end);
 
 		if (arr.length > 0) {
